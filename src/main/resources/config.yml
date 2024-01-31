@@ -1,3 +1,13 @@
+# LightLogin Plugin's configuration file.
+# This file is used to completely customise important aspects of this software.
 #
-#
-#
+# !PLEASE EDIT CAUTIOUSLY!
+
+database:
+  type: 'SQLITE'        # Alternatives: SQLITE, MYSQL, POSTGRESQL
+  username: 'root'      # Username of your database account
+  password: 'password'  # Password of your database account
+  address: '127.0.0.1'  # Address of connection
+  port: 3306            # Port of connection
+  db-name: 'local'      # Name of database to connect and save data into.
+crash-shutdown: false   # Shut down the server after severe crashes or database issues.
