@@ -4,6 +4,7 @@ version: ${project.version}
 load: 'STARTUP'
 api-version: '1.16'
 author: 'CMarco'
+authors: ['mfnalex']
 database: false
 description: 'Optimised and Safe SpigotMC Software for Authentication'
 libraries:
@@ -14,3 +15,5 @@ commands:
     description: 'Login into the server.'
   register:
     description: 'Register into the server.'
+  unregister:
+    description: 'Unregister a user from the server.'

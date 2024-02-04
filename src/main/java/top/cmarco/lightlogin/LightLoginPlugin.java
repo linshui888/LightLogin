@@ -7,9 +7,13 @@ package top.cmarco.lightlogin;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.core.Logger;
+import org.apache.logging.log4j.core.filter.AbstractFilter;
 import org.bukkit.plugin.java.JavaPlugin;
 import top.cmarco.lightlogin.command.LoginCommand;
 import top.cmarco.lightlogin.command.RegisterCommand;
+import top.cmarco.lightlogin.command.UnregisterCommand;
 import top.cmarco.lightlogin.configuration.LightConfiguration;
 import top.cmarco.lightlogin.data.AuthenticationManager;
 import top.cmarco.lightlogin.data.BasicAuthenticationManager;
@@ -19,6 +23,7 @@ import top.cmarco.lightlogin.database.PluginDatabase;
 import top.cmarco.lightlogin.database.SQLiteDatabase;
 import top.cmarco.lightlogin.listeners.LoginAuthenticatorListener;
 import top.cmarco.lightlogin.listeners.PlayerUnloggedListener;
+import top.cmarco.lightlogin.log.SafetyFilter;
 
 import java.util.Objects;
 
@@ -26,6 +31,7 @@ import java.util.Objects;
 public final class LightLoginPlugin extends JavaPlugin {
 
     public final static String PREFIX = "&7╓&eLightLogin&7╛&f: ";
+    private AbstractFilter safetyFilter = null;
 
     private PlayerUnloggedListener playerUnloggedListener = null;
     private LoginAuthenticatorListener loginAuthenticatorListener = null;
@@ -34,14 +40,24 @@ public final class LightLoginPlugin extends JavaPlugin {
     private AuthenticationManager authenticationManager = null;
     private LoginCommand loginCommand = null;
     private RegisterCommand registerCommand = null;
+    private UnregisterCommand unregisterCommand = null;
     @Setter private boolean disabled = false;
+
+    private void setupChatFilter() {
+        Logger rootLogger = (Logger) LogManager.getRootLogger();
+        this.safetyFilter = new SafetyFilter();
+        safetyFilter.start();
+        rootLogger.addFilter(this.safetyFilter);
+    }
 
     private void setupCommands() {
         this.loginCommand = new LoginCommand(this);
         this.registerCommand = new RegisterCommand(this);
+        this.unregisterCommand = new UnregisterCommand(this);
         this.loginCommand.register();
         this.loginCommand.startClearTasks();
         this.registerCommand.register();
+        this.unregisterCommand.register();
     }
 
     private void setupAuthenticationManager() {
@@ -106,6 +122,7 @@ public final class LightLoginPlugin extends JavaPlugin {
         this.setupAuthenticationManager();
         this.registerAllListeners();
         this.setupCommands();
+        this.setupChatFilter();
     }
 
     /**
@@ -113,5 +130,6 @@ public final class LightLoginPlugin extends JavaPlugin {
      */
     @Override
     public void onDisable() {
+        this.database.close();
     }
 }

@@ -1,5 +1,6 @@
 package top.cmarco.lightlogin.command;
 
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import top.cmarco.lightlogin.LightLoginPlugin;
@@ -13,10 +14,10 @@ import java.util.Base64;
 import java.util.Iterator;
 import java.util.List;
 
-public class RegisterCommand extends LightLoginCommand {
+public final class RegisterCommand extends LightLoginCommand {
 
     public RegisterCommand(@NotNull LightLoginPlugin plugin) {
-        super(plugin, null, "register");
+        super(plugin, null, "register", false);
     }
 
     public static boolean isCharAllowed(final char character, final @NotNull List<Character> specialChars) {
@@ -101,7 +102,11 @@ public class RegisterCommand extends LightLoginCommand {
     }
 
     @Override
-    protected void commandLogic(@NotNull Player player, @NotNull String[] args) {
+    protected void commandLogic(@NotNull CommandSender sender, @NotNull String[] args) {
+
+        if (!(sender instanceof final Player player)) {
+            return;
+        }
 
         if (args.length != 2) {
             sendColorPrefixMessages(player, super.configuration.getRegisterIncorrectUsageMessage(), super.plugin);

@@ -80,7 +80,7 @@ public final class LoginAuthenticatorListener implements Listener {
         }
 
         this.database.updateRow(player.getUniqueId().toString(), LightLoginColumn.LAST_LOGIN, System.currentTimeMillis());
-        this.database.updateRow(player.getUniqueId().toString(), LightLoginColumn.LAST_IPV4, System.currentTimeMillis());
+        this.database.updateRow(player.getUniqueId().toString(), LightLoginColumn.LAST_IPV4, NetworkUtilities.convertInetSocketAddressToLong(player.getAddress()));
 
         authManager.unauthenticate(player);
     }

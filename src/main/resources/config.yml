@@ -65,6 +65,8 @@ messages:
   unregistered:
     - '{PREFIX}: &cSomeone else has unregistered you!'
     - '{PREFIX}: &cRegister again with /register <password> <password>'
+  unregistered-success:
+    - '{PREFIX}: &aWe successfully unregistered this player.'
   unsafe-password:
     - '{PREFIX}: &cYour password is unsafe!'
     - '{PREFIX}: &cIt must match the following criteria:'
@@ -91,3 +93,8 @@ messages:
     - '{PREFIX}: &cYou cannot login without being registered!'
   login-wrong-password:
     - '{PREFIX}: &cWrong login password!'
+  unregister-incorrect-usage:
+    - '{PREFIX}: &cIncorrect unregister command usage!'
+    - '{PREFIX}: &cUse &e/unregister <player>'
+  unregister-not-found:
+    - '{PREFIX}: &cWe did not find any player registered with such name.'

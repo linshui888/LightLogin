@@ -144,6 +144,10 @@ public final class LightConfiguration {
         return this.configuration.getStringList("messages.missing-permission");
     }
 
+    public List<String> getUnregisterIncorrectUsage() {
+        return this.configuration.getStringList("messages.unregister-incorrect-usage");
+    }
+
     public List<String> getRegisterMessage() {
         return this.configuration.getStringList("messages.register-message");
     }
@@ -168,6 +172,11 @@ public final class LightConfiguration {
         return this.configuration.getStringList("messages.unregistered");
     }
 
+    public List<String> getUnregisteredSuccess() {
+        return this.configuration.getStringList("messages.unregistered-success");
+    }
+
+
     public List<String> getUnsafePassword() {
         return this.configuration.getStringList("messages.unsafe-password");
     }
@@ -178,6 +187,10 @@ public final class LightConfiguration {
 
     public List<String> getLoginIncorrectUsage() {
         return this.configuration.getStringList("messages.login-incorrect-usage");
+    }
+
+    public List<String> getUnregisterNotFound() {
+        return this.configuration.getStringList("messages.unregister-not-found");
     }
 
     public List<String> getLoginAlreadyAuthenticated() {

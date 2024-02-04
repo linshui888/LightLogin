@@ -10,6 +10,7 @@ import org.jetbrains.annotations.Nullable;
 import top.cmarco.lightlogin.data.LightLoginDbRow;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
@@ -53,4 +54,17 @@ public interface PluginDatabase {
     CompletableFuture<LightLoginDbRow> addRow(@NotNull LightLoginDbRow row);
 
     CompletableFuture<Void> updateRow(@NotNull String uuid, @NotNull LightLoginColumn column, @NotNull Object columnValue);
+
+    CompletableFuture<Boolean> deleteRow(@NotNull String uuid);
+
+    default void close() {
+        try {
+            Connection connection = getConnection();
+            if (connection != null) {
+                connection.close();
+            }
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+    }
 }

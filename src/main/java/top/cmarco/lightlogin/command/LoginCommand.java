@@ -1,6 +1,6 @@
 package top.cmarco.lightlogin.command;
 
-import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import top.cmarco.lightlogin.LightLoginPlugin;
@@ -14,9 +14,9 @@ import java.util.HashMap;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class LoginCommand extends LightLoginCommand {
+public final class LoginCommand extends LightLoginCommand {
     public LoginCommand(@NotNull LightLoginPlugin plugin) {
-        super(plugin, null, "login");
+        super(plugin, null, "login", false);
     }
 
     private final HashMap<UUID, Long> lastLoginAttempt = new HashMap<>();
@@ -33,7 +33,11 @@ public class LoginCommand extends LightLoginCommand {
     }
 
     @Override
-    protected void commandLogic(@NotNull Player player, @NotNull String[] args) {
+    protected void commandLogic(@NotNull CommandSender sender, @NotNull String[] args) {
+
+        if (!(sender instanceof final Player player)) {
+            return;
+        }
 
         if (args.length != 1) {
             sendColorPrefixMessages(player, super.configuration.getLoginIncorrectUsage(), super.plugin);

@@ -1,6 +1,7 @@
 package top.cmarco.lightlogin.listeners;
 
 import lombok.RequiredArgsConstructor;
+import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.*;
@@ -55,6 +56,17 @@ public final class PlayerUnloggedListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onMove(PlayerMoveEvent event) {
+        if (event.getTo() == null) {
+            return;
+        }
+
+        Location from = event.getFrom();
+        Location to = event.getTo();
+
+        if (from.getX() == to.getX() && from.getY() == to.getY() && from.getZ() == to.getZ()) {
+            return;
+        }
+
         this.cancelIfPlayerUnauthenticated(event.getPlayer(), event);
     }
 

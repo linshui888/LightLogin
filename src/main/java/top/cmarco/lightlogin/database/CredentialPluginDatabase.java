@@ -58,7 +58,6 @@ public abstract class CredentialPluginDatabase extends AbstractPluginDatabase {
 
     @Override
     public void connect() {
-
         if (this.connection != null) {
             return;
         }

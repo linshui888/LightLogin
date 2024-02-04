@@ -133,4 +133,22 @@ public final class MySqlDatabase extends HikariPluginDatabase {
             return null;
         });
     }
+
+    private static final String DELETE_ROW = "DELETE FROM lightlogin WHERE uuid=?;";
+
+    @Override
+    public CompletableFuture<Boolean> deleteRow(@NotNull String uuid) {
+        return CompletableFuture.supplyAsync(() -> {
+
+            try (PreparedStatement statement = connection.prepareStatement(DELETE_ROW)) {
+                statement.setString(1, uuid);
+                return statement.executeUpdate() != 0;
+            } catch (SQLException exception) {
+                super.plugin.getLogger().warning("WARNING! Error database delete row for " + uuid);
+                super.plugin.getLogger().warning(exception.getLocalizedMessage());
+            }
+
+            return null;
+        });
+    }
 }

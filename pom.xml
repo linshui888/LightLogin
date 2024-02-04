@@ -96,5 +96,11 @@
             <version>5.1.0</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>2.19.0</version> <!-- This is the version Spigot 1.20.1 uses -->
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 </project>
