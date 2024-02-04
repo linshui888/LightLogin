@@ -5,9 +5,14 @@
  */
 package top.cmarco.lightlogin.database;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import top.cmarco.lightlogin.data.LightLoginDbRow;
 
 import java.sql.Connection;
+import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * Represents a specific implementation of database used by this
@@ -43,4 +48,9 @@ public interface PluginDatabase {
      */
     @Nullable Connection getConnection();
 
+    CompletableFuture<LightLoginDbRow> searchRowFromPK(@NotNull String uuid);
+
+    CompletableFuture<LightLoginDbRow> addRow(@NotNull LightLoginDbRow row);
+
+    CompletableFuture<Void> updateRow(@NotNull String uuid, @NotNull LightLoginColumn column, @NotNull Object columnValue);
 }

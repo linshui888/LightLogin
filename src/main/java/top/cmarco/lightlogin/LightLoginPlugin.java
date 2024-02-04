@@ -8,29 +8,59 @@ package top.cmarco.lightlogin;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.plugin.java.JavaPlugin;
+import top.cmarco.lightlogin.command.LoginCommand;
+import top.cmarco.lightlogin.command.RegisterCommand;
 import top.cmarco.lightlogin.configuration.LightConfiguration;
+import top.cmarco.lightlogin.data.AuthenticationManager;
+import top.cmarco.lightlogin.data.BasicAuthenticationManager;
 import top.cmarco.lightlogin.database.DatabaseType;
 import top.cmarco.lightlogin.database.MySqlDatabase;
 import top.cmarco.lightlogin.database.PluginDatabase;
 import top.cmarco.lightlogin.database.SQLiteDatabase;
-import top.cmarco.lightlogin.listeners.AuthorisedEventsManager;
+import top.cmarco.lightlogin.listeners.LoginAuthenticatorListener;
+import top.cmarco.lightlogin.listeners.PlayerUnloggedListener;
 
 import java.util.Objects;
 
 @Getter
 public final class LightLoginPlugin extends JavaPlugin {
 
-    private AuthorisedEventsManager authorisedEventsManager = null;
+    public final static String PREFIX = "&7╓&eLightLogin&7╛&f: ";
+
+    private PlayerUnloggedListener playerUnloggedListener = null;
+    private LoginAuthenticatorListener loginAuthenticatorListener = null;
     private LightConfiguration lightConfiguration = null;
     private PluginDatabase database = null;
+    private AuthenticationManager authenticationManager = null;
+    private LoginCommand loginCommand = null;
+    private RegisterCommand registerCommand = null;
     @Setter private boolean disabled = false;
+
+    private void setupCommands() {
+        this.loginCommand = new LoginCommand(this);
+        this.registerCommand = new RegisterCommand(this);
+        this.loginCommand.register();
+        this.loginCommand.startClearTasks();
+        this.registerCommand.register();
+    }
+
+    private void setupAuthenticationManager() {
+        if (this.authenticationManager != null) {
+            return;
+        }
+
+        this.authenticationManager = new BasicAuthenticationManager(this);
+    }
 
     /**
      * Method responsible for registering all of this software listeners.
      */
     private void registerAllListeners() {
-        this.authorisedEventsManager = new AuthorisedEventsManager(this);
-        this.authorisedEventsManager.registerBlockEvent();
+        this.playerUnloggedListener = new PlayerUnloggedListener(this);
+        this.loginAuthenticatorListener = new LoginAuthenticatorListener(this);
+
+        getServer().getPluginManager().registerEvents(this.loginAuthenticatorListener, this);
+        getServer().getPluginManager().registerEvents(this.playerUnloggedListener, this);
     }
 
     private void setupConfig() {
@@ -57,6 +87,7 @@ public final class LightLoginPlugin extends JavaPlugin {
             case MYSQL -> this.database = new MySqlDatabase(this);
             default -> this.database = null;
         }
+
         assert this.database != null;
 
         this.database.loadDriverClass();
@@ -72,7 +103,9 @@ public final class LightLoginPlugin extends JavaPlugin {
     public void onEnable() {
         this.setupConfig();
         this.setupDatabase();
+        this.setupAuthenticationManager();
         this.registerAllListeners();
+        this.setupCommands();
     }
 
     /**

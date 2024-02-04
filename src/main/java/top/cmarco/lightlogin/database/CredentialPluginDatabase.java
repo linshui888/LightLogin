@@ -52,7 +52,7 @@ public abstract class CredentialPluginDatabase extends AbstractPluginDatabase {
     }
 
     @Override
-    public @Nullable Connection getConnection() {
+    public final @Nullable Connection getConnection() {
         return this.connection;
     }
 
