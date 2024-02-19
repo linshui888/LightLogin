@@ -5,6 +5,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import top.cmarco.lightlogin.LightLoginPlugin;
+import top.cmarco.lightlogin.api.UnregisterEvent;
 import top.cmarco.lightlogin.data.AuthenticationManager;
 import top.cmarco.lightlogin.database.PluginDatabase;
 
@@ -44,6 +45,11 @@ public final class UnregisterCommand extends LightLoginCommand {
         PluginDatabase database = super.plugin.getDatabase();
         authManager.unauthenticate(playerUUID);
 
+        UnregisterEvent unregisterEvent = new UnregisterEvent(playerUUID);
+        super.plugin.getServer().getPluginManager().callEvent(unregisterEvent);
+
+        final UUID finalPlayerUUID = playerUUID;
+
         database.deleteRow(playerUUID.toString())
                 .whenComplete((bool, throwable) -> {
 
@@ -54,13 +60,14 @@ public final class UnregisterCommand extends LightLoginCommand {
 
                     if (bool) {
 
-                        if (!(sender instanceof Player player) || player.isOnline()) {
+                        if (!(sender instanceof Player) || ((Player) sender).isOnline()) {
                             sendColorPrefixMessages(sender, super.configuration.getUnregisteredSuccess(), plugin);
+                            authManager.addUnregistered(finalPlayerUUID);
                         }
 
                     } else {
 
-                        if (!(sender instanceof Player player) || player.isOnline()) {
+                        if (!(sender instanceof Player) || ((Player) sender).isOnline()) {
                             sendColorPrefixMessages(sender, super.configuration.getUnregisterNotFound(), plugin);
                         }
 

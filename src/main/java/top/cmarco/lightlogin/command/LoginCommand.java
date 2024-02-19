@@ -4,6 +4,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import top.cmarco.lightlogin.LightLoginPlugin;
+import top.cmarco.lightlogin.api.PlayerAuthenticateEvent;
 import top.cmarco.lightlogin.data.AuthenticationManager;
 import top.cmarco.lightlogin.database.LightLoginColumn;
 import top.cmarco.lightlogin.database.PluginDatabase;
@@ -35,9 +36,11 @@ public final class LoginCommand extends LightLoginCommand {
     @Override
     protected void commandLogic(@NotNull CommandSender sender, @NotNull String[] args) {
 
-        if (!(sender instanceof final Player player)) {
+        if (!(sender instanceof Player)) {
             return;
         }
+
+        final Player player = (Player) sender;
 
         if (args.length != 1) {
             sendColorPrefixMessages(player, super.configuration.getLoginIncorrectUsage(), super.plugin);
@@ -87,15 +90,17 @@ public final class LoginCommand extends LightLoginCommand {
                         return;
                     }
 
-                    final String hashAttempt = Argon2Utilities.encryptArgon2(password, Base64.getDecoder().decode(row.passwordSalt()));
-                    final String databaseHash = row.passwordHash();
+                    final String hashAttempt = Argon2Utilities.encryptArgon2(password, Base64.getDecoder().decode(row.getPasswordSalt()));
+                    final String databaseHash = row.getPasswordHash();
 
                     if (databaseHash.equalsIgnoreCase(hashAttempt)) {
                         if (player.isOnline()) {
                             sendColorPrefixMessages(player, super.configuration.getLoginSuccess(), super.plugin);
                         }
+
                         authManager.authenticate(player);
                         database.updateRow(uuid.toString(), LightLoginColumn.LAST_LOGIN, System.currentTimeMillis());
+
                     } else if (player.isOnline()) {
 
                         sendColorPrefixMessages(player, super.configuration.getLoginWrongPassword(), super.plugin);

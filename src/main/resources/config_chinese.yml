@@ -1,0 +1,120 @@
+# LightLogin插件的配置文件。
+# 该文件用于完全定制此软件的重要方面。
+#
+# version 1.0.0 (DO NOT MODIFY)
+# ！请谨慎编辑！
+plugin:
+  info:
+    - '{PREFIX}: &6插件信息'
+    - '&e此插件当前版本为{VERSION}'
+    - '&e该软件的开发者是CMarco'
+    - '&7该插件于2024年1月创建，旨在保护您的服务器并使其对所有人安全可访问！'
+
+# 数据库配置
+database:
+  type: 'SQLITE'        # 数据库类型（替代项：SQLITE、MYSQL、POSTGRESQL）
+  username: 'root'      # 您的数据库帐户的用户名
+  password: 'password'  # 您的数据库帐户的密码
+  address: '127.0.0.1'  # 连接地址
+  port: 3306            # 连接端口
+  db-name: 'local'      # 要连接和保存数据的数据库名称。
+
+# 服务器在崩溃或数据库问题后的行为
+crash-shutdown: false     # 严重崩溃或数据库问题后关闭服务器。
+
+safety:
+  players-same-ip: 2      # 同一IPv4地址上可以同时连接多少玩家？
+
+# 登录配置
+login:
+  command-delay: 3        # 登录命令可执行之前的延迟时间（秒）
+  max-failed-attempts: 10 # 允许的最大登录失败尝试次数，否则将受到惩罚
+  bruteforce-punishment:  # 暴力破解尝试的惩罚命令
+    - 'clear {PLAYER}'
+    - 'tempban {PLAYER} 1h &c您登录失败次数太多！'
+  auto-login: true        # 注册后自动登录玩家
+  session-expire: 900     # 登录会话过期的时间（秒），默认为15分钟
+  allowed-commands:       # 玩家在登录之前可以运行的命令列表
+    - '/help'
+    - '/login'
+    - '/register'
+
+# 安全密码配置
+safe-passwords:
+  force-safe:
+    enabled: true         # 启用或禁用强制安全密码功能
+    min-length: 8         # 密码的最小长度
+    min-uppercase: 1      # 大写字母的最小数量
+    min-numbers: 2        # 数字字符的最小数量
+    min-special: 1        # 特殊字符的最小数量
+    allowed-special: ['@', '^', '-', '_', '#', '!', '?', '*', '$', '%', '&', '*'] # 允许的特殊字符
+
+# 消息配置
+messages:
+  prefix: '&7╓&eLightLogin&7╛&f' # 插件消息的前缀
+  player-only-command: ['{PREFIX}: &c此命令仅限玩家执行！']
+  missing-permission: ['{PREFIX}: &c您缺少权限&l{PERMISSION}']
+  incorrect-command-usage: ['{PREFIX}: &c该命令的使用方式不正确！']
+  register-message:
+    - '{PREFIX}: &c请使用以下命令注册：'
+    - '{PREFIX}: &e/register <密码> <密码>'
+  register-incorrect-usage:
+    - '{PREFIX}: &c注册命令使用不正确！'
+    - '{PREFIX}: &c使用&e/register <密码> <密码>'
+  register-unequal-passwords:
+    - '{PREFIX}: &c密码输入错误！'
+    - '{PREFIX}: &c两个密码不匹配。'
+  register-error:
+    - '{PREFIX}: &c注册时发生了一些问题'
+  register-success:
+    - '{PREFIX}: &a您成功注册 :)'
+    - '{PREFIX} &a请确保保护您的密码&l安全'
+  already-registered:
+    - '{PREFIX}: &c您已经注册！'
+    - '{PREFIX}: &c如果要更改当前密码，请使用&e/changepassword <旧密码> <新密码>'
+  unregistered:
+    - '{PREFIX}: &c其他人已经取消了您的注册！'
+    - '{PREFIX}: &c使用/register <密码> <密码>重新注册'
+  unregistered-success:
+    - '{PREFIX}: &a我们成功取消了此玩家的注册。'
+  unsafe-password:
+    - '{PREFIX}: &c您的密码不安全！'
+    - '{PREFIX}: &c必须符合以下条件：'
+    - '&7- &c至少&e{MIN_LENGTH} &c个字符'
+    - '&7- &c至少&e{MIN_UPCASE} &c大写字母、&e{MIN_SPECIAL} &c特殊字符、&e{MIN_NUMBERS} &c数字。'
+    - '&7- &c允许的特殊字符：{SPECIAL}'
+  command-too-fast:
+    - '{PREFIX}: &c您使用该命令太快！'
+  login-already-authenticated:
+    - '{PREFIX}: &c您已经通过身份验证！'
+  login-error:
+    - '{PREFIX}: &c登录时发生了一些问题。'
+  login-incorrect-usage:
+    - '{PREFIX}: &c登录命令使用不正确！'
+    - '{PREFIX}: &c使用&e/login <密码>'
+  login-success:
+    - '{PREFIX}: &a您成功登录。'
+  login-auto:
+    - '{PREFIX}: &a您已自动通过身份验证。'
+  login-messages:
+    - '{PREFIX}: &c请使用以下命令登录：'
+    - '{PREFIX}: &e/login <密码>'
+  login-unregistered:
+    - '{PREFIX}: &c您不能在未注册的情况下登录！'
+  login-wrong-password:
+    - '{PREFIX}: &c错误的登录密码！'
+  unregister-incorrect-usage:
+    - '{PREFIX}: &c取消注册命令使用不正确！'
+    - '{PREFIX}: &c使用&e/unregister <玩家>'
+  unregister-not-found:
+    - '{PREFIX}: &c我们没有找到使用此名称注册的任何玩家。'
+  changepassword-unregistered:
+    - "{PREFIX}: &c您必须先注册才能更改密码。"
+  changepassword-wrong-oldpassword:
+    - "{PREFIX}: &c您的旧密码不正确！"
+  changepassword-changed:
+    - "{PREFIX}: &a您的旧密码已成功更新！"
+  player-not-online:
+    - "{PREFIX}: &a该玩家不在线！"
+  players-same-ip: "{PREFIX}: &c您的网络地址连接了太多玩家！"
+

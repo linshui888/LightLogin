@@ -5,7 +5,6 @@
  */
 package top.cmarco.lightlogin.configuration;
 
-import lombok.RequiredArgsConstructor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -17,8 +16,9 @@ import java.util.List;
  * This class represents the configuration for the LightLoginPlugin, providing convenient methods
  * to access various configuration parameters related to the database.
  */
-@RequiredArgsConstructor
 public final class LightConfiguration {
+
+    private final ConfigurationFiles chosenLanguage;
 
     // The LightLoginPlugin instance associated with this configuration.
     private final LightLoginPlugin plugin;
@@ -26,12 +26,24 @@ public final class LightConfiguration {
     // The FileConfiguration instance used to store and retrieve configuration settings.
     private FileConfiguration configuration = null;
 
+    public LightConfiguration(ConfigurationFiles chosenLanguage, LightLoginPlugin plugin) {
+        this.chosenLanguage = chosenLanguage;
+        this.plugin = plugin;
+    }
+
     /**
      * Loads the default configuration for the associated plugin and retrieves the configuration instance.
      */
     public void loadConfig() {
-        this.plugin.saveDefaultConfig();
-        configuration = this.plugin.getConfig();
+        configuration = this.plugin.getLanguagesConfigMap().get(chosenLanguage);
+    }
+
+    public List<String> getPluginInfo() {
+        return this.configuration.getStringList("plugin.info");
+    }
+
+    public List<String> getIncorrectCommandUsage() {
+        return this.configuration.getStringList("messages.incorrect-command-usage");
     }
 
     /**
@@ -245,6 +257,10 @@ public final class LightConfiguration {
         return this.configuration.getCharacterList("safe-passwords.force-safe.allowed-special");
     }
 
+    public String getMessagePlayersSameIp() {
+        return this.configuration.getString("messages.players-same-ip");
+    }
+
     public int getSafePasswordMaxLength() {
         return this.configuration.getInt("safe-passwords.force-safe.max-length", 32);
     }
@@ -253,5 +269,23 @@ public final class LightConfiguration {
         return this.configuration.getStringList("messages.command-too-fast");
     }
 
+    public List<String> getChangepasswordUnregistered() {
+        return this.configuration.getStringList("messages.changepassword-unregistered");
+    }
 
+    public List<String> getChangepasswordWrongOldPassword() {
+        return this.configuration.getStringList("messages.changepassword-wrong-oldpassword");
+    }
+
+    public List<String> getChangePasswordUpdated() {
+        return this.configuration.getStringList("messages.changepassword-changed");
+    }
+
+    public List<String> getPlayerNotOnline() {
+        return this.configuration.getStringList("messages.player-not-online");
+    }
+
+    public int getPlayersSameIp() {
+        return this.configuration.getInt("safety.players-same-ip", 2);
+    }
 }

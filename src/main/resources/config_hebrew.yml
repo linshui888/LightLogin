@@ -1,0 +1,120 @@
+# קובץ הגדרות של תוסף LightLogin.
+# קובץ זה משמש להתאמה אישית מוחלטת של נפילת חלקים חשובים בתוכנה זו.
+# version 1.0.0 (DO NOT MODIFY)
+# !בבקשה לערוך בזהירות
+plugin:
+  info:
+    - '{PREFIX}: &6מידע על התוסף'
+    - '&eהתוסף נמצא כרגע בגרסה {VERSION}'
+    - '&eהמפתח של תוכנה זו הוא CMarco'
+    - '&7תוסף זה נוצר בינואר 2024 כדי להגן על השרת שלך ולהפוך אותו לנגיש לכולם בצורה בטוחה!'
+
+# הגדרות בסיס נתונים
+database:
+  type: 'SQLITE'        # סוג מסד נתונים (אלטרנטיבות: SQLITE, MYSQL, POSTGRESQL)
+  username: 'root'      # שם המשתמש של חשבון המסד נתונים שלך
+  password: 'password'  # סיסמת חשבון המסד נתונים שלך
+  address: '127.0.0.1'  # כתובת החיבור
+  port: 3306            # פורט החיבור
+  db-name: 'local'      # שם המסד נתונים להתחברות ושמירת הנתונים.
+
+# התנהגות השרת לאחר נפילות או בעיות במסד הנתונים
+crash-shutdown: false   # לכבות את השרת לאחר נפילות חמורות או בעיות במסד הנתונים.
+
+# הגדרות כניסה
+login:
+  command-delay: 3       # השהייה בשניות לפני שהפקודה של כניסה יכולה להתבצע
+  max-failed-attempts: 10 # מספר מרבי של נסיונות כניסה נכשלים שמותרים לפני פקודות עונש
+  bruteforce-punishment: # פקודות עונש לנסיונות כניסה ברוטפורס
+    - 'clear {PLAYER}'
+    - 'tempban {PLAYER} 1h &cנכשלת בכניסה יותר מדי פעמים!'
+  auto-login: true        # התחבר אוטומטית שחקנים לאחר רישום
+  session-expire: 900     # זמן בשניות אחריו הסשן של הכניסה יפוג (ברירת מחדל 15 דקות)
+  allowed-commands:       # רשימת פקודות ששחקנים יכולים להריץ לפני שהם מתחברים
+    - '/help'
+    - '/login'
+    - '/register'
+
+safety:
+  players-same-ip: 2      # כמה שחקנים יכולים להתחבר באותו זמן דרך אותו כתובת IPv4?
+
+# הגדרות סיסמאות בטוחות
+safe-passwords:
+  force-safe:
+    enabled: true         # הפעל או בטל את יכולת חיוב הסיסמה הבטוחה
+    min-length: 8         # אורך מינימלי של הסיסמה
+    min-uppercase: 1      # מספר מינימלי של תווים בגובה רישאות
+    min-numbers: 2        # מספר מינימלי של תווים נומריים
+    min-special: 1        # מספר מינימלי של תווים מיוחדים
+    allowed-special: ['@', '^', '-', '_', '#', '!', '?', '*', '$', '%', '&', '*'] # תווים מיוחדים מותרים
+
+# הגדרות הודעות
+messages:
+  prefix: '&7╓&eLightLogin&7╛&f' # תחילית להודעות התוסף
+  player-only-command: ['{PREFIX}: &cפקודה זו יכולה להישגר רק כשחקן!']
+  missing-permission: ['{PREFIX}: &cיש לך חוסר הרשאה &l{PERMISSION}']
+  incorrect-command-usage: ['{PREFIX}: &cשימוש בפקודה זו אינו נכון!']
+  register-message:
+    - '{PREFIX}: &cאנא רשום באמצעות הפקודה:'
+    - '{PREFIX}: &e/register <סיסמה> <סיסמה>'
+  register-incorrect-usage:
+    - '{PREFIX}: &cשימוש שגוי בפקודת הרישום!'
+    - '{PREFIX}: &cהשתמש ב&e/register <סיסמה> <סיסמה>'
+  register-unequal-passwords:
+    - '{PREFIX}: &cסיסמה שגויה הוזנה!'
+    - '{PREFIX}: &cשתי הסיסמאות אינן תואמות זו לזו.'
+  register-error:
+    - '{PREFIX}: &cמשהו השתבש בעת הרשמה'
+  register-success:
+    - '{PREFIX}: &aנרשמת בהצלחה :)'
+    - '{PREFIX} &aודא שאתה שומר על הסיסמאות שלך &lבבטחה'
+  already-registered:
+    - '{PREFIX}: &cכבר נרשמת!'
+    - '{PREFIX}: &cהשתמש ב&e/changepassword <סיסמהישנה> <סיסמהחדשה>'
+    - '{PREFIX}: &cאם ברצונך לשנות את הסיסמה הנוכחית שלך!'
+  unregistered:
+    - '{PREFIX}: &cמישהו אחר ביטל את ההרשמה שלך!'
+    - '{PREFIX}: &cהרשם מחדש בעזרת /register <סיסמה> <סיסמה>'
+  unregistered-success:
+    - '{PREFIX}: &aבוטלנו בהצלחה את ההרשמה של שחקן זה.'
+  unsafe-password:
+    - '{PREFIX}: &cהסיסמה שלך אינה בטוחה!'
+    - '{PREFIX}: &cעליה להתאים לקריטריונים הבאים:'
+    - '&7- &cלפחות &e{MIN_LENGTH} &cתווים'
+    - '&7- &cלפחות &e{MIN_UPCASE} &cאותיות גדולות, &e{MIN_SPECIAL} &cתווים מיוחדים, &e{MIN_NUMBERS} &cמספרים.'
+    - '&7- &cתווים מיוחדים מותרים: {SPECIAL}'
+  command-too-fast:
+    - '{PREFIX}: &cאתה משתמש בפקודה זו מהר מדי!'
+  login-already-authenticated:
+    - '{PREFIX}: &cאתה כבר מאומת!'
+  login-error:
+    - '{PREFIX}: &cמשהו השתבש בעת התחברות.'
+  login-incorrect-usage:
+    - '{PREFIX}: &cשימוש שגוי בפקודת התחברות!'
+    - '{PREFIX}: &cהשתמש ב&e/login <סיסמה>'
+  login-success:
+    - '{PREFIX}: &aהתחברת בהצלחה.'
+  login-auto:
+    - '{PREFIX}: &aהופעלת התחברות אוטומטית.'
+  login-messages:
+    - '{PREFIX}: &cאנא התחבר באמצעות הפקודה:'
+    - '{PREFIX}: &e/login <סיסמה>'
+  login-unregistered:
+    - '{PREFIX}: &cאתה לא יכול להתחבר בלעדי הרשמה!'
+  login-wrong-password:
+    - '{PREFIX}: &cסיסמת התחברות שגויה!'
+  unregister-incorrect-usage:
+    - '{PREFIX}: &cשימוש שגוי בפקודת ביטול הרשמה!'
+    - '{PREFIX}: &cהשתמש ב&e/unregister <שחקן>'
+  unregister-not-found:
+    - '{PREFIX}: &cלא מצאנו שחקן רשום עם שם כזה.'
+  changepassword-unregistered:
+    - "{PREFIX}: &cאין לך אפשרות לשנות סיסמה בלעדי הרשמה."
+  changepassword-wrong-oldpassword:
+    - "{PREFIX}: &cהסיסמה הקודמת שלך אינה נכונה!"
+  changepassword-changed:
+    - "{PREFIX}: &aהסיסמה הישנה שלך עודכנה בהצלחה!"
+  player-not-online:
+    - "{PREFIX}: &aהשחקן הזה לא מחובר!"
+  players-same-ip: "{PREFIX}: &cרובים מדי שחקנים מחוברים מכתובת הרשת שלך!"
+

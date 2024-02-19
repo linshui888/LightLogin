@@ -14,6 +14,8 @@ import java.util.Base64;
  */
 public final class Argon2Utilities {
 
+    public static boolean debug = false;
+
     private Argon2Utilities() {
         throw new RuntimeException("You may not instantiate this utility class.");
     }
@@ -32,10 +34,10 @@ public final class Argon2Utilities {
         return salt;
     }
 
-    private static final int ITERATIONS = 4;
+    private static final int ITERATIONS = 4; // 16
     private static final int MEMORY_LIMIT = 65336;
-    private static final int HASH_LENGTH = 32;
-    private static final int PARALLELISM = 1;
+    private static final int HASH_LENGTH = 32; // 64
+    private static final int PARALLELISM = 4;
 
     /**
      * A function to encrypt a string in Argon2 and encode it using Base64.
@@ -46,9 +48,9 @@ public final class Argon2Utilities {
      * @param salt a salt to use.
      * @return Hashed and encoded password.
      */
-    public static String encryptArgon2(@NotNull String password, final byte[] salt) {
-        // final byte[] salt = generateSaltByte(0x10);
-
+    @NotNull
+    public static String encryptArgon2(@NotNull final String password, final byte[] salt) {
+        final long startTime = System.currentTimeMillis();
         final Argon2Parameters.Builder builder = new Argon2Parameters.Builder(Argon2Parameters.ARGON2_id)
                 .withVersion(Argon2Parameters.ARGON2_VERSION_13)
                 .withIterations(ITERATIONS)
@@ -60,6 +62,10 @@ public final class Argon2Utilities {
         generator.init(builder.build());
         final byte[] result = new byte[HASH_LENGTH];
         generator.generateBytes(password.getBytes(StandardCharsets.UTF_8), result, 0x00, result.length);
+        final long endTime = System.currentTimeMillis();
+        if (debug) {
+            System.out.printf("HASH IMPACT (ms) = %.3f%n", ((double) (endTime - startTime)) / 1E3);
+        }
         return Base64.getEncoder().encodeToString(result);
     }
 
@@ -72,7 +78,7 @@ public final class Argon2Utilities {
      * @param password The plaintext password input.
      * @return Hashed and encoded password.
      */
-    public static String encryptArgon2(@NotNull String password) {
+    public static String encryptArgon2(@NotNull final String password) {
         return encryptArgon2(password, generateSaltByte(0x10));
     }
 

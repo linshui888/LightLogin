@@ -5,16 +5,12 @@
  */
 package top.cmarco.lightlogin.database;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
  * Supported databases
  */
-@RequiredArgsConstructor
-@Getter
 public enum DatabaseType {
 
     SQLITE("sqlite", "org.sqlite.JDBC"),
@@ -23,6 +19,19 @@ public enum DatabaseType {
 
     private final String name;
     private final String className;
+
+    DatabaseType(String name, String className) {
+        this.name = name;
+        this.className = className;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getClassName() {
+        return className;
+    }
 
     @Nullable
     public static DatabaseType fromName(@NotNull String name) {

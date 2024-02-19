@@ -1,0 +1,120 @@
+# Archivo de configuración del complemento LightLogin.
+# Este archivo se utiliza para personalizar completamente aspectos importantes de este software.
+# version 1.0.0 (DO NOT MODIFY)
+# ¡EDITE CON PRECAUCIÓN!
+plugin:
+  info:
+    - '{PREFIX}: &6Información del complemento'
+    - '&eEste complemento se encuentra actualmente en la versión {VERSION}'
+    - '&eEl desarrollador de este software es CMarco'
+    - '&7Este complemento fue creado en enero de 2024 para proteger su servidor y hacerlo accesible para todos de manera segura.'
+
+# Configuración de la base de datos
+database:
+  type: 'SQLITE'        # Tipo de base de datos (Alternativas: SQLITE, MYSQL, POSTGRESQL)
+  username: 'root'      # Nombre de usuario de tu cuenta de base de datos
+  password: 'password'  # Contraseña de tu cuenta de base de datos
+  address: '127.0.0.1'  # Dirección de conexión
+  port: 3306            # Puerto de conexión
+  db-name: 'local'      # Nombre de la base de datos para conectarse y guardar datos.
+
+# Comportamiento del servidor después de caídas o problemas de la base de datos
+crash-shutdown: false   # Apagar el servidor después de caídas graves o problemas de la base de datos.
+
+# Configuración de inicio de sesión
+login:
+  command-delay: 3       # Retraso en segundos antes de que el comando de inicio de sesión sea ejecutable
+  max-failed-attempts: 10 # Número máximo de intentos de inicio de sesión fallidos permitidos antes de ser castigado
+  bruteforce-punishment: # Comandos de castigo por intentos de fuerza bruta
+    - 'clear {PLAYER}'
+    - 'tempban {PLAYER} 1h &cHas fallado el inicio de sesión demasiadas veces.'
+  auto-login: true        # Iniciar sesión automáticamente después del registro
+  session-expire: 900     # Tiempo en segundos después del cual una sesión de inicio de sesión debería expirar (por defecto 15 minutos)
+  allowed-commands:       # Lista de comandos que los jugadores pueden ejecutar antes de iniciar sesión
+    - '/help'
+    - '/login'
+    - '/register'
+
+safety:
+  players-same-ip: 2      # ¿Cuántos jugadores pueden estar conectados al mismo tiempo desde la misma dirección IPv4?
+
+# Configuración de contraseñas seguras
+safe-passwords:
+  force-safe:
+    enabled: true         # Habilitar o deshabilitar la función de contraseña segura forzada
+    min-length: 8         # Longitud mínima de la contraseña
+    min-uppercase: 1      # Número mínimo de caracteres en mayúsculas
+    min-numbers: 2        # Número mínimo de caracteres numéricos
+    min-special: 1        # Número mínimo de caracteres especiales
+    allowed-special: ['@', '^', '-', '_', '#', '!', '?', '*', '$', '%', '&', '*'] # Caracteres especiales permitidos
+
+# Configuración de mensajes
+messages:
+  prefix: '&7╓&eLightLogin&7╛&f' # Prefijo para los mensajes del complemento
+  player-only-command: ['{PREFIX}: &cEste comando solo puede ser ejecutado por un jugador.']
+  missing-permission: ['{PREFIX}: &cTe falta el permiso &l{PERMISSION}']
+  incorrect-command-usage: ['{PREFIX}: &c¡El uso de este comando es incorrecto!']
+  register-message:
+    - '{PREFIX}: &cPor favor, regístrate usando el comando:'
+    - '{PREFIX}: &e/register <psw> <psw>'
+  register-incorrect-usage:
+    - '{PREFIX}: &cUso incorrecto del comando de registro.'
+    - '{PREFIX}: &cUsa &e/register <contraseña> <contraseña>'
+  register-unequal-passwords:
+    - '{PREFIX}: &cSe escribió la contraseña incorrecta.'
+    - '{PREFIX}: &cLas dos contraseñas no coinciden entre sí.'
+  register-error:
+    - '{PREFIX}: &cAlgo salió mal durante el registro.'
+  register-success:
+    - '{PREFIX}: &a¡Te has registrado con éxito! :)'
+    - '{PREFIX} &aAsegúrate de mantener tus contraseñas &lseguras.'
+  already-registered:
+    - '{PREFIX}: &c¡Ya estás registrado!'
+    - '{PREFIX}: &cUsa &e/changepassword <contraseñaAntigua> <contraseñaNueva>'
+    - '{PREFIX}: &csi deseas cambiar tu contraseña actual.'
+  unregistered:
+    - '{PREFIX}: &c¡Alguien más te ha desregistrado!'
+    - '{PREFIX}: &cRegístrate de nuevo con /register <contraseña> <contraseña>'
+  unregistered-success:
+    - '{PREFIX}: &aHemos desregistrado con éxito a este jugador.'
+  unsafe-password:
+    - '{PREFIX}: &c¡Tu contraseña no es segura!'
+    - '{PREFIX}: &cDebe cumplir con los siguientes criterios:'
+    - '&7- &cAl menos &e{MIN_LENGTH} &ccaracteres.'
+    - '&7- &cAl menos &e{MIN_UPCASE} &cmayúsculas, &e{MIN_SPECIAL} &ccaracteres especiales, &e{MIN_NUMBERS} &cnúmeros.'
+    - '&7- &cCaracteres especiales permitidos: {SPECIAL}'
+  command-too-fast:
+    - '{PREFIX}: &cEstás usando este comando demasiado rápido!'
+  login-already-authenticated:
+    - '{PREFIX}: &c¡Ya estás autenticado!'
+  login-error:
+    - '{PREFIX}: &cAlgo salió mal durante el inicio de sesión.'
+  login-incorrect-usage:
+    - '{PREFIX}: &cUso incorrecto del comando de inicio de sesión.'
+    - '{PREFIX}: &cUsa &e/login <contraseña>'
+  login-success:
+    - '{PREFIX}: &aHas iniciado sesión con éxito.'
+  login-auto:
+    - '{PREFIX}: &aHas sido autenticado automáticamente.'
+  login-messages:
+    - '{PREFIX}: &cPor favor, inicia sesión usando el comando:'
+    - '{PREFIX}: &e/login <contraseña>'
+  login-unregistered:
+    - '{PREFIX}: &c¡No puedes iniciar sesión sin estar registrado!'
+  login-wrong-password:
+    - '{PREFIX}: &c¡Contraseña de inicio de sesión incorrecta!'
+  unregister-incorrect-usage:
+    - '{PREFIX}: &cUso incorrecto del comando de desregistro.'
+    - '{PREFIX}: &cUsa &e/unregister <jugador>'
+  unregister-not-found:
+    - '{PREFIX}: &cNo encontramos ningún jugador registrado con ese nombre.'
+  changepassword-unregistered:
+    - "{PREFIX}: &cNo puedes cambiar la contraseña sin estar registrado."
+  changepassword-wrong-oldpassword:
+    - "{PREFIX}: &c¡Tu antigua contraseña es incorrecta!"
+  changepassword-changed:
+    - "{PREFIX}: &aTu antigua contraseña se ha actualizado correctamente."
+  player-not-online:
+    - "{PREFIX}: &a¡Ese jugador no está en línea!"
+  players-same-ip: "{PREFIX}: &cDemasiados jugadores están conectados desde tu dirección de red!"
+

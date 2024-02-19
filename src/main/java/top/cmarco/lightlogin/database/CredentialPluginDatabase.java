@@ -5,7 +5,7 @@
  */
 package top.cmarco.lightlogin.database;
 
-import lombok.Getter;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import top.cmarco.lightlogin.LightLoginPlugin;
@@ -15,7 +15,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-@Getter
 public abstract class CredentialPluginDatabase extends AbstractPluginDatabase {
 
     /* ------------------------------ */
@@ -72,5 +71,25 @@ public abstract class CredentialPluginDatabase extends AbstractPluginDatabase {
                 super.plugin.getServer().shutdown();
             }
         }
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public String getDatabaseName() {
+        return databaseName;
+    }
+
+    public int getPort() {
+        return port;
     }
 }

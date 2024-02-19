@@ -1,5 +1,6 @@
 package top.cmarco.lightlogin.database;
 
+
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.jetbrains.annotations.NotNull;

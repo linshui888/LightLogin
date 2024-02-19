@@ -1,6 +1,5 @@
 package top.cmarco.lightlogin.command;
 
-import lombok.RequiredArgsConstructor;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -12,6 +11,7 @@ import top.cmarco.lightlogin.LightLoginPlugin;
 import top.cmarco.lightlogin.configuration.LightConfiguration;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 public abstract class LightLoginCommand implements CommandExecutor {
@@ -33,19 +33,20 @@ public abstract class LightLoginCommand implements CommandExecutor {
         this.configuration = plugin.getLightConfiguration();
     }
 
-    public static void sendColorMessage(@NotNull final CommandSender sender, @NotNull String string) {
-        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', string));
+    public static String colorMessage(@NotNull final String text) {
+        return ChatColor.translateAlternateColorCodes('&', text);
     }
+
+    public static String colorAndReplace(@NotNull final String text, @NotNull final LightLoginPlugin plugin) {
+        return colorMessage(text.replaceAll("\\{PREFIX}", plugin.getLightConfiguration().getMessagePrefix()));
+    }
+
+    public static void sendColorMessage(@NotNull final CommandSender sender, @NotNull String string, @NotNull LightLoginPlugin plugin) {
+        sender.sendMessage(colorAndReplace(string.replace("\\{PLAYER}", sender.getName()), plugin));
+    }
+
     public static void sendColorPrefixMessages(@NotNull final CommandSender sender, @NotNull List<String> strings, @NotNull LightLoginPlugin plugin) {
-        strings.forEach(str -> {
-            str = str.replaceAll("\\{PREFIX}", plugin.getLightConfiguration().getMessagePrefix());
-
-            if (sender instanceof Player player) {
-                str = str.replaceAll("\\{PLAYER}", player.getName());
-            }
-
-            sendColorMessage(sender, str);
-        });
+        strings.forEach(string -> sendColorMessage(sender, string, plugin));
     }
 
     protected abstract void commandLogic(@NotNull final CommandSender sender, @NotNull final String[] args);
@@ -58,12 +59,12 @@ public abstract class LightLoginCommand implements CommandExecutor {
     public final boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
 
         if (!allowConsole && !(sender instanceof Player)) {
-            sender.sendMessage(LightLoginPlugin.PREFIX + ChatColor.RED + "This command can only be executed as a player!");
+            sendColorPrefixMessages(sender, configuration.getPlayerOnlyCommandMessage(), plugin);
             return false;
         }
 
         if (this.basePermission != null && !sender.hasPermission(this.basePermission)) {
-            sender.sendMessage(LightLoginPlugin.PREFIX + ChatColor.RED + "You are missing permission &l" + this.basePermission);
+            sendColorPrefixMessages(sender, configuration.getMissingPermissionMessage().stream().map(s -> s.replaceAll("\\{PERMISSION}", basePermission)).collect(Collectors.toList()), plugin);
             return false;
         }
 

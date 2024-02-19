@@ -1,0 +1,122 @@
+# Fichier de configuration du plugin LightLogin.
+# Ce fichier est utilisé pour personnaliser complètement des aspects importants de ce logiciel.
+#
+# version 1.0.0 (DO NOT MODIFY)
+# !VEUILLEZ MODIFIER AVEC PRUDENCE!
+plugin:
+  info:
+    - "{PREFIX}: &6Informations sur le plugin"
+    - "&eCe plugin est actuellement en version {VERSION}"
+    - "&eLe développeur de ce logiciel est CMarco"
+    - "&7Ce plugin a été créé en janvier 2024 pour protéger votre serveur et le rendre accessible à tous, en toute sécurité !"
+
+# Configuration de la base de données
+database:
+  type: 'SQLITE'        # Type de base de données (Alternatives : SQLITE, MYSQL, POSTGRESQL)
+  username: 'root'      # Nom d'utilisateur de votre compte de base de données
+  password: 'password'  # Mot de passe de votre compte de base de données
+  address: '127.0.0.1'  # Adresse de connexion
+  port: 3306            # Port de connexion
+  db-name: 'local'      # Nom de la base de données pour la connexion et l'enregistrement des données.
+
+# Comportement du serveur après des plantages ou des problèmes de base de données
+crash-shutdown: false   # Arrêter le serveur après des plantages graves ou des problèmes de base de données.
+
+# Configuration de la connexion
+login:
+  command-delay: 3        # Délai en secondes avant que la commande de connexion ne soit exécutable
+  max-failed-attempts: 10 # Nombre maximum de tentatives de connexion échouées autorisées avant la punition
+  bruteforce-punishment:  # Commandes de punition pour les tentatives de force brute
+    - "clear {PLAYER}"
+    - "tempban {PLAYER} 1h &cVous avez échoué à la connexion trop de fois !"
+  auto-login: true        # Connecter automatiquement les joueurs après l'enregistrement
+  session-expire: 900     # Temps en secondes après lequel une session de connexion doit expirer (par défaut 15 minutes)
+  allowed-commands:       # Liste de commandes que les joueurs peuvent exécuter avant de se connecter
+    - "/help"
+    - "/login"
+    - "/register"
+
+safety:
+  players-same-ip: 2      # Combien de joueurs peuvent être connectés en même temps depuis la même adresse IPv4?
+
+# Configuration des mots de passe sûrs
+safe-passwords:
+  force-safe:
+    enabled: true         # Activer ou désactiver la fonction de mot de passe sûr forcé
+    min-length: 8         # Longueur minimale du mot de passe
+    min-uppercase: 1      # Nombre minimum de caractères majuscules
+    min-numbers: 2        # Nombre minimum de caractères numériques
+    min-special: 1        # Nombre minimum de caractères spéciaux
+    allowed-special: ['@', '^', '-', '_', '#', '!', '?', '*', '$', '%', '&', '*'] # Caractères spéciaux autorisés
+
+# Configuration des messages
+messages:
+  prefix: "&7╓&eLightLogin&7╛&f" # Préfixe pour les messages du plugin
+  player-only-command: ["{PREFIX}: &cCette commande ne peut être exécutée que par un joueur !"]
+  missing-permission: ["{PREFIX}: &cVous n'avez pas la permission &l{PERMISSION}"]
+  incorrect-command-usage: ["{PREFIX}: &cL'utilisation de cette commande est incorrecte !"]
+  register-message:
+    - "{PREFIX}: &cVeuillez vous enregistrer en utilisant la commande :"
+    - "{PREFIX}: &e/register <mdp> <mdp>"
+  register-incorrect-usage:
+    - "{PREFIX}: &cUsage incorrect de la commande d'enregistrement !"
+    - "{PREFIX}: &cUtilisez &e/register <motdepasse> <motdepasse>"
+  register-unequal-passwords:
+    - "{PREFIX}: &cMauvais mot de passe saisi !"
+    - "{PREFIX}: &cLes deux mots de passe ne correspondent pas."
+  register-error:
+    - "{PREFIX}: &cQuelque chose s'est mal passé lors de l'enregistrement"
+  register-success:
+    - "{PREFIX}: &aVous vous êtes enregistré avec succès :)"
+    - "{PREFIX} &aAssurez-vous de garder vos mots de passe &lsûrs"
+  already-registered:
+    - "{PREFIX}: &cVous êtes déjà enregistré !"
+    - "{PREFIX}: &cUtilisez &e/changepassword <ancienMotDePasse> <nouveauMotDePasse>"
+    - "{PREFIX}: &csi vous souhaitez changer votre mot de passe actuel !"
+  unregistered:
+    - "{PREFIX}: &cQuelqu'un d'autre vous a désenregistré !"
+    - "{PREFIX}: &cEnregistrez-vous à nouveau avec /register <motdepasse> <motdepasse>"
+  unregistered-success:
+    - "{PREFIX}: &aNous avons réussi à désenregistrer ce joueur."
+  unsafe-password:
+    - "{PREFIX}: &cVotre mot de passe n'est pas sûr !"
+    - "{PREFIX}: &cIl doit répondre aux critères suivants :"
+    - "&7- &cAu moins &e{MIN_LENGTH} &ccaractères"
+    - "&7- &cAu moins &e{MIN_UPCASE} &cmajuscules, &e{MIN_SPECIAL} &ccaractères spéciaux, &e{MIN_NUMBERS} &cchiffres."
+    - "&7- &cCaractères spéciaux autorisés : {SPECIAL}"
+  command-too-fast:
+    - "{PREFIX}: &cVous utilisez cette commande trop rapidement !"
+  login-already-authenticated:
+    - "{PREFIX}: &cVous êtes déjà authentifié !"
+  login-error:
+    - "{PREFIX}: &cQuelque chose s'est mal passé lors de la connexion."
+  login-incorrect-usage:
+    - "{PREFIX}: &cUsage incorrect de la commande de connexion !"
+    - "{PREFIX}: &cUtilisez &e/login <motdepasse>"
+  login-success:
+    - "{PREFIX}: &aVous vous êtes connecté avec succès."
+  login-auto:
+    - "{PREFIX}: &aVous avez été automatiquement authentifié."
+  login-messages:
+    - "{PREFIX}: &cVeuillez vous connecter en utilisant la commande :"
+    - "{PREFIX}: &e/login <motdepasse>"
+  login-unregistered:
+    - "{PREFIX}: &cVous ne pouvez pas vous connecter sans être enregistré !"
+  login-wrong-password:
+    - "{PREFIX}: &cMauvais mot de passe de connexion !"
+  unregister-incorrect-usage:
+    - "{PREFIX}: &cUsage incorrect de la commande de désenregistrement !"
+    - "{PREFIX}: &cUtilisez &e/unregister <joueur>"
+  unregister-not-found:
+    - "{PREFIX}: &cNous n'avons trouvé aucun joueur enregistré avec ce nom."
+  changepassword-unregistered:
+    - "{PREFIX}: &cVous ne pouvez pas changer de mot de passe sans être enregistré."
+  changepassword-wrong-oldpassword:
+    - "{PREFIX}: &cVotre ancien mot de passe est incorrect !"
+  changepassword-changed:
+    - "{PREFIX}: &aVotre ancien mot de passe a été mis à jour avec succès !"
+  player-not-online:
+    - "{PREFIX}: &aCe joueur n'est pas en ligne !"
+  players-same-ip: "{PREFIX}: &cTrop de joueurs sont connectés depuis votre adresse réseau!"
+
+

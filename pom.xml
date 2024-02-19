@@ -6,7 +6,7 @@
 
     <groupId>top.cmarco</groupId>
     <artifactId>LightLogin</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>LightLogin</name>
@@ -19,6 +19,68 @@
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>3.1.0</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.yworks</groupId>
+                        <artifactId>yguard</artifactId>
+                        <version>4.1.0</version>
+                        <scope>compile</scope>
+                    </dependency>
+                </dependencies>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <id>obfuscate</id>
+                        <configuration>
+                            <target>
+                                <property name="runtime_classpath" refid="maven.runtime.classpath"/>
+                                <!--suppress UnresolvedMavenProperty -->
+                                <taskdef name="yguard" classname="com.yworks.yguard.YGuardTask"
+                                         classpath="${runtime_classpath}"/>
+                                <yguard>
+                                    <inoutpair in="${project.build.directory}/${project.build.finalName}.jar"
+                                               out="${project.build.directory}/${project.build.finalName}.jar"/>
+
+                                    <rename logfile="${project.build.directory}/yguard.log.xml"
+                                            replaceClassNameStrings="true">
+
+                                        <property name="overload-enabled" value="true"/>
+                                        <property name="naming-scheme" value="simple"/>
+                                        <property name="language-conformity" value="compatible"/>
+                                        <property name="obfuscation-prefix" value="top.cmarco.lightlogin.LightLoginPlugin"/>
+
+                                        <keep>
+                                            <class methods="private" classes="private" fields="private">
+                                                <patternset>
+                                                    <include name="com.alessiodp.libby.**"/>
+                                                </patternset>
+                                            </class>
+                                            <class name="top.cmarco.lightlogin.LightLoginPlugin"/>
+                                            <method class="top.cmarco.lightlogin.LightLoginPlugin" name="void onEnable()"/>
+                                            <method class="top.cmarco.lightlogin.LightLoginPlugin" name="void onDisable()"/>
+                                        </keep>
+
+                                    </rename>
+
+                                    <externalclasses>
+                                        <!--suppress UnresolvedMavenProperty -->
+                                        <pathelement path="${mvn.classpath}"/>
+                                    </externalclasses>
+
+                                </yguard>
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -38,9 +100,27 @@
                         <goals>
                             <goal>shade</goal>
                         </goals>
+
                         <configuration>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <relocations>
+                                <relocation>
+                                    <pattern>com.alessiodp.libby</pattern>
+                                    <shadedPattern>top.cmarco.lightlogin.libs.com.alessiodp.libby</shadedPattern>
+                                </relocation>
+
+                                <relocation>
+                                    <pattern>com.zaxxer.hikari</pattern>
+                                    <shadedPattern>top.cmarco.lightlogin.libs.com.zaxxer.hikari</shadedPattern>
+                                </relocation>
+
+                                <relocation>
+                                    <pattern>org.bouncycastle</pattern>
+                                    <shadedPattern>top.cmarco.lightlogin.libs.org.bouncycastle</shadedPattern>
+                                </relocation>
+                            </relocations>
                         </configuration>
+
                     </execution>
                 </executions>
             </plugin>
@@ -62,6 +142,10 @@
             <id>sonatype</id>
             <url>https://oss.sonatype.org/content/groups/public/</url>
         </repository>
+        <repository>
+            <id>maven-snapshots</id>
+            <url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -72,18 +156,11 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.18.30</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.20.4-R0.1-SNAPSHOT</version>
+            <version>1.13.2-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
-
         <dependency>
             <groupId>org.bouncycastle</groupId>
             <artifactId>bcpkix-jdk18on</artifactId>
@@ -93,7 +170,7 @@
         <dependency>
             <groupId>com.zaxxer</groupId>
             <artifactId>HikariCP</artifactId>
-            <version>5.1.0</version>
+            <version>5.0.1</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -101,6 +178,12 @@
             <artifactId>log4j-core</artifactId>
             <version>2.19.0</version> <!-- This is the version Spigot 1.20.1 uses -->
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.alessiodp.libby</groupId>
+            <artifactId>libby-bukkit</artifactId> <!-- Replace bukkit if you're using another platform -->
+            <version>2.0.0-SNAPSHOT</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 </project>

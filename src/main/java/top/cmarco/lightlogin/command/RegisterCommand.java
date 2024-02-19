@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import top.cmarco.lightlogin.LightLoginPlugin;
 import top.cmarco.lightlogin.api.PlayerRegisterEvent;
+import top.cmarco.lightlogin.configuration.LightConfiguration;
 import top.cmarco.lightlogin.data.LightLoginDbRow;
 import top.cmarco.lightlogin.database.PluginDatabase;
 import top.cmarco.lightlogin.encrypt.Argon2Utilities;
@@ -13,6 +14,7 @@ import top.cmarco.lightlogin.network.NetworkUtilities;
 import java.util.Base64;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public final class RegisterCommand extends LightLoginCommand {
 
@@ -27,12 +29,12 @@ public final class RegisterCommand extends LightLoginCommand {
                 specialChars.contains(character);
     }
 
-    private boolean isPasswordSafe(@NotNull final String password) {
-        final int minLength = super.configuration.getSafePasswordMinLength();
-        final int minUppercase = super.configuration.getSafePasswordMinUppercase();
-        final int minNumbers = super.configuration.getSafePasswordMinNumbers();
-        final int minSpecial = super.configuration.getSafePasswordMinSpecial();
-        final List<Character> special = super.configuration.getSafePasswordAllowedSpecial();
+    public static boolean isPasswordSafe(@NotNull final String password, LightConfiguration configuration) {
+        final int minLength = configuration.getSafePasswordMinLength();
+        final int minUppercase = configuration.getSafePasswordMinUppercase();
+        final int minNumbers = configuration.getSafePasswordMinNumbers();
+        final int minSpecial = configuration.getSafePasswordMinSpecial();
+        final List<Character> special = configuration.getSafePasswordAllowedSpecial();
 
         if (password.length() < minLength) {
             // plugin.getLogger().warning("Password too short: " + password.length() + '/' + minLength);
@@ -72,17 +74,17 @@ public final class RegisterCommand extends LightLoginCommand {
 
     private static String specialDisplayCache = null;
 
-    private void unsafePasswordMsg(@NotNull Player player) {
-        final int minLength = super.configuration.getSafePasswordMinLength();
-        final int minUppercase = super.configuration.getSafePasswordMinUppercase();
-        final int minNumbers = super.configuration.getSafePasswordMinNumbers();
-        final int minSpecial = super.configuration.getSafePasswordMinSpecial();
-        final List<Character> special = super.configuration.getSafePasswordAllowedSpecial();
+    public static void unsafePasswordMsg(@NotNull Player player, LightConfiguration configuration, LightLoginPlugin plugin) {
+        final int minLength = configuration.getSafePasswordMinLength();
+        final int minUppercase = configuration.getSafePasswordMinUppercase();
+        final int minNumbers = configuration.getSafePasswordMinNumbers();
+        final int minSpecial = configuration.getSafePasswordMinSpecial();
+        final List<Character> special = configuration.getSafePasswordAllowedSpecial();
 
         if (specialDisplayCache == null) {
             final StringBuilder specialDisplay = new StringBuilder();
             specialDisplay.append("&7[&e");
-            Iterator<Character> characterIterator = special.iterator();
+            final Iterator<Character> characterIterator = special.iterator();
             while (characterIterator.hasNext()) {
                 specialDisplay.append(characterIterator.next()).append("&f,&e");
             }
@@ -91,22 +93,24 @@ public final class RegisterCommand extends LightLoginCommand {
         }
 
         sendColorPrefixMessages(player,
-                super.configuration.getUnsafePassword().stream()
+                configuration.getUnsafePassword().stream()
                         .map(str -> str.replace("{MIN_LENGTH}", String.valueOf(minLength))
                                 .replace("{MIN_UPCASE}", String.valueOf(minUppercase))
                                 .replace("{MIN_NUMBERS}", String.valueOf(minNumbers))
                                 .replace("{MIN_SPECIAL}", String.valueOf(minSpecial))
                                 .replace("{SPECIAL}", specialDisplayCache))
-                        .toList(),
-                super.plugin);
+                        .collect(Collectors.toList()),
+                plugin);
     }
 
     @Override
     protected void commandLogic(@NotNull CommandSender sender, @NotNull String[] args) {
 
-        if (!(sender instanceof final Player player)) {
+        if (!(sender instanceof Player)) {
             return;
         }
+
+        final Player player = (Player) sender;
 
         if (args.length != 2) {
             sendColorPrefixMessages(player, super.configuration.getRegisterIncorrectUsageMessage(), super.plugin);
@@ -118,8 +122,8 @@ public final class RegisterCommand extends LightLoginCommand {
             return;
         }
 
-        if (!isPasswordSafe(args[0])) {
-            unsafePasswordMsg(player);
+        if (!isPasswordSafe(args[0], super.configuration)) {
+            unsafePasswordMsg(player, super.configuration, super.plugin);
             return;
         }
 

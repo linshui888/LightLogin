@@ -100,12 +100,12 @@ public final class SQLiteDatabase extends CredentialPluginDatabase {
     public CompletableFuture<LightLoginDbRow> addRow(@NotNull LightLoginDbRow row) {
         return CompletableFuture.supplyAsync(() -> {
             try (final PreparedStatement statement = connection.prepareStatement(INSERT_UPDATE)) {
-                statement.setString(1, row.uuid());
-                statement.setString(2, row.passwordHash());
-                statement.setString(3, row.passwordSalt());
-                statement.setString(4, row.email());
-                statement.setLong(5, row.lastLogin());
-                statement.setLong(6, row.last_ipv4());
+                statement.setString(1, row.getUuid());
+                statement.setString(2, row.getPasswordHash());
+                statement.setString(3, row.getPasswordSalt());
+                statement.setString(4, row.getEmail());
+                statement.setLong(5, row.getLastLogin());
+                statement.setLong(6, row.getLastIpv4());
                 statement.execute();
                 return row;
             } catch (SQLException exception) {
@@ -128,14 +128,15 @@ public final class SQLiteDatabase extends CredentialPluginDatabase {
 
         return CompletableFuture.supplyAsync(() -> {
             try (final PreparedStatement statement = connection.prepareStatement(UPDATE_TABLE.replace("{COLUMN}", column.getName()))) {
-                switch (column) {
-                    case LAST_IPV4, LAST_LOGIN -> statement.setLong(1, (Long) columnValue);
-                    case EMAIL, PASSWORD, SALT -> statement.setString(1, (String) columnValue);
-                    default -> {
-                        super.plugin.getLogger().warning("WARNING! Illegal lightlogin column value passed.");
-                        return null;
-                    }
+                if (column == LightLoginColumn.LAST_IPV4 || column == LightLoginColumn.LAST_LOGIN) {
+                    statement.setLong(1, (Long) columnValue);
+                } else if (column == LightLoginColumn.EMAIL || column == LightLoginColumn.PASSWORD || column == LightLoginColumn.SALT) {
+                    statement.setString(1, (String) columnValue);
+                } else {
+                    super.plugin.getLogger().warning("WARNING! Illegal lightlogin column value passed.");
+                    return null;
                 }
+
                 statement.setString(2, uuid);
                 statement.executeUpdate();
             } catch (SQLException exception) {

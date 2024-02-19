@@ -1,10 +1,5 @@
 package top.cmarco.lightlogin.database;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-
-@RequiredArgsConstructor
-@Getter
 public enum LightLoginColumn {
 
     UUID("uuid", String.class),
@@ -16,4 +11,17 @@ public enum LightLoginColumn {
 
     private final String name;
     private final Class<?> columnType;
+
+    LightLoginColumn(String name, Class<?> columnType) {
+        this.name = name;
+        this.columnType = columnType;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Class<?> getColumnType() {
+        return columnType;
+    }
 }

@@ -5,14 +5,12 @@
  */
 package top.cmarco.lightlogin.database;
 
-import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import top.cmarco.lightlogin.LightLoginPlugin;
 
 /**
  * An abstract implementation for PluginDatabase.
  */
-@Getter
 public abstract class AbstractPluginDatabase implements PluginDatabase {
 
     protected final LightLoginPlugin plugin;
@@ -36,5 +34,13 @@ public abstract class AbstractPluginDatabase implements PluginDatabase {
                 this.plugin.getServer().shutdown();
             }
         }
+    }
+
+    public DatabaseType getDatabaseType() {
+        return databaseType;
+    }
+
+    public LightLoginPlugin getPlugin() {
+        return plugin;
     }
 }

@@ -1,0 +1,120 @@
+# LightLogin Plugin's configuration file.
+# This file is used to completely customise important aspects of this software.
+#
+# version 1.0.0 (DO NOT MODIFY)
+# !PLEASE EDIT CAUTIOUSLY!
+plugin:
+  info:
+    - '{PREFIX}: &6Plugin information'
+    - '&eThis plugin is currently in version {VERSION}'
+    - '&eThe developer of this software is CMarco'
+    - '&7This plugin has been created in Jan. 2024 to protect your server and make it accessible to everyone, safely!'
+
+# Database configuration
+database:
+  type: 'SQLITE'        # Database type (Alternatives: SQLITE, MYSQL, POSTGRESQL)
+  username: 'root'      # Username of your database account
+  password: 'password'  # Password of your database account
+  address: '127.0.0.1'  # Address of connection
+  port: 3306            # Port of connection
+  db-name: 'local'      # Name of the database to connect and save data into.
+
+# Server behavior after crashes or database issues
+crash-shutdown: false   # Shut down the server after severe crashes or database issues.
+
+# Login configuration
+login:
+  command-delay: 3       # Delay in seconds before the login command is executable
+  max-failed-attempts: 10 # Maximum allowed failed login attempts before punishment
+  bruteforce-punishment: # Punishment commands for brute-force attempts
+    - 'clear {PLAYER}'
+    - 'tempban {PLAYER} 1h &cYou have failed the login too many times!'
+  auto-login: true        # Automatically log in players after registration
+  session-expire: 900     # Time in seconds after which a login session should expire (default 15 minutes)
+  allowed-commands:       # List of commands that players may run before logging in
+    - '/help'
+    - '/login'
+    - '/register'
+
+safety:
+  players-same-ip: 2      # How many players can be connected at the same time through the same IPv4?
+
+# Safe password configuration
+safe-passwords:
+  force-safe:
+    enabled: true         # Enable or disable the forced safe password feature
+    min-length: 8         # Minimum length of the password
+    min-uppercase: 1      # Minimum number of uppercase characters
+    min-numbers: 2        # Minimum number of numeric characters
+    min-special: 1        # Minimum number of special characters
+    allowed-special: ['@', '^', '-', '_', '#', '!', '?', '*', '$', '%', '&', '*'] # Allowed special characters
+
+# Messages configuration
+messages:
+  prefix: '&7★&eLightLogin&7★&f' # Prefix for plugin messages
+  player-only-command: ['{PREFIX}: &cThis command may only be executed as a player!']
+  missing-permission: ['{PREFIX}: &cYou are missing permission &l{PERMISSION}']
+  incorrect-command-usage: ['{PREFIX}: &cThe usage of this command is incorrect!']
+  register-message:
+    - '{PREFIX}: &cPlease register using the command:'
+    - '{PREFIX}: &e/register <psw> <psw>'
+  register-incorrect-usage:
+    - '{PREFIX}: &cIncorrect register command usage!'
+    - '{PREFIX}: &cUse &e/register <password> <password>'
+  register-unequal-passwords:
+    - '{PREFIX}: &cWrong passwords written!'
+    - '{PREFIX}: &cThe two passwords do not match each other.'
+  register-error:
+    - '{PREFIX}: &cSomething went wrong while registering'
+  register-success:
+    - '{PREFIX}: &aYou successfully registered :)'
+    - '{PREFIX} &aMake sure to keep your passwords &lsafe'
+  already-registered:
+    - '{PREFIX}: &cYou are already registered!'
+    - '{PREFIX}: &cUse &e/changepassword <oldPassword> <newPassword>'
+    - '{PREFIX}: &cif you wish to change your current password!'
+  unregistered:
+    - '{PREFIX}: &cSomeone else has unregistered you!'
+    - '{PREFIX}: &cRegister again with /register <password> <password>'
+  unregistered-success:
+    - '{PREFIX}: &aWe successfully unregistered this player.'
+  unsafe-password:
+    - '{PREFIX}: &cYour password is unsafe!'
+    - '{PREFIX}: &cIt must match the following criteria:'
+    - '&7- &cAt least &e{MIN_LENGTH} &ccharacters'
+    - '&7- &cAt least &e{MIN_UPCASE} &cuppercase, &e{MIN_SPECIAL} &cspecial characters, &e{MIN_NUMBERS} &csnumbers.'
+    - '&7- &cAllowed special chars: {SPECIAL}'
+  command-too-fast:
+    - '{PREFIX}: &cYou are using this command too fast!'
+  login-already-authenticated:
+    - '{PREFIX}: &cYou already are authenticated!'
+  login-error:
+    - '{PREFIX}: &cSomething went wrong while logging in.'
+  login-incorrect-usage:
+    - '{PREFIX}: &cIncorrect login command usage!'
+    - '{PREFIX}: &cUse &e/login <password>'
+  login-success:
+    - '{PREFIX}: &aYou successfully logged in.'
+  login-auto:
+    - '{PREFIX}: &aYou were automatically authenticated.'
+  login-messages:
+    - '{PREFIX}: &cPlease login using the command:'
+    - '{PREFIX}: &e/login <password>'
+  login-unregistered:
+    - '{PREFIX}: &cYou cannot login without being registered!'
+  login-wrong-password:
+    - '{PREFIX}: &cWrong login password!'
+  unregister-incorrect-usage:
+    - '{PREFIX}: &cIncorrect unregister command usage!'
+    - '{PREFIX}: &cUse &e/unregister <player>'
+  unregister-not-found:
+    - '{PREFIX}: &cWe did not find any player registered with such name.'
+  changepassword-unregistered:
+    - '{PREFIX}: &cYou cannot change password without being registered.'
+  changepassword-wrong-oldpassword:
+    - '{PREFIX}: &cYour old password is incorrect!'
+  changepassword-changed:
+    - '{PREFIX}: &aYour old password has now been updated successfully!'
+  player-not-online:
+    - "{PREFIX}: &aThat player is not online!"
+  players-same-ip: "{PREFIX}: &cToo many players are connected from your network address!" # only a single string allowed!

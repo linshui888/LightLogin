@@ -1,10 +1,21 @@
-name: 'LightLogin'
-main: 'top.cmarco.lightlogin.LightLoginPlugin'
-version: 1.0.0-SNAPSHOT
+name: "LightLogin"
+main: "top.cmarco.lightlogin.LightLoginPlugin"
+version: 1.0.1-SNAPSHOT
 load: 'STARTUP'
-api-version: '1.13'
-author: 'CMarco'
+api-version: "1.13"
+author: "CMarco"
 database: false
-description: 'Optimised and Safe SpigotMC Software for Authentication'
-libraries:
-  - 'org.bouncycastle:bcpkix-jdk18on:1.77'
+description: "Optimised and Safe SpigotMC Software for Authentication"
+commands:
+  login:
+    description: "Login into the server."
+  register:
+    description: "Register into the server."
+  unregister:
+    description: "Unregister a user from the server."
+  lightlogin:
+    description: "Information about this software"
+  changepassword:
+    description: "Change your current password."
+  unlogin:
+    description: "Remove login session from a player."

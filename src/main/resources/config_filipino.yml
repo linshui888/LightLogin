@@ -1,0 +1,120 @@
+# Konfigurasyon ng LightLogin Plugin.
+# Ang seryeng ito ay ginagamit upang lubos na baguhin ang mga mahahalagang bahagi ng software na ito.
+#
+# bersyon 1.0.0 (HUWAG BAGUHIN)
+# !MANGYARING BANTAYAN NG MAAYOS!
+plugin:
+  info:
+    - "{PREFIX}: &6Impormasyon ng Plugin"
+    - "&eAng plugin na ito ay kasalukuyang nasa bersyon {VERSION}"
+    - "&eAng developer ng software na ito ay si CMarco"
+    - "&7Ang plugin na ito ay ginawa noong Ene. 2024 upang protektahan ang iyong server at gawing ligtas para sa lahat!"
+
+# Konfigurasyon ng Database
+database:
+  type: "SQLITE"       # Uri ng Database (Alternatibo: SQLITE, MYSQL, POSTGRESQL)
+  username: "root"      # Username ng iyong database account
+  password: "password"  # Password ng iyong database account
+  address: "127.0.0.1"  # Address ng koneksyon
+  port: 3306            # Port ng koneksyon
+  db-name: "local"      # Pangalan ng database para sa koneksyon at pagsasave ng data.
+
+# Ugali ng Server matapos ang mga crash o isyu sa database
+crash-shutdown: false   # Ipatay ang server matapos ang matinding crash o mga isyu sa database.
+
+# Konfigurasyon ng Login
+login:
+  command-delay: 3       # Pagitan ng segundo bago maging epektibo ang login command
+  max-failed-attempts: 10 # Pinakamataas na pinapayagang mabigong login attempts bago magkaruon ng parusa
+  bruteforce-punishment: # Mga command para sa parusang bruteforce attempts
+    - "clear {PLAYER}"
+    - "tempban {PLAYER} 1h &cIkaw ay masyadong madalas na mabigong mag-login!"
+  auto-login: true        # Awtomatikong mag-login ang mga players pagkatapos ng pagrehistro
+  session-expire: 900     # Oras sa segundo bago mag-expire ang login session (default na 15 minuto)
+  allowed-commands:       # Listahan ng mga command na maaring gawin ng mga players bago mag-login
+    - "/help"
+    - "/login"
+    - "/register"
+
+safety:
+  players-same-ip: 2      # Ilang players ang maaring mag-connect sabay-sabay gamit ang parehong IPv4?
+
+# Konfigurasyon ng Safe Passwords
+safe-passwords:
+  force-safe:
+    enabled: true         # I-enable o I-disable ang forced safe password feature
+    min-length: 8         # Minimum na haba ng password
+    min-uppercase: 1      # Minimum na bilang ng mga uppercase characters
+    min-numbers: 2        # Minimum na bilang ng mga numeric characters
+    min-special: 1        # Minimum na bilang ng mga special characters
+    allowed-special: ['@', '^', '-', '_', '#', '!', '?', '*', '$', '%', '&', '*'] # Mga allowed na special characters
+
+# Konfigurasyon ng Mensahe
+messages:
+  prefix: "&7╓&eLightLogin&7╛&f" # Prefix para sa mga mensaheng ng plugin
+  player-only-command: ["{PREFIX}: &cAng command na ito ay maaring gawin lamang ng player!"]
+  missing-permission: ["{PREFIX}: &cKulang ang iyong pahintulot &l{PERMISSION}"]
+  incorrect-command-usage: ["{PREFIX}: &cMali ang paggamit ng command na ito!"]
+  register-message:
+    - "{PREFIX}: &cMangyaring magrehistro gamit ang command:"
+    - "{PREFIX}: &e/register <psw> <psw>"
+  register-incorrect-usage:
+    - "{PREFIX}: &cMaling paggamit ng register command!"
+    - "{PREFIX}: &cGamitin ang &e/register <password> <password>"
+  register-unequal-passwords:
+    - "{PREFIX}: &cMaling password na isinulat!"
+    - "{PREFIX}: &cAng dalawang password ay hindi magkapareho."
+  register-error:
+    - "{PREFIX}: &cMay nangyaring mali habang nagre-register"
+  register-success:
+    - "{PREFIX}: &aMatagumpay kang nagrehistro :)"
+    - "{PREFIX} &aSiguruhing panatilihing &lligtas ang iyong mga password"
+  already-registered:
+    - "{PREFIX}: &cIkaw ay mayroon nang account!"
+    - "{PREFIX}: &cGumamit ng &e/changepassword <oldPassword> <newPassword>"
+    - "{PREFIX}: &ckung gusto mong palitan ang iyong kasalukuyang password!"
+  unregistered:
+    - "{PREFIX}: &cMay ibang tao na nag-unregister sa iyo!"
+    - "{PREFIX}: &cMagrehistro ulit gamit ang /register <password> <password>"
+  unregistered-success:
+    - "{PREFIX}: &aMatagumpay na nai-unregister ang player na ito."
+  unsafe-password:
+    - "{PREFIX}: &cAng iyong password ay hindi ligtas!"
+    - "{PREFIX}: &cIto ay dapat na tumugma sa sumusunod na kundisyon:"
+    - "&7- &cHindi bababa sa &e{MIN_LENGTH} &ccharacters"
+    - "&7- &cHindi bababa sa &e{MIN_UPCASE} &cmga uppercase, &e{MIN_SPECIAL} &cmga special characters, &e{MIN_NUMBERS} &cmga numero."
+    - "&7- &cAllowed na special chars: {SPECIAL}"
+  command-too-fast:
+    - "{PREFIX}: &cMasyado kang mabilis gumamit ng command na ito!"
+  login-already-authenticated:
+    - "{PREFIX}: &cIkaw ay nakalogin na!"
+  login-error:
+    - "{PREFIX}: &cMay nangyaring mali habang nag-login."
+  login-incorrect-usage:
+    - "{PREFIX}: &cMaling paggamit ng login command!"
+    - "{PREFIX}: &cGamitin ang &e/login <password>"
+  login-success:
+    - "{PREFIX}: &aMatagumpay kang nag-login."
+  login-auto:
+    - "{PREFIX}: &aIkaw ay awtomatikong na-authenticate."
+  login-messages:
+    - "{PREFIX}: &cMangyaring mag-login gamit ang command:"
+    - "{PREFIX}: &e/login <password>"
+  login-unregistered:
+    - "{PREFIX}: &cHindi ka makapag-login nang walang pagkakarehistro!"
+  login-wrong-password:
+    - "{PREFIX}: &cMaling password sa login!"
+  unregister-incorrect-usage:
+    - "{PREFIX}: &cMaling paggamit ng unregister command!"
+    - "{PREFIX}: &cGamitin ang &e/unregister <player>"
+  unregister-not-found:
+    - "{PREFIX}: &cWalang nahanap na player na rehistrado sa ganitong pangalan."
+  changepassword-unregistered:
+    - "{PREFIX}: &cHindi mo mababago ang iyong password nang hindi nakarehistro."
+  changepassword-wrong-oldpassword:
+    - "{PREFIX}: &cMali ang iyong lumang password!"
+  changepassword-changed:
+    - "{PREFIX}: &aMatagumpay na na-update ang iyong lumang password!"
+  player-not-online:
+    - "{PREFIX}: &aHindi online ang player na iyan!"
+  players-same-ip: "{PREFIX}: &cMasyadong maraming players ang konektado mula sa iyong network address!" # isa lamang na string ang pinapayagan!

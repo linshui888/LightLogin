@@ -1,6 +1,5 @@
 package top.cmarco.lightlogin.listeners;
 
-import lombok.RequiredArgsConstructor;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -18,10 +17,14 @@ import top.cmarco.lightlogin.data.AuthenticationManager;
 import java.util.List;
 import java.util.function.Supplier;
 
-@RequiredArgsConstructor
+
 public final class PlayerUnloggedListener implements Listener {
 
     private final LightLoginPlugin plugin;
+
+    public PlayerUnloggedListener(@NotNull final LightLoginPlugin plugin) {
+        this.plugin = plugin;
+    }
 
     private <K extends Cancellable> void cancelIfPlayerUnauthenticated(@NotNull Player player, @NotNull K cancellable) {
         final AuthenticationManager authManager = plugin.getAuthenticationManager();
@@ -34,15 +37,22 @@ public final class PlayerUnloggedListener implements Listener {
     private <K extends Event & Cancellable> void cancelIfUnauthenticated(@NotNull K cancellableEntityEvent,
                                                                          @NotNull Supplier<Entity> playerSupplier) {
         final Entity entity = playerSupplier.get();
-        if (entity instanceof final Player player) {
-            this.cancelIfPlayerUnauthenticated(player, cancellableEntityEvent);
+        if (entity instanceof Player) {
+            this.cancelIfPlayerUnauthenticated((Player) entity, cancellableEntityEvent);
         }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void onCommandPreprocess(PlayerCommandPreprocessEvent event) {
+    public void onCommandPreprocess(final PlayerCommandPreprocessEvent event) {
         final String message = event.getMessage();
+        final Player player = event.getPlayer();
+
+        if (plugin.getAuthenticationManager().isAuthenticated(player)) {
+            return;
+        }
+
         final List<String> allowedCommands = this.plugin.getLightConfiguration().getAllowedCommands();
+
         final boolean isAllowed = allowedCommands.stream().anyMatch(message::startsWith);
         if (!isAllowed) {
             event.setCancelled(true);
@@ -50,12 +60,12 @@ public final class PlayerUnloggedListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void onVelocity(PlayerVelocityEvent event) {
+    public void onVelocity(final PlayerVelocityEvent event) {
         this.cancelIfPlayerUnauthenticated(event.getPlayer(), event);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void onMove(PlayerMoveEvent event) {
+    public void onMove(final PlayerMoveEvent event) {
         if (event.getTo() == null) {
             return;
         }
@@ -71,48 +81,48 @@ public final class PlayerUnloggedListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void onChat(AsyncPlayerChatEvent event) {
+    public void onChat(final AsyncPlayerChatEvent event) {
         this.cancelIfPlayerUnauthenticated(event.getPlayer(), event);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void onInteract(PlayerInteractEvent event) {
+    public void onInteract(final PlayerInteractEvent event) {
         this.cancelIfPlayerUnauthenticated(event.getPlayer(), event);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void onDrop(PlayerDropItemEvent event) {
+    public void onDrop(final PlayerDropItemEvent event) {
         this.cancelIfPlayerUnauthenticated(event.getPlayer(), event);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void onArrowPickup(PlayerPickupArrowEvent event) {
+    public void onArrowPickup(final PlayerPickupArrowEvent event) {
         this.cancelIfPlayerUnauthenticated(event.getPlayer(), event);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void onItemPickup(EntityPickupItemEvent event) {
+    public void onItemPickup(final EntityPickupItemEvent event) {
         this.cancelIfUnauthenticated(event, event::getEntity);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void onDamageByEntity(EntityDamageByEntityEvent event) {
+    public void onDamageByEntity(final EntityDamageByEntityEvent event) {
         this.cancelIfUnauthenticated(event, event::getDamager);
         this.cancelIfUnauthenticated(event, event::getEntity);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void onBow(EntityShootBowEvent event) {
+    public void onBow(final EntityShootBowEvent event) {
         this.cancelIfUnauthenticated(event, event::getEntity);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void onHealthGain(EntityRegainHealthEvent event) {
+    public void onHealthGain(final EntityRegainHealthEvent event) {
         this.cancelIfUnauthenticated(event, event::getEntity);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void onBlockBreak(BlockBreakEvent event) {
+    public void onBlockBreak(final BlockBreakEvent event) {
         this.cancelIfUnauthenticated(event, event::getPlayer);
     }
 
