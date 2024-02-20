@@ -36,9 +36,7 @@ import java.util.Objects;
 
 public final class LightLoginPlugin extends JavaPlugin {
 
-    public final static String PREFIX = "&7╓&eLightLogin&7╛&f: ";
     private AbstractFilter safetyFilter = null;
-
     private PlayerUnloggedListener playerUnloggedListener = null;
     private LoginAuthenticatorListener loginAuthenticatorListener = null;
     private AuthenticationListener authenticationListener = null;
