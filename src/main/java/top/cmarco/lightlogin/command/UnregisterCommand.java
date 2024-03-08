@@ -20,6 +20,11 @@ public final class UnregisterCommand extends LightLoginCommand {
 
     @Override
     protected void commandLogic(@NotNull CommandSender sender, @NotNull String[] args) {
+        final AuthenticationManager authManager = super.plugin.getAuthenticationManager();
+
+        if (sender instanceof Player tempPlayer && !authManager.isAuthenticated(tempPlayer)) {
+            return;
+        }
 
         if (args.length != 1) {
             sendColorPrefixMessages(sender, super.configuration.getUnregisterIncorrectUsage(), super.plugin);
@@ -41,11 +46,10 @@ public final class UnregisterCommand extends LightLoginCommand {
             return;
         }
 
-        AuthenticationManager authManager = super.plugin.getAuthenticationManager();
         PluginDatabase database = super.plugin.getDatabase();
         authManager.unauthenticate(playerUUID);
 
-        UnregisterEvent unregisterEvent = new UnregisterEvent(playerUUID);
+        UnregisterEvent unregisterEvent = new UnregisterEvent(playerUUID, args[0]);
         super.plugin.getServer().getPluginManager().callEvent(unregisterEvent);
 
         final UUID finalPlayerUUID = playerUUID;

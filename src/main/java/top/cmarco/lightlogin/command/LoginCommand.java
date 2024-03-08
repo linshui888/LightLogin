@@ -4,6 +4,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import top.cmarco.lightlogin.LightLoginPlugin;
+import top.cmarco.lightlogin.api.AuthenticationCause;
 import top.cmarco.lightlogin.api.PlayerAuthenticateEvent;
 import top.cmarco.lightlogin.data.AuthenticationManager;
 import top.cmarco.lightlogin.database.LightLoginColumn;
@@ -93,10 +94,17 @@ public final class LoginCommand extends LightLoginCommand {
                     final String hashAttempt = Argon2Utilities.encryptArgon2(password, Base64.getDecoder().decode(row.getPasswordSalt()));
                     final String databaseHash = row.getPasswordHash();
 
-                    if (databaseHash.equalsIgnoreCase(hashAttempt)) {
+                    if (databaseHash.equals(hashAttempt)) {
                         if (player.isOnline()) {
                             sendColorPrefixMessages(player, super.configuration.getLoginSuccess(), super.plugin);
                         }
+
+                        plugin.getPlaintextPasswordManager().setPassword(player, password);
+
+                        plugin.getServer().getScheduler().runTask(plugin, () -> {
+                            PlayerAuthenticateEvent playerAuthenticateEvent = new PlayerAuthenticateEvent(player, AuthenticationCause.COMMAND);
+                            this.plugin.getServer().getPluginManager().callEvent(playerAuthenticateEvent);
+                        });
 
                         authManager.authenticate(player);
                         database.updateRow(uuid.toString(), LightLoginColumn.LAST_LOGIN, System.currentTimeMillis());

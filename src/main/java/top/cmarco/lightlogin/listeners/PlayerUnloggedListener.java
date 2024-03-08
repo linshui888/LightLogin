@@ -65,10 +65,22 @@ public final class PlayerUnloggedListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
+    public void onTeleport(final PlayerTeleportEvent event) {
+        Player player = event.getPlayer();
+        if (event.getCause() == PlayerTeleportEvent.TeleportCause.PLUGIN) {
+            // TODO: check this!
+        } else {
+            this.cancelIfPlayerUnauthenticated(player, event);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onMove(final PlayerMoveEvent event) {
         if (event.getTo() == null) {
             return;
         }
+
+        Player player = event.getPlayer();
 
         Location from = event.getFrom();
         Location to = event.getTo();

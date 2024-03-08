@@ -11,6 +11,7 @@ import org.jetbrains.annotations.Nullable;
 import top.cmarco.lightlogin.LightLoginPlugin;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * This class represents the configuration for the LightLoginPlugin, providing convenient methods
@@ -124,6 +125,10 @@ public final class LightConfiguration {
         return this.configuration.getStringList("login.allowed-commands");
     }
 
+    public int getKickAfterSeconds() {
+        return this.configuration.getInt("login.kick-after-seconds", 120);
+    }
+
     public int getLoginDelay() {
         return this.configuration.getInt("login.command-delay");
     }
@@ -134,6 +139,10 @@ public final class LightConfiguration {
 
     public List<String> getBruteforcePunishment() {
         return this.configuration.getStringList("login.bruteforce-punishment");
+    }
+
+    public String getLoginTookTooMuchTime() {
+        return String.join("\n", this.configuration.getStringList("messages.login-took-too-much-time"));
     }
 
     public boolean isAutoLogin() {
@@ -287,5 +296,17 @@ public final class LightConfiguration {
 
     public int getPlayersSameIp() {
         return this.configuration.getInt("safety.players-same-ip", 2);
+    }
+
+    public boolean isVoidWorldEnabled() {
+        return this.configuration.getBoolean("void-world.enabled", true);
+    }
+
+    public String getVoidWorldMode() {
+        return this.configuration.getString("void-world.mode", "NORMAL");
+    }
+
+    public List<String> getPasswordInChat() {
+        return this.configuration.getStringList("messages.password-in-chat");
     }
 }

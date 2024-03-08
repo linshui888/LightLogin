@@ -4,6 +4,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 import top.cmarco.lightlogin.LightLoginPlugin;
+import top.cmarco.lightlogin.api.AuthenticationCause;
 import top.cmarco.lightlogin.api.PlayerAuthenticateEvent;
 import top.cmarco.lightlogin.command.LightLoginCommand;
 
@@ -70,10 +71,6 @@ public class BasicAuthenticationManager implements AuthenticationManager {
 
     @Override
     public void authenticate(@NotNull Player player) {
-        plugin.getServer().getScheduler().runTask(plugin, () -> {
-            PlayerAuthenticateEvent playerAuthenticateEvent = new PlayerAuthenticateEvent(player);
-            this.plugin.getServer().getPluginManager().callEvent(playerAuthenticateEvent);
-        });
         this.authenticate(player.getUniqueId());
     }
 

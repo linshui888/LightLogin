@@ -22,12 +22,17 @@ database:
 # 服务器在崩溃或数据库问题后的行为
 crash-shutdown: false     # 严重崩溃或数据库问题后关闭服务器。
 
+void-world:
+  enabled: false
+  mode: 'NORMAL'        # NORMAL \ THE_END
+
 safety:
   players-same-ip: 2      # 同一IPv4地址上可以同时连接多少玩家？
 
 # 登录配置
 login:
   command-delay: 3        # 登录命令可执行之前的延迟时间（秒）
+  kick-after-seconds: 120
   max-failed-attempts: 10 # 允许的最大登录失败尝试次数，否则将受到惩罚
   bruteforce-punishment:  # 暴力破解尝试的惩罚命令
     - 'clear {PLAYER}'
@@ -87,6 +92,9 @@ messages:
     - '{PREFIX}: &c您使用该命令太快！'
   login-already-authenticated:
     - '{PREFIX}: &c您已经通过身份验证！'
+  login-took-too-much-time:
+    - "{PREFIX}: &4踢出！"
+    - "&c您花费的认证时间过长。"
   login-error:
     - '{PREFIX}: &c登录时发生了一些问题。'
   login-incorrect-usage:
@@ -117,4 +125,8 @@ messages:
   player-not-online:
     - "{PREFIX}: &a该玩家不在线！"
   players-same-ip: "{PREFIX}: &c您的网络地址连接了太多玩家！"
+  password-in-chat:
+    - "{PREFIX}: &c&l警告"
+    - "&7» &4您已在聊天中输入密码，"
+    - "&7» &4您的消息已被取消，请注意！"
 

@@ -15,6 +15,11 @@ public class UnloginCommand extends LightLoginCommand {
 
     @Override
     protected void commandLogic(@NotNull CommandSender sender, @NotNull String[] args) {
+        final AuthenticationManager authenticationManager = plugin.getAuthenticationManager();
+
+        if (sender instanceof Player tempPlayer && !authenticationManager.isAuthenticated(tempPlayer)) {
+            return;
+        }
 
         if (args.length != 1) {
             // TODO: add
@@ -28,7 +33,6 @@ public class UnloginCommand extends LightLoginCommand {
             return;
         }
 
-        final AuthenticationManager authenticationManager = plugin.getAuthenticationManager();
         final PluginDatabase database = plugin.getDatabase();
 
         database.updateRow(player.getUniqueId().toString(), LightLoginColumn.LAST_LOGIN, 1L);

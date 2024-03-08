@@ -21,9 +21,14 @@ database:
 # התנהגות השרת לאחר נפילות או בעיות במסד הנתונים
 crash-shutdown: false   # לכבות את השרת לאחר נפילות חמורות או בעיות במסד הנתונים.
 
+void-world:
+  enabled: false
+  mode: 'NORMAL'        # NORMAL \ THE_END
+
 # הגדרות כניסה
 login:
   command-delay: 3       # השהייה בשניות לפני שהפקודה של כניסה יכולה להתבצע
+  kick-after-seconds: 120
   max-failed-attempts: 10 # מספר מרבי של נסיונות כניסה נכשלים שמותרים לפני פקודות עונש
   bruteforce-punishment: # פקודות עונש לנסיונות כניסה ברוטפורס
     - 'clear {PLAYER}'
@@ -87,6 +92,9 @@ messages:
     - '{PREFIX}: &cאתה משתמש בפקודה זו מהר מדי!'
   login-already-authenticated:
     - '{PREFIX}: &cאתה כבר מאומת!'
+  login-took-too-much-time:
+    - "{PREFIX}: &4הושלם!"
+    - "&cהשתמשת ביותר מדי זמן לאימות."
   login-error:
     - '{PREFIX}: &cמשהו השתבש בעת התחברות.'
   login-incorrect-usage:
@@ -117,4 +125,8 @@ messages:
   player-not-online:
     - "{PREFIX}: &aהשחקן הזה לא מחובר!"
   players-same-ip: "{PREFIX}: &cרובים מדי שחקנים מחוברים מכתובת הרשת שלך!"
+  password-in-chat:
+    - "{PREFIX}: &c&lאזהרה"
+    - "&7» &4כתבת את הסיסמה שלך בצ'אט,"
+    - "&7» &4ההודעה שלך בוטלה, שים לב!"
 

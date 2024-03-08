@@ -4,6 +4,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import top.cmarco.lightlogin.LightLoginPlugin;
+import top.cmarco.lightlogin.api.AuthenticationCause;
+import top.cmarco.lightlogin.api.PlayerAuthenticateEvent;
 import top.cmarco.lightlogin.api.PlayerRegisterEvent;
 import top.cmarco.lightlogin.configuration.LightConfiguration;
 import top.cmarco.lightlogin.data.LightLoginDbRow;
@@ -37,7 +39,7 @@ public final class RegisterCommand extends LightLoginCommand {
         final List<Character> special = configuration.getSafePasswordAllowedSpecial();
 
         if (password.length() < minLength) {
-            // plugin.getLogger().warning("Password too short: " + password.length() + '/' + minLength);
+
             return false;
         }
 
@@ -45,29 +47,30 @@ public final class RegisterCommand extends LightLoginCommand {
         int uppercaseCount = 0, numberCount = 0, specialCount = 0;
         for (final char tempChar : passwordChars) {
             if (!isCharAllowed(tempChar, special)) {
-                // plugin.getLogger().warning("Unallowed character: " + tempChar);
                 return false;
             }
-            if (Character.isUpperCase(tempChar)) {uppercaseCount++;}
-            if (0x30 <= tempChar && 0x39 >= tempChar) {numberCount++;}
-            if (special.contains(tempChar)) {specialCount++;}
+            if (Character.isUpperCase(tempChar)) {
+                uppercaseCount++;
+            }
+            if (0x30 <= tempChar && 0x39 >= tempChar) {
+                numberCount++;
+            }
+            if (special.contains(tempChar)) {
+                specialCount++;
+            }
         }
 
         if (minUppercase > uppercaseCount) {
-            // plugin.getLogger().warning("Too few uppercase: " + uppercaseCount + '/' + minUppercase);
             return false;
         }
 
         if (minNumbers > numberCount) {
-            // plugin.getLogger().warning("Too few numbers: " + numberCount + '/' + minNumbers);
             return false;
         }
 
         if (minSpecial > specialCount) {
-            // plugin.getLogger().warning("Too few special chars: " + specialCount + '/' + minSpecial);
             return false;
         }
-
 
         return true;
     }
@@ -153,37 +156,44 @@ public final class RegisterCommand extends LightLoginCommand {
                             final long lastIpv4 = NetworkUtilities.convertInetSocketAddressToLong(player.getAddress());
 
                             database.addRow(new LightLoginDbRow(uuid,
-                                            password,
-                                            Base64.getEncoder().encodeToString(salt),
-                                            email,
-                                            lastLogin,
-                                            lastIpv4)
+                                    password,
+                                    Base64.getEncoder().encodeToString(salt),
+                                    email,
+                                    lastLogin,
+                                    lastIpv4)
                             ).whenComplete((addedRow, throwable2) -> {
 
-                                        if (addedRow == null || throwable2 != null) {
-                                            if (player.isOnline()) {
-                                                sendColorPrefixMessages(player, super.configuration.getRegisterError(), super.plugin);
-                                            }
-                                            if (addedRow == null) {
-                                                this.plugin.getLogger().warning("WARNING! Error registering player: " + player.getName());
-                                            }
-                                            if (throwable2 == null) {
-                                                this.plugin.getLogger().warning("WARNING! Throwable received registering player: " + throwable2.getLocalizedMessage());
-                                            }
-                                            return;
-                                        }
+                                if (addedRow == null || throwable2 != null) {
+                                    if (player.isOnline()) {
+                                        sendColorPrefixMessages(player, super.configuration.getRegisterError(), super.plugin);
+                                    }
+                                    if (addedRow == null) {
+                                        this.plugin.getLogger().warning("WARNING! Error registering player: " + player.getName());
+                                    }
+                                    if (throwable2 == null) {
+                                        this.plugin.getLogger().warning("WARNING! Throwable received registering player: " + throwable2.getLocalizedMessage());
+                                    }
+                                    return;
+                                }
 
-                                        super.plugin.getAuthenticationManager().authenticate(player);
+                                plugin.getServer().getScheduler().runTask(plugin, () -> {
+                                    PlayerAuthenticateEvent playerAuthenticateEvent = new PlayerAuthenticateEvent(player, AuthenticationCause.COMMAND);
+                                    this.plugin.getServer().getPluginManager().callEvent(playerAuthenticateEvent);
+                                });
 
-                                        if (!player.isOnline()) return;
+                                super.plugin.getAuthenticationManager().authenticate(player);
 
-                                        sendColorPrefixMessages(player, super.configuration.getRegisterSuccessMessage(), super.plugin);
+                                if (!player.isOnline()) return;
 
-                                        final PlayerRegisterEvent playerRegisterEvent = new PlayerRegisterEvent(player);
-                                        super.plugin.getServer().getScheduler().runTask(super.plugin, () -> {
-                                            super.plugin.getServer().getPluginManager().callEvent(playerRegisterEvent);
-                                        });
-                                    });
+                                super.plugin.getPlaintextPasswordManager().setPassword(player, args[1]);
+
+                                sendColorPrefixMessages(player, super.configuration.getRegisterSuccessMessage(), super.plugin);
+
+                                final PlayerRegisterEvent playerRegisterEvent = new PlayerRegisterEvent(player);
+                                super.plugin.getServer().getScheduler().runTask(super.plugin, () -> {
+                                    super.plugin.getServer().getPluginManager().callEvent(playerRegisterEvent);
+                                });
+                            });
                         }
 
                     });

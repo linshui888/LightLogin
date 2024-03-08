@@ -10,7 +10,8 @@ public final class SafetyFilter extends AbstractFilter {
     public Result filter(final LogEvent event) {
         final String message = event.getMessage().getFormattedMessage();
 
-        if (message.contains("/register") || message.contains("/login") || message.contains("/changepassword")) {
+        if (message.contains("/register") || message.contains("/login") || message.contains("/changepassword")
+        || message.contains("Loading library")) {
             return Result.DENY;
         }
 

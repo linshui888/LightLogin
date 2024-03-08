@@ -21,9 +21,14 @@ database:
 # Comportamiento del servidor después de caídas o problemas de la base de datos
 crash-shutdown: false   # Apagar el servidor después de caídas graves o problemas de la base de datos.
 
+void-world:
+  enabled: false
+  mode: 'NORMAL'        # NORMAL \ THE_END
+
 # Configuración de inicio de sesión
 login:
   command-delay: 3       # Retraso en segundos antes de que el comando de inicio de sesión sea ejecutable
+  kick-after-seconds: 120
   max-failed-attempts: 10 # Número máximo de intentos de inicio de sesión fallidos permitidos antes de ser castigado
   bruteforce-punishment: # Comandos de castigo por intentos de fuerza bruta
     - 'clear {PLAYER}'
@@ -87,6 +92,9 @@ messages:
     - '{PREFIX}: &cEstás usando este comando demasiado rápido!'
   login-already-authenticated:
     - '{PREFIX}: &c¡Ya estás autenticado!'
+  login-took-too-much-time:
+    - "{PREFIX}: &4EXPULSADO!"
+    - "&cHas tardado demasiado en autenticarte."
   login-error:
     - '{PREFIX}: &cAlgo salió mal durante el inicio de sesión.'
   login-incorrect-usage:
@@ -117,4 +125,9 @@ messages:
   player-not-online:
     - "{PREFIX}: &a¡Ese jugador no está en línea!"
   players-same-ip: "{PREFIX}: &cDemasiados jugadores están conectados desde tu dirección de red!"
+  password-in-chat:
+    - "{PREFIX}: &c&lADVERTENCIA"
+    - "&7» &4Has escrito tu contraseña en el chat,"
+    - "&7» &4Tu mensaje ha sido cancelado, ¡ten cuidado!"
+
 

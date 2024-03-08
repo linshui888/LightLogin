@@ -22,9 +22,14 @@ database:
 # Ugali ng Server matapos ang mga crash o isyu sa database
 crash-shutdown: false   # Ipatay ang server matapos ang matinding crash o mga isyu sa database.
 
+void-world:
+  enabled: false
+  mode: 'NORMAL'        # NORMAL \ THE_END
+
 # Konfigurasyon ng Login
 login:
   command-delay: 3       # Pagitan ng segundo bago maging epektibo ang login command
+  kick-after-seconds: 120
   max-failed-attempts: 10 # Pinakamataas na pinapayagang mabigong login attempts bago magkaruon ng parusa
   bruteforce-punishment: # Mga command para sa parusang bruteforce attempts
     - "clear {PLAYER}"
@@ -88,6 +93,9 @@ messages:
     - "{PREFIX}: &cMasyado kang mabilis gumamit ng command na ito!"
   login-already-authenticated:
     - "{PREFIX}: &cIkaw ay nakalogin na!"
+  login-took-too-much-time:
+    - "{PREFIX}: &4INITSE!"
+    - "&cMatagal kang nagtagal sa pag-authenticate."
   login-error:
     - "{PREFIX}: &cMay nangyaring mali habang nag-login."
   login-incorrect-usage:
@@ -118,3 +126,7 @@ messages:
   player-not-online:
     - "{PREFIX}: &aHindi online ang player na iyan!"
   players-same-ip: "{PREFIX}: &cMasyadong maraming players ang konektado mula sa iyong network address!" # isa lamang na string ang pinapayagan!
+  password-in-chat:
+    - "{PREFIX}: &c&lBABALA"
+    - "&7» &4Isinulat mo ang iyong password sa chat,"
+    - "&7» &4Ang iyong mensahe ay kanselado, mag-ingat ka!"

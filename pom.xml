@@ -6,7 +6,7 @@
 
     <groupId>top.cmarco</groupId>
     <artifactId>LightLogin</artifactId>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.0.6-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>LightLogin</name>
@@ -49,23 +49,77 @@
                                                out="${project.build.directory}/${project.build.finalName}.jar"/>
 
                                     <rename logfile="${project.build.directory}/yguard.log.xml"
-                                            replaceClassNameStrings="true">
+                                            replaceClassNameStrings="false">
 
                                         <property name="overload-enabled" value="true"/>
                                         <property name="naming-scheme" value="simple"/>
-                                        <property name="language-conformity" value="compatible"/>
-                                        <property name="obfuscation-prefix" value="top.cmarco.lightlogin.LightLoginPlugin"/>
+                                        <property name="language-conformity" value="legal"/>
+                                        <!--<property name="obfuscation-prefix" value="top.cmarco.lightlogin.LightLoginPlugin"/> -->
 
                                         <keep>
-                                            <class methods="private" classes="private" fields="private">
+                                            <class methods="private" classes="public" fields="none">
                                                 <patternset>
                                                     <include name="com.alessiodp.libby.**"/>
+                                                    <exclude name="top.cmarco.lightlogin.**"/>
                                                 </patternset>
                                             </class>
-                                            <class name="top.cmarco.lightlogin.LightLoginPlugin"/>
-                                            <method class="top.cmarco.lightlogin.LightLoginPlugin" name="void onEnable()"/>
-                                            <method class="top.cmarco.lightlogin.LightLoginPlugin" name="void onDisable()"/>
+
+                                            <class methods="none" classes="public" fields="none">
+                                                <patternset>
+                                                    <include name="top.cmarco.lightlogin.LightLoginPlugin"/>
+                                                </patternset>
+                                            </class>
+
+                                            <method name="org.bukkit.event.HandlerList getHandlerList()">
+                                                <patternset>
+                                                    <include name="top.cmarco.lightlogin.api.**"/>
+                                                </patternset>
+                                            </method>
+
+                                            <method name="org.bukkit.event.HandlerList getHandlers()">
+                                                <patternset>
+                                                    <include name="top.cmarco.lightlogin.api.**"/>
+                                                </patternset>
+                                            </method>
+
+                                            <field name="HANDLERS_LIST">
+                                                <patternset>
+                                                    <include name="top.cmarco.lightlogin.api.**"/>
+                                                </patternset>
+                                            </field>
+
                                         </keep>
+
+                                        <map>
+                                            <!-- Obfuscate methods in LightLoginPlugin class - Fixes issue of yGuard -->
+                                            <method class="top.cmarco.lightlogin.LightLoginPlugin" name="com.alessiodp.libby.Library getBcprov()" map="$15325"/>
+                                            <method class="top.cmarco.lightlogin.LightLoginPlugin" name="top.cmarco.lightlogin.command.LoginCommand getLoginCommand()" map="$314159"/>
+                                            <method class="top.cmarco.lightlogin.LightLoginPlugin" name="top.cmarco.lightlogin.data.AuthenticationManager getAuthenticationManager()" map="$abcdef"/>
+                                            <method class="top.cmarco.lightlogin.LightLoginPlugin" name="java.util.EnumMap getLanguagesConfigMap()" map="$gASjGk"/>
+                                            <method class="top.cmarco.lightlogin.LightLoginPlugin" name="top.cmarco.lightlogin.data.PlaintextPasswordManager getPlaintextPasswordManager()" map="$lmnop"/>
+                                            <method class="top.cmarco.lightlogin.LightLoginPlugin" name="top.cmarco.lightlogin.command.RegisterCommand getRegisterCommand()" map="$qrstu"/>
+                                            <method class="top.cmarco.lightlogin.LightLoginPlugin" name="top.cmarco.lightlogin.data.StartupLoginsManager getStartupLoginsManager()" map="$vwxyz"/>
+                                            <method class="top.cmarco.lightlogin.LightLoginPlugin" name="top.cmarco.lightlogin.listeners.AuthenticationListener getAuthenticationListener()" map="$12345"/>
+                                            <method class="top.cmarco.lightlogin.LightLoginPlugin" name="com.alessiodp.libby.Library getBcutils()" map="$67890"/>
+                                            <method class="top.cmarco.lightlogin.LightLoginPlugin" name="top.cmarco.lightlogin.listeners.LoginAuthenticatorListener getLoginAuthenticatorListener()" map="$aGkvs"/>
+                                            <method class="top.cmarco.lightlogin.LightLoginPlugin" name="top.cmarco.lightlogin.command.ChangePasswordCommand getChangePasswordCommand()" map="$ghijk"/>
+                                            <method class="top.cmarco.lightlogin.LightLoginPlugin" name="top.cmarco.lightlogin.data.VoidLoginManager getVoidLoginManager()" map="$lGlkac"/>
+                                            <method class="top.cmarco.lightlogin.LightLoginPlugin" name="com.alessiodp.libby.Library getBcpkix()" map="$UiIVX"/>
+                                            <method class="top.cmarco.lightlogin.LightLoginPlugin" name="top.cmarco.lightlogin.command.BaseCommand getBaseCommand()" map="$KthUq"/>
+                                            <method class="top.cmarco.lightlogin.LightLoginPlugin" name="org.apache.logging.log4j.core.filter.AbstractFilter getSafetyFilter()" map="$j5lhu"/>
+                                            <method class="top.cmarco.lightlogin.LightLoginPlugin" name="top.cmarco.lightlogin.log.AuthLogs getAuthLogs()" map="$5wP66"/>
+                                            <method class="top.cmarco.lightlogin.LightLoginPlugin" name="org.bukkit.World getLoginWorld()" map="$BjldW"/>
+                                            <method class="top.cmarco.lightlogin.LightLoginPlugin" name="top.cmarco.lightlogin.database.PluginDatabase getDatabase()" map="$qSXC6"/>
+                                            <method class="top.cmarco.lightlogin.LightLoginPlugin" name="top.cmarco.lightlogin.data.AutoKickManager getAutoKickManager()" map="$pjy8Y"/>
+                                            <method class="top.cmarco.lightlogin.LightLoginPlugin" name="com.alessiodp.libby.BukkitLibraryManager getBukkitLibraryManager()" map="$TZe0j"/>
+                                            <method class="top.cmarco.lightlogin.LightLoginPlugin" name="com.alessiodp.libby.Library getHikariCP()" map="$SCtzc"/>
+                                            <method class="top.cmarco.lightlogin.LightLoginPlugin" name="top.cmarco.lightlogin.command.UnregisterCommand getUnregisterCommand()" map="$XfTsu"/>
+                                            <method class="top.cmarco.lightlogin.LightLoginPlugin" name="top.cmarco.lightlogin.listeners.PlayerUnloggedListener getPlayerUnloggedListener()" map="$rX3RB"/>
+                                            <method class="top.cmarco.lightlogin.LightLoginPlugin" name="top.cmarco.lightlogin.command.UnloginCommand getUnloginCommand()" map="$MPbI9"/>
+                                            <method class="top.cmarco.lightlogin.LightLoginPlugin" name="top.cmarco.lightlogin.configuration.LightConfiguration getLightConfiguration()" map="$RQjxy"/>
+                                            <method class="top.cmarco.lightlogin.LightLoginPlugin" name="boolean isDisabled()" map="$ggghk"/>
+
+                                        </map>
 
                                     </rename>
 
@@ -118,6 +172,11 @@
                                     <pattern>org.bouncycastle</pattern>
                                     <shadedPattern>top.cmarco.lightlogin.libs.org.bouncycastle</shadedPattern>
                                 </relocation>
+
+                                <relocation>
+                                    <pattern>org.postgresql</pattern>
+                                    <shadedPattern>top.cmarco.lightlogin.libs.org.postgresql</shadedPattern>
+                                </relocation>
                             </relocations>
                         </configuration>
 
@@ -150,6 +209,12 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.7.2</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
             <version>24.0.1</version>
@@ -158,7 +223,7 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.13.2-R0.1-SNAPSHOT</version>
+            <version>1.17.1-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

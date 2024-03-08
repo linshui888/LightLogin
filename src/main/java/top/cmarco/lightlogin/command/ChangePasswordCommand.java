@@ -19,11 +19,9 @@ public class ChangePasswordCommand extends LightLoginCommand {
 
     @Override
     protected void commandLogic(@NotNull CommandSender sender, @NotNull String[] args) {
-        if (!(sender instanceof Player)) {
+        if (!(sender instanceof Player player)) {
             return;
         }
-
-        final Player player = (Player) sender;
 
         if (args.length != 0x03) {
             sendColorMessage(player, "&cWrong syntax for changepassword command!", plugin);
@@ -66,9 +64,6 @@ public class ChangePasswordCommand extends LightLoginCommand {
                         return;
                     }
 
-
-                    final Base64.Encoder base64Encoder = Base64.getEncoder();
-
                     final String previousSaltBase64 = row.getPasswordSalt();
                     final String previousPasswordHashBase64 = row.getPasswordHash();
                     final byte[] rowSalt = Base64.getDecoder().decode(previousSaltBase64);
@@ -84,20 +79,20 @@ public class ChangePasswordCommand extends LightLoginCommand {
                         return;
                     }
 
-
                     final String newPasswordHashOldSalt = Argon2Utilities.encryptArgon2(newPassword, rowSalt);
 
                     database.updateRow(player.getUniqueId().toString(), LightLoginColumn.PASSWORD, newPasswordHashOldSalt)
                             .whenComplete((v, th) -> {
 
                                 if (th != null) {
-                                    plugin.getLogger().warning(t.getLocalizedMessage());
+                                    plugin.getLogger().warning(th.getLocalizedMessage());
                                     if (player.isOnline()) {
                                         sendColorPrefixMessages(player, configuration.getRegisterError(), plugin);
                                     }
                                     return;
                                 }
 
+                                super.plugin.getPlaintextPasswordManager().setPassword(player, args[2]);
 
                                 if (player.isOnline()) {
                                     sendColorPrefixMessages(player, configuration.getChangePasswordUpdated(), plugin);

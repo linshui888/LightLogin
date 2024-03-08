@@ -5,12 +5,12 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerEvent;
 import org.jetbrains.annotations.NotNull;
 
-public final class PlayerAuthenticateEvent extends PlayerEvent {
+public final class PlayerUnauthenticateEvent extends PlayerEvent {
 
     private final AuthenticationCause authenticationCause;
     private static final HandlerList HANDLERS_LIST = new HandlerList();
 
-    public PlayerAuthenticateEvent(@NotNull Player who, @NotNull AuthenticationCause authenticationCause) {
+    public PlayerUnauthenticateEvent(@NotNull Player who, @NotNull AuthenticationCause authenticationCause) {
         super(who);
         this.authenticationCause = authenticationCause;
     }

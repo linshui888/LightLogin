@@ -22,9 +22,14 @@ database:
 # Comportement du serveur après des plantages ou des problèmes de base de données
 crash-shutdown: false   # Arrêter le serveur après des plantages graves ou des problèmes de base de données.
 
+void-world:
+  enabled: false
+  mode: 'NORMAL'        # NORMAL \ THE_END
+
 # Configuration de la connexion
 login:
   command-delay: 3        # Délai en secondes avant que la commande de connexion ne soit exécutable
+  kick-after-seconds: 120
   max-failed-attempts: 10 # Nombre maximum de tentatives de connexion échouées autorisées avant la punition
   bruteforce-punishment:  # Commandes de punition pour les tentatives de force brute
     - "clear {PLAYER}"
@@ -88,6 +93,9 @@ messages:
     - "{PREFIX}: &cVous utilisez cette commande trop rapidement !"
   login-already-authenticated:
     - "{PREFIX}: &cVous êtes déjà authentifié !"
+  login-took-too-much-time:
+    - "{PREFIX}: &4EXCLU!"
+    - "&cVous avez mis trop de temps pour vous authentifier."
   login-error:
     - "{PREFIX}: &cQuelque chose s'est mal passé lors de la connexion."
   login-incorrect-usage:
@@ -118,5 +126,9 @@ messages:
   player-not-online:
     - "{PREFIX}: &aCe joueur n'est pas en ligne !"
   players-same-ip: "{PREFIX}: &cTrop de joueurs sont connectés depuis votre adresse réseau!"
+  password-in-chat:
+    - "{PREFIX}: &c&lAVERTISSEMENT"
+    - "&7» &4Vous avez écrit votre mot de passe dans le chat,"
+    - "&7» &4Votre message a été annulé, faites attention !"
 
 

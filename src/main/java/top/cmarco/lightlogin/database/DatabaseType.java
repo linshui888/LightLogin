@@ -14,7 +14,8 @@ import org.jetbrains.annotations.Nullable;
 public enum DatabaseType {
 
     SQLITE("sqlite", "org.sqlite.JDBC"),
-    MYSQL("mysql", "com.mysql.jdbc.Driver")
+    MYSQL("mysql", "com.mysql.jdbc.Driver"),
+    POSTGRESQL("postgresql", "org.postgresql.Driver")
     ;
 
     private final String name;
