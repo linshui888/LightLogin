@@ -36,11 +36,12 @@ import java.util.List;
 import java.util.function.Supplier;
 
 
-public final class PlayerUnloggedListener implements Listener {
+public final class PlayerUnloggedListener extends NamedListener {
 
     private final LightLoginPlugin plugin;
 
     public PlayerUnloggedListener(@NotNull final LightLoginPlugin plugin) {
+        super("player_unlogged_listener");
         this.plugin = plugin;
     }
 

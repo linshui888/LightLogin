@@ -61,19 +61,8 @@ public class StartupLogo {
             "&7[ &a&l✔&r &7] &aCorrectly set up Authentication Database &7(&a",
             "&7)&e!"
     };
-    private static final String[] MY_STRINGS = {
-            "com{}zaxxer", "HikariCP", "5.0.1", "com{}zaxxer{}hikari", "top{}cmarco{}lightlogin{}libs{}com{}zaxxer{}hikari",
-            "org{}bouncycastle", "bcpkix-jdk18on", "1.77", "org{}bouncycastle", "top{}cmarco{}lightlogin{}libs{}org{}bouncycastle",
-            "org{}bouncycastle", "bcutil-jdk18on", "1.77", "org{}bouncycastle", "top{}cmarco{}lightlogin{}libs{}org{}bouncycastle",
-            "org{}bouncycastle", "bcprov-jdk18on", "1.77", "org{}bouncycastle", "top{}cmarco{}lightlogin{}libs{}org{}bouncycastle",
-            "org{}postgresql", "postgresql", "42.7.2", "org{}postgresql", "top{}cmarco{}lightlogin{}libs{}org{}postgresql"
-    };
 
-    public static String getMY_STRINGS(int number) {
-        return MY_STRINGS[number];
-    }
-
-    public static String getSTRINGS(int number) {
+    public static String getLoadingString(int number) {
         return STRINGS[number];
     }
 

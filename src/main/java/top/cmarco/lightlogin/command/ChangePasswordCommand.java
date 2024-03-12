@@ -63,7 +63,7 @@ public class ChangePasswordCommand extends LightLoginCommand {
         final PluginDatabase database = super.plugin.getDatabase();
 
         database.searchRowFromPK(player.getUniqueId().toString())
-                .whenComplete((row, t) -> {
+                .whenCompleteAsync((row, t) -> {
 
 
                     if (t != null) {
@@ -100,7 +100,7 @@ public class ChangePasswordCommand extends LightLoginCommand {
                     final String newPasswordHashOldSalt = Argon2Utilities.encryptArgon2(newPassword, rowSalt);
 
                     database.updateRow(player.getUniqueId().toString(), LightLoginColumn.PASSWORD, newPasswordHashOldSalt)
-                            .whenComplete((v, th) -> {
+                            .whenCompleteAsync((v, th) -> {
 
                                 if (th != null) {
                                     plugin.getLogger().warning(th.getLocalizedMessage());

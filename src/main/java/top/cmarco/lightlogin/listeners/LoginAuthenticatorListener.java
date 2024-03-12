@@ -49,7 +49,7 @@ import java.util.HashMap;
 import java.util.Objects;
 import java.util.UUID;
 
-public final class LoginAuthenticatorListener implements Listener {
+public final class LoginAuthenticatorListener extends NamedListener {
 
     private final LightLoginPlugin plugin;
     private final StartupLoginsManager startupLoginsManager;
@@ -58,6 +58,7 @@ public final class LoginAuthenticatorListener implements Listener {
     private final LightConfiguration configuration;
 
     public LoginAuthenticatorListener(LightLoginPlugin plugin) {
+        super("login_authenticator_listener");
         this.plugin = plugin;
         this.startupLoginsManager = plugin.getStartupLoginsManager();
         this.authManager = this.plugin.getAuthenticationManager();

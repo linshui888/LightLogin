@@ -30,11 +30,12 @@ import top.cmarco.lightlogin.data.PlaintextPasswordManager;
 
 import java.util.stream.Collectors;
 
-public final class PasswordObfuscationListener implements Listener {
+public final class PasswordObfuscationListener extends NamedListener {
 
     private final LightLoginPlugin plugin;
 
     public PasswordObfuscationListener(@NotNull final LightLoginPlugin plugin) {
+        super("password_obfuscation_listener");
         this.plugin = plugin;
     }
 

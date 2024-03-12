@@ -73,7 +73,7 @@ public final class UnregisterCommand extends LightLoginCommand {
         final UUID finalPlayerUUID = playerUUID;
 
         database.deleteRow(playerUUID.toString())
-                .whenComplete((bool, throwable) -> {
+                .whenCompleteAsync((bool, throwable) -> {
 
                     if (throwable != null) {
                         super.plugin.getLogger().warning(throwable.getLocalizedMessage());

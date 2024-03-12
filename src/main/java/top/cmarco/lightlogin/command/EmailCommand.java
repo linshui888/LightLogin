@@ -66,7 +66,7 @@ public class EmailCommand extends LightLoginCommand {
 
             PluginDatabase database = super.plugin.getDatabase();
             database.updateRow(player.getUniqueId().toString(), LightLoginColumn.EMAIL, email)
-                    .whenComplete((v, t) -> {
+                    .whenCompleteAsync((v, t) -> {
 
                         if (t != null) {
                             plugin.getLogger().warning(t.getLocalizedMessage());

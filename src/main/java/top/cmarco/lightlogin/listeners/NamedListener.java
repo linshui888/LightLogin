@@ -18,13 +18,19 @@
 
 package top.cmarco.lightlogin.listeners;
 
+import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
-import top.cmarco.lightlogin.LightLoginPlugin;
 
-public final class PasswordWriteProtectionListener {
-    private final LightLoginPlugin plugin;
+public abstract class NamedListener implements Listener {
 
-    public PasswordWriteProtectionListener(@NotNull LightLoginPlugin plugin) {
-        this.plugin = plugin;
+    private final String name;
+
+    protected NamedListener(@NotNull String name) {
+        this.name = name;
+    }
+
+    @NotNull
+    public String getName() {
+        return name;
     }
 }

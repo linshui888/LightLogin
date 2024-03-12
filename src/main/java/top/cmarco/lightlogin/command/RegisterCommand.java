@@ -179,7 +179,7 @@ public final class RegisterCommand extends LightLoginCommand {
                                     email,
                                     lastLogin,
                                     lastIpv4)
-                            ).whenComplete((addedRow, throwable2) -> {
+                            ).whenCompleteAsync((addedRow, throwable2) -> {
 
                                 if (addedRow == null || throwable2 != null) {
                                     if (player.isOnline()) {

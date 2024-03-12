@@ -92,7 +92,7 @@ public final class LoginCommand extends LightLoginCommand {
 
         final PluginDatabase database = super.plugin.getDatabase();
         database.searchRowFromPK(player.getUniqueId().toString())
-                .whenComplete((row, throwable) -> {
+                .whenCompleteAsync((row, throwable) -> {
 
                     if (throwable != null) {
                         if (player.isOnline()) {

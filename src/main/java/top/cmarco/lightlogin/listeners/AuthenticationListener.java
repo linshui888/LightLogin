@@ -33,12 +33,13 @@ import top.cmarco.lightlogin.api.UnregisterEvent;
 import top.cmarco.lightlogin.data.VoidLoginManager;
 import top.cmarco.lightlogin.log.AuthLogs;
 
-public class AuthenticationListener implements Listener {
+public class AuthenticationListener extends NamedListener {
 
     private final LightLoginPlugin plugin;
     private final VoidLoginManager voidLoginManager;
 
     public AuthenticationListener(@NotNull final LightLoginPlugin plugin) {
+        super("authentication_listener");
         this.plugin = plugin;
         this.voidLoginManager = plugin.getVoidLoginManager();
     }
