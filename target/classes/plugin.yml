@@ -1,7 +1,8 @@
 name: "LightLogin"
 main: "top.cmarco.lightlogin.LightLoginPlugin"
-version: 1.0.1-SNAPSHOT
-load: 'STARTUP'
+version: 1.1.0-SNAPSHOT
+load: 'POSTWORLD'
+folia-supported: false
 api-version: "1.13"
 author: "CMarco"
 database: false
@@ -19,3 +20,7 @@ commands:
     description: "Change your current password."
   unlogin:
     description: "Remove login session from a player."
+  email:
+    description: "Set your personal email."
+  resetpassword:
+    description: "Reset a password through an email."
