@@ -1,8 +1,20 @@
 /*
-* This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
-* If a copy of the MPL was not distributed with this file,
-* You can obtain one at https://mozilla.org/MPL/2.0/.
-*/
+ * LightLogin - Optimised and Safe SpigotMC Software for Authentication
+ *     Copyright © 2024  CMarco
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
 package top.cmarco.lightlogin;
 
 import com.alessiodp.libby.BukkitLibraryManager;
@@ -29,15 +41,18 @@ import top.cmarco.lightlogin.listeners.PlayerUnloggedListener;
 import top.cmarco.lightlogin.log.AuthLogs;
 import top.cmarco.lightlogin.log.SafetyFilter;
 import top.cmarco.lightlogin.log.StartupLogo;
+import top.cmarco.lightlogin.mail.MailManager;
 import top.cmarco.lightlogin.security.LightLoginSecurity;
 import top.cmarco.lightlogin.world.generator.EmptyChunkGenerator;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.EnumMap;
+import java.util.Map;
 import java.util.Objects;
 
-@SuppressWarnings("removal")
 public final class LightLoginPlugin extends JavaPlugin {
 
     private AbstractFilter safetyFilter = null;
@@ -55,16 +70,19 @@ public final class LightLoginPlugin extends JavaPlugin {
     private RegisterCommand registerCommand = null;
     private UnregisterCommand unregisterCommand = null;
     private ChangePasswordCommand changePasswordCommand = null;
+    private EmailCommand emailCommand = null;
+    private ResetPasswordCommand resetPasswordCommand = null;
     private final EnumMap<ConfigurationFiles, FileConfiguration> languagesConfigMap = new EnumMap<>(ConfigurationFiles.class);
     private PlaintextPasswordManager plaintextPasswordManager = null;
     private boolean disabled = false;
     private BukkitLibraryManager bukkitLibraryManager = null;
-    private Library hikariCP = null, bcpkix = null, bcutils = null, bcprov = null, postgreSQL = null;
+    private Library hikariCP = null, bcpkix = null, bcutils = null, bcprov = null, postgreSQL = null, jakartaMail = null, jakartaApi = null, angus = null;
     private World loginWorld;
     private AuthLogs authLogs = null;
     private VoidLoginManager voidLoginManager = null;
     private StartupLoginsManager startupLoginsManager = null;
     private LightLoginSecurity lightLoginSecurity = null;
+    private MailManager mailManager = null;
 
     /* --------------------------------------------------------- */
 
@@ -86,6 +104,7 @@ public final class LightLoginPlugin extends JavaPlugin {
         this.setupPasswordManager();
         this.setupStartupLoginsManager();
         this.registerAllListeners();
+        this.setupMailManager();
         this.setupCommands();
         this.setupKickManager();
         this.setAuthLogs();
@@ -103,6 +122,16 @@ public final class LightLoginPlugin extends JavaPlugin {
 
     /* --------------------------------------------------------- */
 
+    private void setupMailManager() {
+        this.mailManager = new MailManager(this);
+
+        if (!lightConfiguration.isEmailEnabled()) {
+            return;
+        }
+
+        this.mailManager.startSession();
+    }
+
     private void setupStartupLoginsManager() {
         this.startupLoginsManager = new StartupLoginsManager();
     }
@@ -116,15 +145,14 @@ public final class LightLoginPlugin extends JavaPlugin {
     }
 
     private void printLogoStartup() {
-        this.sendConsoleColoured(StartupLogo.LOGO);
-        this.sendConsoleColoured("&e© CMarco 2024");
+        this.sendConsoleColoured(StartupLogo.LOGO_ARRAY[0]);
+        this.sendConsoleColoured(StartupLogo.getSTRINGS(0));
     }
 
     private void setupSecurity() {
         this.lightLoginSecurity = new LightLoginSecurity(this);
-        this.sendConsoleColoured("&7[ &a&l. . .&r &7] &eSetting up JVM security factors");
-        java.lang.System.setSecurityManager(this.lightLoginSecurity);
-        this.sendConsoleColoured("&7[ &a&l✔&r &7] &aCorrectly set up JVM security factors!");
+        this.sendConsoleColoured(StartupLogo.getSTRINGS(1));
+        this.sendConsoleColoured(StartupLogo.getSTRINGS(2));
     }
 
     public void setVoidLoginManager() {
@@ -132,15 +160,15 @@ public final class LightLoginPlugin extends JavaPlugin {
             return;
         }
 
-        this.sendConsoleColoured("&7[ &a&l. . .&r &7] &eSetting up void world feature");
+        this.sendConsoleColoured(StartupLogo.getSTRINGS(3));
         this.voidLoginManager = new VoidLoginManager(this.loginWorld);
-        this.sendConsoleColoured("&7[ &a&l✔&r &7] &aCorrectly set up void world feature!");
+        this.sendConsoleColoured(StartupLogo.getSTRINGS(4));
     }
 
     private void setAuthLogs() {
-        this.sendConsoleColoured("&7[ &a&l. . .&r &7] &eSetting up authentication logging");
+        this.sendConsoleColoured(StartupLogo.getSTRINGS(5));
         this.authLogs = new AuthLogs(this);
-        this.sendConsoleColoured("&7[ &a&l✔&r &7] &aCorrectly set up void authentication logging!");
+        this.sendConsoleColoured(StartupLogo.getSTRINGS(6));
     }
 
     public void loadLoginWorld() {
@@ -153,7 +181,7 @@ public final class LightLoginPlugin extends JavaPlugin {
             return;
         }
 
-        WorldCreator worldCreator = WorldCreator.name("login_world");
+        WorldCreator worldCreator = WorldCreator.name(StartupLogo.getSTRINGS(7));
         worldCreator.generator(new EmptyChunkGenerator());
 
         World.Environment environment = null;
@@ -171,49 +199,74 @@ public final class LightLoginPlugin extends JavaPlugin {
         this.loginWorld = loginWorld;
     }
 
+
     private void loadLibraries() {
-        if (this.hikariCP != null || this.bcpkix != null || this.bcutils != null || this.bcprov != null || this.bukkitLibraryManager != null || postgreSQL != null) {
+        if (this.hikariCP != null || this.bcpkix != null || this.bcutils != null
+                || this.bcprov != null || this.bukkitLibraryManager != null || postgreSQL != null
+        || angus != null) {
             return;
         }
 
         this.bukkitLibraryManager = new BukkitLibraryManager(this);
         this.bukkitLibraryManager.addMavenCentral();
         this.hikariCP = Library.builder()
-                .groupId("com{}zaxxer")
-                .artifactId("HikariCP")
-                .version("5.0.1")
-                .relocate("com{}zaxxer{}hikari","top{}cmarco{}lightlogin{}libs{}com{}zaxxer{}hikari")
+                .groupId(StartupLogo.getMY_STRINGS(0))
+                .artifactId(StartupLogo.getMY_STRINGS(1))
+                .version(StartupLogo.getMY_STRINGS(2))
+                .relocate(StartupLogo.getMY_STRINGS(3), StartupLogo.getMY_STRINGS(4))
                 .build();
         this.bcpkix = Library.builder()
-                .groupId("org{}bouncycastle")
-                .artifactId("bcpkix-jdk18on")
-                .version("1.77")
-                .relocate("org{}bouncycastle", "top{}cmarco{}lightlogin{}libs{}org{}bouncycastle")
+                .groupId(StartupLogo.getMY_STRINGS(5))
+                .artifactId(StartupLogo.getMY_STRINGS(6))
+                .version(StartupLogo.getMY_STRINGS(7))
+                .relocate(StartupLogo.getMY_STRINGS(8), StartupLogo.getMY_STRINGS(9))
                 .build();
         this.bcutils = Library.builder()
-                .groupId("org{}bouncycastle")
-                .artifactId("bcutil-jdk18on")
-                .version("1.77")
-                .relocate("org{}bouncycastle", "top{}cmarco{}lightlogin{}libs{}org{}bouncycastle")
+                .groupId(StartupLogo.getMY_STRINGS(10))
+                .artifactId(StartupLogo.getMY_STRINGS(11))
+                .version(StartupLogo.getMY_STRINGS(12))
+                .relocate(StartupLogo.getMY_STRINGS(13), StartupLogo.getMY_STRINGS(14))
                 .build();
         this.bcprov = Library.builder()
-                .groupId("org{}bouncycastle")
-                .artifactId("bcprov-jdk18on")
-                .version("1.77")
-                .relocate("org{}bouncycastle", "top{}cmarco{}lightlogin{}libs{}org{}bouncycastle")
+                .groupId(StartupLogo.getMY_STRINGS(15))
+                .artifactId(StartupLogo.getMY_STRINGS(16))
+                .version(StartupLogo.getMY_STRINGS(17))
+                .relocate(StartupLogo.getMY_STRINGS(18), StartupLogo.getMY_STRINGS(19))
                 .build();
         this.postgreSQL = Library.builder()
-                .groupId("org{}postgresql")
-                .artifactId("postgresql")
-                .version("42.7.2")
-                .relocate("org{}postgresql", "top{}cmarco{}lightlogin{}libs{}org{}postgresql")
+                .groupId(StartupLogo.getMY_STRINGS(20))
+                .artifactId(StartupLogo.getMY_STRINGS(21))
+                .version(StartupLogo.getMY_STRINGS(22))
+                .relocate(StartupLogo.getMY_STRINGS(23), StartupLogo.getMY_STRINGS(24))
                 .build();
 
-        this.bukkitLibraryManager.loadLibraries(this.bcpkix, this.bcprov, this.bcutils, this.hikariCP, this.postgreSQL);
+        this.angus = Library.builder()
+                .groupId("org{}eclipse{}angus")
+                .artifactId("angus-mail")
+                .version("2.0.3")
+                .relocate("org{}eclipse{}angus", "top{}cmarco{}lightlogin{}libs{}org{}eclipse{}angus")
+                .build();
+
+        this.jakartaApi = Library.builder()
+                .groupId("jakarta.activation")
+                .artifactId("jakarta.activation-api")
+                .version("2.1.3")
+                .relocate("jakarta{}activation", "top{}cmarco{}lightlogin{}libs{}jakarta{}activation")
+                .build();
+
+        this.jakartaMail = Library.builder()
+                .groupId("jakarta.mail")
+                .artifactId("jakarta.mail-api")
+                .version("2.1.3")
+                .relocate("jakarta{}mail","top{}cmarco{}lightlogin{}libs{}jakarta{}mail")
+                .build();
+
+        this.bukkitLibraryManager.loadLibraries(this.bcpkix, this.bcprov, this.bcutils, this.hikariCP, this.postgreSQL, this.jakartaApi, this.jakartaMail, this.angus);
     }
 
+
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     private YamlConfiguration createCustomConfig(@NotNull ConfigurationFiles configurationFile) {
-        YamlConfiguration customConfig = null;
         File customConfigFile = new File(super.getDataFolder(), configurationFile.getFilename());
 
         if (!customConfigFile.exists()) {
@@ -221,13 +274,34 @@ public final class LightLoginPlugin extends JavaPlugin {
             super.saveResource(configurationFile.getFilename(), false);
         }
 
-        customConfig = new YamlConfiguration();
+        final YamlConfiguration customConfig = new YamlConfiguration();
+
         try {
+
+            YamlConfiguration original = new YamlConfiguration();
+            InputStream stream = super.getResource(configurationFile.getFilename());
+            assert stream != null;
+            InputStreamReader streamReader = new InputStreamReader(stream);
+            original.load(streamReader);
             customConfig.load(customConfigFile);
-            customConfig.options().copyDefaults(true);
+
+            Map<String, Object> currentValues = customConfig.getValues(true);
+            Map<String, Object> originalValues = original.getValues(true);
+
+            originalValues.forEach((a,b) -> {
+                if (!currentValues.containsKey(a)) {
+                    customConfig.set(a, b);
+                }
+            });
+
+            customConfig.save(customConfigFile);
+
+            streamReader.close();
+            stream.close();
+
             return customConfig;
         } catch (IOException | InvalidConfigurationException exception) {
-            getLogger().warning("WARNING! Error loading custom configuration " + configurationFile.getFilename());
+            getLogger().warning(StartupLogo.getSTRINGS(8) + configurationFile.getFilename());
             getLogger().warning(exception.getLocalizedMessage());
         }
         return null;
@@ -244,12 +318,12 @@ public final class LightLoginPlugin extends JavaPlugin {
      * Setup chat filter to prevent password leaks
      */
     private void setupChatFilter() {
-        this.sendConsoleColoured("&7[ &a&l. . .&r &7] &eSetting up safe log filter");
+        this.sendConsoleColoured(StartupLogo.getSTRINGS(9));
         Logger rootLogger = (Logger) LogManager.getRootLogger();
         this.safetyFilter = new SafetyFilter();
         this.safetyFilter.start();
         rootLogger.addFilter(this.safetyFilter);
-        this.sendConsoleColoured("&7[ &a&l✔&r &7] &aCorrectly set up safe log filter!");
+        this.sendConsoleColoured(StartupLogo.getSTRINGS(10));
     }
 
     /**
@@ -264,6 +338,8 @@ public final class LightLoginPlugin extends JavaPlugin {
         this.registerCommand = new RegisterCommand(this);
         this.unregisterCommand = new UnregisterCommand(this);
         this.changePasswordCommand = new ChangePasswordCommand(this);
+        this.emailCommand = new EmailCommand(this);
+        this.resetPasswordCommand = new ResetPasswordCommand(this);
         this.baseCommand.register();
         this.loginCommand.register();
         this.loginCommand.startClearTasks();
@@ -271,6 +347,8 @@ public final class LightLoginPlugin extends JavaPlugin {
         this.unregisterCommand.register();
         this.unloginCommand.register();
         this.changePasswordCommand.register();
+        this.emailCommand.register();
+        this.resetPasswordCommand.register();
     }
 
     /**
@@ -281,11 +359,11 @@ public final class LightLoginPlugin extends JavaPlugin {
             return;
         }
 
-        this.sendConsoleColoured("&7[ &a&l. . .&r &7] &eSetting up authentication manager.");
+        this.sendConsoleColoured(StartupLogo.getSTRINGS(11));
         this.authenticationManager = new BasicAuthenticationManager(this);
         this.authenticationManager.startLoginNotifyTask();
         this.authenticationManager.startRegisterNotifyTask();
-        this.sendConsoleColoured("&7[ &a&l✔&r &7] &aCorrectly set up authentication manager!");
+        this.sendConsoleColoured(StartupLogo.getSTRINGS(12));
     }
 
     private void setupKickManager() {
@@ -293,17 +371,17 @@ public final class LightLoginPlugin extends JavaPlugin {
             return;
         }
 
-        this.sendConsoleColoured("&7[ &a&l. . .&r &7] &eSetting up kick manager.");
+        this.sendConsoleColoured(StartupLogo.getSTRINGS(13));
         this.autoKickManager = new AutoKickManager(this);
         this.autoKickManager.startAutoKickTask();
-        this.sendConsoleColoured("&7[ &a&l✔&r &7] &aCorrectly set up kick manager!");
+        this.sendConsoleColoured(StartupLogo.getSTRINGS(14));
     }
 
     /**
      * Method responsible for registering all of this software listeners.
      */
     private void registerAllListeners() {
-        this.sendConsoleColoured("&7[ &a&l. . .&r &7] &eSetting up custom listeners.");
+        this.sendConsoleColoured(StartupLogo.getSTRINGS(15));
         this.playerUnloggedListener = new PlayerUnloggedListener(this);
         this.loginAuthenticatorListener = new LoginAuthenticatorListener(this);
         this.authenticationListener = new AuthenticationListener(this);
@@ -313,15 +391,15 @@ public final class LightLoginPlugin extends JavaPlugin {
         getServer().getPluginManager().registerEvents(this.playerUnloggedListener, this);
         getServer().getPluginManager().registerEvents(this.authenticationListener, this);
         getServer().getPluginManager().registerEvents(this.passwordObfuscationListener, this);
-        this.sendConsoleColoured("&7[ &a&l✔&r &7] &aCorrectly set up custom listeners!");
+        this.sendConsoleColoured(StartupLogo.getSTRINGS(16));
     }
 
     private void setupConfig() {
-        this.sendConsoleColoured("&7[ &a&l. . .&r &7] &eSetting up configurations.");
+        this.sendConsoleColoured(StartupLogo.getSTRINGS(17));
         saveDefaultConfig();
         saveAllConfigs();
 
-        final String language = getConfig().getString("language");
+        final String language = getConfig().getString(StartupLogo.getSTRINGS(18));
         ConfigurationFiles chosenLanguage = null;
 
         for (ConfigurationFiles value : ConfigurationFiles.values()) {
@@ -332,27 +410,27 @@ public final class LightLoginPlugin extends JavaPlugin {
         }
 
         if (chosenLanguage == null) {
-            getLogger().warning("WARNING! Invalid configuration language chosen as " + language);
-            getLogger().warning("Will use config_english.yml until issue is solved!");
+            getLogger().warning(StartupLogo.getSTRINGS(19)+ language);
+            getLogger().warning(StartupLogo.getSTRINGS(20));
             chosenLanguage = ConfigurationFiles.ENGLISH;
         }
 
-        this.sendConsoleColoured("&7[ &a&l✔&r &7] &aLoaded config with language" + language + "!");
+        this.sendConsoleColoured(StartupLogo.getSTRINGS(21) + language + "!");
 
         lightConfiguration = new LightConfiguration(chosenLanguage, this);
         lightConfiguration.loadConfig();
     }
 
     private void setupDatabase() {
-        this.sendConsoleColoured("&7[ &a&l. . .&r &7] &eSetting up authentication Database.");
+        this.sendConsoleColoured(StartupLogo.getSTRINGS(22));
         final DatabaseType databaseType = DatabaseType.fromName(
                 Objects.requireNonNull(this.lightConfiguration.getDatabaseType()));
 
         if (databaseType == null) {
             this.disabled = true;
-            getLogger().warning("WARNING! Invalid database type from config file. Cannot load plugin.");
+            getLogger().warning(StartupLogo.getSTRINGS(23));
             if (lightConfiguration.isCrashShutdown()) {
-                getLogger().warning("Shutting down server . . .");
+                getLogger().warning(StartupLogo.getSTRINGS(24));
                 getServer().shutdown();
             }
             return;
@@ -371,22 +449,10 @@ public final class LightLoginPlugin extends JavaPlugin {
         this.database.connect();
         this.database.createTables();
 
-        this.sendConsoleColoured("&7[ &a&l✔&r &7] &aCorrectly set up Authentication Database &7(&a" + databaseType.name() + "&7)&e!");
+        this.sendConsoleColoured(StartupLogo.getSTRINGS(25) + databaseType.name() + StartupLogo.getSTRINGS(26));
     }
 
     /* -------------------------------------------------------------------------- */
-
-    public AbstractFilter getSafetyFilter() {
-        return safetyFilter;
-    }
-
-    public PlayerUnloggedListener getPlayerUnloggedListener() {
-        return playerUnloggedListener;
-    }
-
-    public LoginAuthenticatorListener getLoginAuthenticatorListener() {
-        return loginAuthenticatorListener;
-    }
 
     public LightConfiguration getLightConfiguration() {
         return lightConfiguration;
@@ -400,60 +466,8 @@ public final class LightLoginPlugin extends JavaPlugin {
         return authenticationManager;
     }
 
-    public BaseCommand getBaseCommand() {
-        return baseCommand;
-    }
-
-    public LoginCommand getLoginCommand() {
-        return loginCommand;
-    }
-
-    public RegisterCommand getRegisterCommand() {
-        return registerCommand;
-    }
-
-    public UnregisterCommand getUnregisterCommand() {
-        return unregisterCommand;
-    }
-
     public EnumMap<ConfigurationFiles, FileConfiguration> getLanguagesConfigMap() {
         return languagesConfigMap;
-    }
-
-    public boolean isDisabled() {
-        return disabled;
-    }
-
-    public AuthenticationListener getAuthenticationListener() {
-        return authenticationListener;
-    }
-
-    public ChangePasswordCommand getChangePasswordCommand() {
-        return changePasswordCommand;
-    }
-
-    public BukkitLibraryManager getBukkitLibraryManager() {
-        return bukkitLibraryManager;
-    }
-
-    public Library getHikariCP() {
-        return hikariCP;
-    }
-
-    public Library getBcpkix() {
-        return bcpkix;
-    }
-
-    public Library getBcutils() {
-        return bcutils;
-    }
-
-    public Library getBcprov() {
-        return bcprov;
-    }
-
-    public UnloginCommand getUnloginCommand() {
-        return unloginCommand;
     }
 
     public void setDisabled(boolean disabled) {
@@ -484,5 +498,7 @@ public final class LightLoginPlugin extends JavaPlugin {
         return startupLoginsManager;
     }
 
-
+    public MailManager getMailManager() {
+        return mailManager;
+    }
 }

@@ -53,6 +53,27 @@ safe-passwords:
     min-special: 1        # Minimum number of special characters
     allowed-special: ['@', '^', '-', '_', '#', '!', '?', '*', '$', '%', '&', '*'] # Allowed special characters
 
+# Email Configuration
+email:
+  enabled: false
+  email-smtp: 'smtp.gmail.com'                    # The SMTP server provider.
+  email-port: 465                                 # The port used by SMTP server.
+  use-tls: true                                   # Use TLS secure connection.
+  email-account: ''                               # Your email account (e.g jeb@mojang.com).
+  email-password: ''                              # The password associated with your email account.
+  email-sender-name: 'LightLogin'                 # The email sender name.
+  recovery-password-min-length: 8                 # Length of automatically generated password.
+  recovery-min-delay: 90                          # The minimum minutes between each reset request.
+  email-subject: 'Your new LightLogin password!'  # Subject of the recovery email.
+  email-text-content:                             # Email content,
+                                                  # Placeholders: {PASSWORD}, {PLAYER}
+    - "Dear {PLAYER},"
+    - "This is the new temporary password you have just requested from the server:"
+    - "Password: {PASSWORD}"
+    - "Please, do not share it and feel free to change it later on."
+    - ""
+    - "~ MyMinecraftServer"
+
 # Messages configuration
 messages:
   prefix: '&6&l★&r&eLightLogin&6&l★&r&f' # Prefix for plugin messages
@@ -129,3 +150,33 @@ messages:
     - "{PREFIX}: &c&lWARNING"
     - "&7» &4You have written your password in the chat,"
     - "&7» &4Your message has been cancelled, watch out!"
+  email-update-help:
+    - "{PREFIX}: &eEmail Help"
+    - "&7Set your recovery email using:"
+    - "&7/&eemail &7<&emyEmail&7>"
+  email-invalid-format:
+    - "{PREFIX}: &cThis email has an invalid format!"
+  email-updated:
+    - "{PREFIX}: &aYour new email has been set to &e{EMAIL}"
+  email-something-wrong:
+    - "{PREFIX}: &cSomething went wrong while updating your email."
+  password-reset-help:
+    - "{PREFIX}: &ePassword Reset Help"
+    - "&7Reset your password using:"
+    - "&7/&eresetpassword"
+  password-reset-help-admins:
+    - "{PREFIX}: &ePassword Reset Admin Help"
+    - "&7Reset any player password using:"
+    - "&7/&eresetpassword &7<&6player&7>"
+  password-reset-missing-email:
+    - "{PREFIX}: &cWe could reset the password"
+    - "&cbecause no recipient email has been associated!"
+  password-reset-not-enabled:
+    - "{PREFIX}: &cEmail Password Recovery has not been set-up"
+    - "&cBy the administrators of this server."
+  password-reset-failed:
+    - "{PREFIX}: &cSomething went wrong when resetting &e{PLAYER}&c's password."
+  password-reset-success:
+    - "{PREFIX}: &aWe successfully sent a reset email to &e{EMAIL}."
+  password-reset-too-early:
+    - "{PREFIX}: &cYou need to wait more time before you can ask a new password reset."

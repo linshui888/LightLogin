@@ -54,6 +54,27 @@ safe-passwords:
     min-special: 1        # Минимальное количество специальных символов
     allowed-special: ['@', '^', '-', '_', '#', '!', '?', '*', '$', '%', '&', '*'] # Разрешенные специальные символы
 
+# Конфигурация Email
+email:
+  enabled: false
+  email-smtp: 'smtp.gmail.com'                    # Провайдер SMTP-сервера.
+  email-port: 465                                 # Порт, используемый SMTP-сервером.
+  use-tls: true                                   # Использовать защищенное соединение TLS.
+  email-account: ''                               # Ваш email-аккаунт (например, jeb@mojang.com).
+  email-password: ''                              # Пароль, связанный с вашим email-аккаунтом.
+  email-sender-name: 'LightLogin'                 # Имя отправителя email.
+  recovery-password-min-length: 8                 # Длина автоматически сгенерированного пароля.
+  recovery-min-delay: 90                          # Минимальное количество минут между каждым запросом сброса.
+  email-subject: 'Ваш новый пароль LightLogin!'   # Тема восстановления пароля по email.
+  email-text-content:                             # Содержание email,
+    # Заменители: {PASSWORD}, {PLAYER}
+    - "Дорогой {PLAYER},"
+    - "Это ваш новый временный пароль, который вы только что запросили с сервера:"
+    - "Пароль: {PASSWORD}"
+    - "Пожалуйста, не делитесь им и не стесняйтесь изменить его позже."
+    - ""
+    - "~ Мой Minecraft Сервер"
+
 # Конфигурация сообщений
 messages:
   prefix: '&7╓&eLightLogin&7╛&f' # Префикс для сообщений плагина
@@ -130,4 +151,34 @@ messages:
     - "{PREFIX}: &c&lПРЕДУПРЕЖДЕНИЕ"
     - "&7» &4Вы написали свой пароль в чате,"
     - "&7» &4Ваше сообщение отменено, будьте внимательны!"
+  email-update-help:
+    - "{PREFIX}: &eПомощь по электронной почте"
+    - "&7Установите ваш восстановительный email с помощью:"
+    - "&7/&eemail &7<&emyEmail&7>"
+  email-invalid-format:
+    - "{PREFIX}: &cУ этого email недопустимый формат!"
+  email-updated:
+    - "{PREFIX}: &aВаш новый email установлен на &e{EMAIL}"
+  email-something-wrong:
+    - "{PREFIX}: &cЧто-то пошло не так при обновлении вашего email."
+  password-reset-help:
+    - "{PREFIX}: &eПомощь по сбросу пароля"
+    - "&7Сбросьте свой пароль, используя:"
+    - "&7/&eresetpassword"
+  password-reset-help-admins:
+    - "{PREFIX}: &eПомощь по сбросу пароля для администраторов"
+    - "&7Сбросьте пароль любого игрока, используя:"
+    - "&7/&eresetpassword &7<&6игрок&7>"
+  password-reset-missing-email:
+    - "{PREFIX}: &cМы не можем сбросить пароль"
+    - "&cпотому что не указан адрес электронной почты получателя!"
+  password-reset-not-enabled:
+    - "{PREFIX}: &cВосстановление пароля по электронной почте не настроено"
+    - "&cадминистраторами этого сервера."
+  password-reset-failed:
+    - "{PREFIX}: &cЧто-то пошло не так при сбросе пароля для &e{PLAYER}&c."
+  password-reset-success:
+    - "{PREFIX}: &aМы успешно отправили письмо для сброса на &e{EMAIL}."
+  password-reset-too-early:
+    - "{PREFIX}: &cВам нужно подождать больше времени, прежде чем вы сможете запросить новый сброс пароля."
 

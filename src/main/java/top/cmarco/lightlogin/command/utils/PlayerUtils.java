@@ -16,26 +16,34 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package top.cmarco.lightlogin.data;
+package top.cmarco.lightlogin.command.utils;
 
-import org.bukkit.entity.Player;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Map;
+import java.nio.charset.StandardCharsets;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
-public final class PlaintextPasswordManager {
+public final class PlayerUtils {
 
-    private final Map<UUID, String> plaintextPasswordHolder = new ConcurrentHashMap<>();
-
-    public void setPassword(@NotNull Player player, @NotNull String password) {
-        this.plaintextPasswordHolder.put(player.getUniqueId(), password);
+    private PlayerUtils() {
+        throw new RuntimeException();
     }
 
     @Nullable
-    public String getPassword(@NotNull Player player) {
-        return this.plaintextPasswordHolder.get(player.getUniqueId());
+    public static UUID getUuid(@NotNull final Plugin plugin, @NotNull final String username) {
+        UUID playerUUID = null;
+        if (!plugin.getServer().getOnlineMode()) {
+            playerUUID = UUID.nameUUIDFromBytes(("OfflinePlayer:" + username).getBytes(StandardCharsets.UTF_8));
+        } else {
+            OfflinePlayer offlinePlayer = plugin.getServer().getOfflinePlayer(username);
+            if (offlinePlayer.hasPlayedBefore()) {
+                playerUUID = offlinePlayer.getUniqueId();
+            }
+        }
+
+        return playerUUID;
     }
 }

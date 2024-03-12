@@ -54,6 +54,27 @@ safe-passwords:
     min-special: 1        # Minimum na bilang ng mga special characters
     allowed-special: ['@', '^', '-', '_', '#', '!', '?', '*', '$', '%', '&', '*'] # Mga allowed na special characters
 
+# Konfigurasyon ng Email
+email:
+  enabled: false
+  email-smtp: 'smtp.gmail.com'                    # Ang nagbibigay ng SMTP server.
+  email-port: 465                                 # Ang port na ginagamit ng SMTP server.
+  use-tls: true                                   # Gamitin ang TLS secure connection.
+  email-account: ''                               # Ang iyong email account (hal. jeb@mojang.com).
+  email-password: ''                              # Ang password na kaugnay sa iyong email account.
+  email-sender-name: 'LightLogin'                 # Ang pangalan ng nagpapadala ng email.
+  recovery-password-min-length: 8                 # Haba ng awtomatikong ginagawang password.
+  recovery-min-delay: 90                          # Ang minimum na mga minuto sa pagitan ng bawat request na pag-reset.
+  email-subject: 'Ang iyong bagong LightLogin password!'  # Paksa ng recovery email.
+  email-text-content:                             # Nilalaman ng email,
+    # Mga pook marka: {PASSWORD}, {PLAYER}
+    - "Mahal na {PLAYER},"
+    - "Ito ang bagong pansamantalang password na iyong hinihiling mula sa server:"
+    - "Password: {PASSWORD}"
+    - "Mangyaring huwag itong ibahagi at huwag mag-atubiling baguhin ito mamaya."
+    - ""
+    - "~ Aking Minecraft Server"
+
 # Konfigurasyon ng Mensahe
 messages:
   prefix: "&7╓&eLightLogin&7╛&f" # Prefix para sa mga mensaheng ng plugin
@@ -130,3 +151,34 @@ messages:
     - "{PREFIX}: &c&lBABALA"
     - "&7» &4Isinulat mo ang iyong password sa chat,"
     - "&7» &4Ang iyong mensahe ay kanselado, mag-ingat ka!"
+  email-update-help:
+    - "{PREFIX}: &eTulong sa Email"
+    - "&7Itakda ang iyong recovery email gamit ang:"
+    - "&7/&eemail &7<&emyEmail&7>"
+  email-invalid-format:
+    - "{PREFIX}: &cMay maling format ang email na ito!"
+  email-updated:
+    - "{PREFIX}: &aAng iyong bagong email ay na-set sa &e{EMAIL}"
+  email-something-wrong:
+    - "{PREFIX}: &cMay nangyaring hindi tama habang ini-update ang iyong email."
+  password-reset-help:
+    - "{PREFIX}: &eTulong sa Pag-reset ng Password"
+    - "&7I-reset ang iyong password gamit ang:"
+    - "&7/&eresetpassword"
+  password-reset-help-admins:
+    - "{PREFIX}: &eTulong sa Pag-reset ng Password para sa Admins"
+    - "&7I-reset ang password ng anumang player gamit ang:"
+    - "&7/&eresetpassword &7<&6player&7>"
+  password-reset-missing-email:
+    - "{PREFIX}: &cHindi namin ma-reset ang password"
+    - "&cdahil walang kaugnayang email na naka-associate!"
+  password-reset-not-enabled:
+    - "{PREFIX}: &cHindi pa na-set up ang Email Password Recovery"
+    - "&cng mga administrator ng server na ito."
+  password-reset-failed:
+    - "{PREFIX}: &cMay nangyaring mali habang inii-reset ang password ni &e{PLAYER}&c."
+  password-reset-success:
+    - "{PREFIX}: &aMatagumpay nating naipadala ang reset email kay &e{EMAIL}."
+  password-reset-too-early:
+    - "{PREFIX}: &cKailangan mong maghintay ng mas mahabang oras bago ka makapag-request ng bagong pag-reset ng password."
+

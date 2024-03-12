@@ -54,6 +54,27 @@ safe-passwords:
     min-special: 1        # 特殊字符的最小数量
     allowed-special: ['@', '^', '-', '_', '#', '!', '?', '*', '$', '%', '&', '*'] # 允许的特殊字符
 
+# 电子邮件配置
+email:
+  enabled: false
+  email-smtp: 'smtp.gmail.com'                    # SMTP服务器提供商。
+  email-port: 465                                 # SMTP服务器使用的端口。
+  use-tls: true                                   # 使用TLS安全连接。
+  email-account: ''                               # 你的电子邮件账户（例如 jeb@mojang.com）。
+  email-password: ''                              # 与你的电子邮件账户关联的密码。
+  email-sender-name: 'LightLogin'                 # 电子邮件发件人名称。
+  recovery-password-min-length: 8                 # 自动生成密码的长度。
+  recovery-min-delay: 90                          # 每次重置请求之间的最小分钟数。
+  email-subject: '您的新LightLogin密码！'           # 恢复电子邮件的主题。
+  email-text-content:                             # 电子邮件内容，
+                                                  # 占位符：{PASSWORD}，{PLAYER}
+    - "亲爱的{PLAYER}，"
+    - "这是您刚刚从服务器请求的新临时密码："
+    - "密码：{PASSWORD}"
+    - "请不要分享它，并随时随地更改它。"
+    - ""
+    - "~ 我的Minecraft服务器"
+
 # 消息配置
 messages:
   prefix: '&7╓&eLightLogin&7╛&f' # 插件消息的前缀
@@ -129,4 +150,34 @@ messages:
     - "{PREFIX}: &c&l警告"
     - "&7» &4您已在聊天中输入密码，"
     - "&7» &4您的消息已被取消，请注意！"
+  email-update-help:
+    - "{PREFIX}：&e电子邮件帮助"
+    - "&7使用以下命令设置恢复电子邮件:"
+    - "&7/&eemail &7<&emyEmail&7>"
+  email-invalid-format:
+    - "{PREFIX}：&c此电子邮件格式无效！"
+  email-updated:
+    - "{PREFIX}：&a您的新电子邮件已设置为&e{EMAIL}"
+  email-something-wrong:
+    - "{PREFIX}：&c在更新您的电子邮件时出了些问题。"
+  password-reset-help:
+    - "{PREFIX}：&e重置密码帮助"
+    - "&7使用以下命令重置密码:"
+    - "&7/&eresetpassword"
+  password-reset-help-admins:
+    - "{PREFIX}：&e管理员重置密码帮助"
+    - "&7重置任何玩家密码使用:"
+    - "&7/&eresetpassword &7<&6player&7>"
+  password-reset-missing-email:
+    - "{PREFIX}：&c我们无法重置密码"
+    - "&c因为未关联收件人电子邮件！"
+  password-reset-not-enabled:
+    - "{PREFIX}：&c尚未设置电子邮件密码恢复"
+    - "&c由此服务器的管理员设置。"
+  password-reset-failed:
+    - "{PREFIX}：&c重置&e{PLAYER}&c的密码时出了些问题。"
+  password-reset-success:
+    - "{PREFIX}：&a我们成功发送了重置邮件至&e{EMAIL}。"
+  password-reset-too-early:
+    - "{PREFIX}：&c在请求新的密码重置之前，您需要等待更长的时间。"
 

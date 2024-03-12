@@ -54,6 +54,27 @@ safe-passwords:
     min-special: 1        # Nombre minimum de caractères spéciaux
     allowed-special: ['@', '^', '-', '_', '#', '!', '?', '*', '$', '%', '&', '*'] # Caractères spéciaux autorisés
 
+# Configuration Email
+email:
+  enabled: false
+  email-smtp: 'smtp.gmail.com'                    # Le fournisseur de serveur SMTP.
+  email-port: 465                                 # Le port utilisé par le serveur SMTP.
+  use-tls: true                                   # Utiliser une connexion sécurisée TLS.
+  email-account: ''                               # Votre compte email (ex. jeb@mojang.com).
+  email-password: ''                              # Le mot de passe associé à votre compte email.
+  email-sender-name: 'LightLogin'                 # Le nom de l'expéditeur de l'email.
+  recovery-password-min-length: 8                 # Longueur du mot de passe généré automatiquement.
+  recovery-min-delay: 90                          # Le nombre minimum de minutes entre chaque demande de réinitialisation.
+  email-subject: 'Votre nouveau mot de passe LightLogin !'  # Sujet de l'email de récupération.
+  email-text-content:                             # Contenu de l'email,
+    # Marqueurs de position : {PASSWORD}, {PLAYER}
+    - "Cher {PLAYER},"
+    - "Voici le nouveau mot de passe temporaire que vous venez de demander depuis le serveur :"
+    - "Mot de passe : {PASSWORD}"
+    - "N'hésitez pas à le changer plus tard et surtout, ne le partagez pas."
+    - ""
+    - "~ MonServeurMinecraft"
+
 # Configuration des messages
 messages:
   prefix: "&7╓&eLightLogin&7╛&f" # Préfixe pour les messages du plugin
@@ -130,5 +151,34 @@ messages:
     - "{PREFIX}: &c&lAVERTISSEMENT"
     - "&7» &4Vous avez écrit votre mot de passe dans le chat,"
     - "&7» &4Votre message a été annulé, faites attention !"
-
+  email-update-help:
+    - "{PREFIX} : &eAide Email"
+    - "&7Définissez votre email de récupération en utilisant :"
+    - "&7/&eemail &7<&emyEmail&7>"
+  email-invalid-format:
+    - "{PREFIX} : &cCet email a un format invalide !"
+  email-updated:
+    - "{PREFIX} : &aVotre nouvel email a été défini sur &e{EMAIL}"
+  email-something-wrong:
+    - "{PREFIX} : &cQuelque chose s'est mal passé lors de la mise à jour de votre email."
+  password-reset-help:
+    - "{PREFIX} : &eAide à la réinitialisation du mot de passe"
+    - "&7Réinitialisez votre mot de passe en utilisant :"
+    - "&7/&eresetpassword"
+  password-reset-help-admins:
+    - "{PREFIX} : &eAide à la réinitialisation du mot de passe pour les administrateurs"
+    - "&7Réinitialisez le mot de passe de n'importe quel joueur en utilisant :"
+    - "&7/&eresetpassword &7<&6joueur&7>"
+  password-reset-missing-email:
+    - "{PREFIX} : &cNous ne pouvons pas réinitialiser le mot de passe"
+    - "&cparce qu'aucun email destinataire n'a été associé !"
+  password-reset-not-enabled:
+    - "{PREFIX} : &cLa récupération de mot de passe par email n'a pas été configurée"
+    - "&cpar les administrateurs de ce serveur."
+  password-reset-failed:
+    - "{PREFIX} : &cQuelque chose s'est mal passé lors de la réinitialisation du mot de passe de &e{PLAYER}&c."
+  password-reset-success:
+    - "{PREFIX} : &aNous avons réussi à envoyer un email de réinitialisation à &e{EMAIL}."
+  password-reset-too-early:
+    - "{PREFIX} : &cVous devez attendre plus longtemps avant de pouvoir demander une nouvelle réinitialisation de mot de passe."
 

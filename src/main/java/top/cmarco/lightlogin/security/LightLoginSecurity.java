@@ -1,42 +1,31 @@
+/*
+ * LightLogin - Optimised and Safe SpigotMC Software for Authentication
+ *     Copyright © 2024  CMarco
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package top.cmarco.lightlogin.security;
 
-import org.jetbrains.annotations.NotNull;
+
 import top.cmarco.lightlogin.LightLoginPlugin;
 
-import java.security.Permission;
-import java.util.Objects;
+public class LightLoginSecurity {
 
-@SuppressWarnings("removal")
-public final class LightLoginSecurity extends SecurityManager {
+    private final LightLoginPlugin plugin;
 
-    private LightLoginPlugin plugin;
-    public LightLoginSecurity(@NotNull final LightLoginPlugin plugin) {
-        if (plugin == null) {
-            throw new RuntimeException("Cannot implement security from null plugin!");
-        }
-
+    public LightLoginSecurity(LightLoginPlugin plugin) {
         this.plugin = plugin;
-    }
-
-    private static final String ALLOWED_PACKAGE_PREFIX = "top.cmarco.lightlogin";
-
-    @Override
-    public void checkPermission(@NotNull final Permission perm) {
-        // You can implement more checks here if needed
-        if (perm.getName().equals("suppressAccessChecks")) {
-            checkPackageAccess();
-        }
-    }
-
-    private void checkPackageAccess() {
-        Class<?>[] classContext = getClassContext();
-        for (final Class<?> clazz : classContext) {
-            if (clazz.getName().startsWith(ALLOWED_PACKAGE_PREFIX)) {
-                // System.out.println("allowed access from " + clazz.getName());
-                return;  // Allow access if calling class is within the allowed package
-            }
-        }
-
-        throw new SecurityException("Access denied to methods outside of " + ALLOWED_PACKAGE_PREFIX);
     }
 }

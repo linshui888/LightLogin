@@ -1,4 +1,22 @@
 /*
+ * LightLogin - Optimised and Safe SpigotMC Software for Authentication
+ *     Copyright © 2024  CMarco
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+/*
  * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
  * If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/.
@@ -308,5 +326,93 @@ public final class LightConfiguration {
 
     public List<String> getPasswordInChat() {
         return this.configuration.getStringList("messages.password-in-chat");
+    }
+
+    public List<String> getEmailUpdateHelp() {
+        return this.configuration.getStringList("messages.email-update-help");
+    }
+
+    public List<String> getEmailInvalidFormat() {
+        return this.configuration.getStringList("messages.email-invalid-format");
+    }
+
+    public List<String> getEmailUpdated() {
+        return this.configuration.getStringList("messages.email-updated");
+    }
+
+    public List<String> getEmailSomethingWrong() {
+        return this.configuration.getStringList("messages.email-something-wrong");
+    }
+
+    public String getEmailSMTP() {
+        return this.configuration.getString("email.email-smtp");
+    }
+
+    public int getEmailPort() {
+        return this.configuration.getInt("email.email-port");
+    }
+
+    public boolean getEmailUseTLS() {
+        return this.configuration.getBoolean("email.use-tls", true);
+    }
+
+    public String getEmailAccount() {
+        return this.configuration.getString("email.email-account");
+    }
+
+    public String getEmailPassword() {
+        return this.configuration.getString("email.email-password");
+    }
+
+    public String getEmailSenderName() {
+        return this.configuration.getString("email.email-sender-name");
+    }
+
+    public int getRecoveryPasswordMinLength() {
+        return this.configuration.getInt("email.recovery-password-min-length");
+    }
+
+    public String getEmailSubject() {
+        return this.configuration.getString("email.email-subject");
+    }
+
+    public List<String> getEmailTextContent() {
+        return this.configuration.getStringList("email.email-text-content");
+    }
+
+    public List<String> getPasswordResetHelp() {
+        return this.configuration.getStringList("messages.password-reset-help");
+    }
+
+    public List<String> getPasswordResetHelpAdmins() {
+        return this.configuration.getStringList("messages.password-reset-help-admins");
+    }
+
+    public List<String> getPasswordResetMissingEmail() {
+        return this.configuration.getStringList("messages.password-reset-missing-email");
+    }
+
+    public List<String> getPasswordResetNotEnabled() {
+        return this.configuration.getStringList("messages.password-reset-not-enabled");
+    }
+
+    public List<String> getPasswordResetFailed() {
+        return this.configuration.getStringList("messages.password-reset-failed");
+    }
+
+    public List<String> getPasswordResetSuccess() {
+        return this.configuration.getStringList("messages.password-reset-success");
+    }
+
+    public List<String> getPasswordResetTooEarly() {
+        return this.configuration.getStringList("messages.password-reset-too-early");
+    }
+
+    public int getRecoveryMinDelay() {
+        return this.configuration.getInt("email.recovery-min-delay", 90);
+    }
+
+    public boolean isEmailEnabled() {
+        return this.configuration.getBoolean("email.enabled", false);
     }
 }

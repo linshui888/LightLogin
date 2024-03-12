@@ -53,6 +53,27 @@ safe-passwords:
     min-special: 1        # Número mínimo de caracteres especiales
     allowed-special: ['@', '^', '-', '_', '#', '!', '?', '*', '$', '%', '&', '*'] # Caracteres especiales permitidos
 
+# Configuración de Email
+email:
+  enabled: false
+  email-smtp: 'smtp.gmail.com'                    # El proveedor del servidor SMTP.
+  email-port: 465                                 # El puerto utilizado por el servidor SMTP.
+  use-tls: true                                   # Utilizar conexión segura TLS.
+  email-account: ''                               # Tu cuenta de correo electrónico (por ejemplo, jeb@mojang.com).
+  email-password: ''                              # La contraseña asociada a tu cuenta de correo electrónico.
+  email-sender-name: 'LightLogin'                 # El nombre del remitente del correo electrónico.
+  recovery-password-min-length: 8                 # Longitud de la contraseña generada automáticamente.
+  recovery-min-delay: 90                          # El mínimo de minutos entre cada solicitud de restablecimiento.
+  email-subject: '¡Tu nueva contraseña de LightLogin!'  # Asunto del correo electrónico de recuperación.
+  email-text-content:                             # Contenido del correo electrónico,
+    # Marcadores de posición: {PASSWORD}, {PLAYER}
+    - "Estimado {PLAYER},"
+    - "Esta es la nueva contraseña temporal que acabas de solicitar desde el servidor:"
+    - "Contraseña: {PASSWORD}"
+    - "Por favor, no la compartas y siéntete libre de cambiarla más tarde."
+    - ""
+    - "~ Mi Servidor Minecraft"
+
 # Configuración de mensajes
 messages:
   prefix: '&7╓&eLightLogin&7╛&f' # Prefijo para los mensajes del complemento
@@ -129,5 +150,33 @@ messages:
     - "{PREFIX}: &c&lADVERTENCIA"
     - "&7» &4Has escrito tu contraseña en el chat,"
     - "&7» &4Tu mensaje ha sido cancelado, ¡ten cuidado!"
-
-
+  email-update-help:
+    - "{PREFIX}: &eAyuda de Email"
+    - "&7Configura tu email de recuperación usando:"
+    - "&7/&eemail &7<&emiaEmail&7>"
+  email-invalid-format:
+    - "{PREFIX}: &cEste email tiene un formato inválido."
+  email-updated:
+    - "{PREFIX}: &aTu nuevo email ha sido configurado como &e{EMAIL}"
+  email-something-wrong:
+    - "{PREFIX}: &cAlgo salió mal al actualizar tu email."
+  password-reset-help:
+    - "{PREFIX}: &eAyuda para Restablecer Contraseña"
+    - "&7Restablece tu contraseña usando:"
+    - "&7/&eresetpassword"
+  password-reset-help-admins:
+    - "{PREFIX}: &eAyuda para Restablecer Contraseña de Administradores"
+    - "&7Restablece la contraseña de cualquier jugador usando:"
+    - "&7/&eresetpassword &7<&6jugador&7>"
+  password-reset-missing-email:
+    - "{PREFIX}: &cNo podemos restablecer la contraseña"
+    - "&cporque no se ha asociado ningún correo electrónico del destinatario."
+  password-reset-not-enabled:
+    - "{PREFIX}: &cLa recuperación de contraseña por correo electrónico no ha sido configurada"
+    - "&cpor los administradores de este servidor."
+  password-reset-failed:
+    - "{PREFIX}: &cAlgo salió mal al restablecer la contraseña de &e{PLAYER}&c."
+  password-reset-success:
+    - "{PREFIX}: &aHemos enviado con éxito un correo de restablecimiento a &e{EMAIL}."
+  password-reset-too-early:
+    - "{PREFIX}: &cNecesitas esperar más tiempo antes de poder solicitar un nuevo restablecimiento de contraseña."

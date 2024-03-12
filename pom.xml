@@ -6,7 +6,7 @@
 
     <groupId>top.cmarco</groupId>
     <artifactId>LightLogin</artifactId>
-    <version>1.0.6-SNAPSHOT</version>
+    <version>1.1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>LightLogin</name>
@@ -19,122 +19,6 @@
 
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <version>3.1.0</version>
-                <dependencies>
-                    <dependency>
-                        <groupId>com.yworks</groupId>
-                        <artifactId>yguard</artifactId>
-                        <version>4.1.0</version>
-                        <scope>compile</scope>
-                    </dependency>
-                </dependencies>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                        <id>obfuscate</id>
-                        <configuration>
-                            <target>
-                                <property name="runtime_classpath" refid="maven.runtime.classpath"/>
-                                <!--suppress UnresolvedMavenProperty -->
-                                <taskdef name="yguard" classname="com.yworks.yguard.YGuardTask"
-                                         classpath="${runtime_classpath}"/>
-                                <yguard>
-                                    <inoutpair in="${project.build.directory}/${project.build.finalName}.jar"
-                                               out="${project.build.directory}/${project.build.finalName}.jar"/>
-
-                                    <rename logfile="${project.build.directory}/yguard.log.xml"
-                                            replaceClassNameStrings="false">
-
-                                        <property name="overload-enabled" value="true"/>
-                                        <property name="naming-scheme" value="simple"/>
-                                        <property name="language-conformity" value="legal"/>
-                                        <!--<property name="obfuscation-prefix" value="top.cmarco.lightlogin.LightLoginPlugin"/> -->
-
-                                        <keep>
-                                            <class methods="private" classes="public" fields="none">
-                                                <patternset>
-                                                    <include name="com.alessiodp.libby.**"/>
-                                                    <exclude name="top.cmarco.lightlogin.**"/>
-                                                </patternset>
-                                            </class>
-
-                                            <class methods="none" classes="public" fields="none">
-                                                <patternset>
-                                                    <include name="top.cmarco.lightlogin.LightLoginPlugin"/>
-                                                </patternset>
-                                            </class>
-
-                                            <method name="org.bukkit.event.HandlerList getHandlerList()">
-                                                <patternset>
-                                                    <include name="top.cmarco.lightlogin.api.**"/>
-                                                </patternset>
-                                            </method>
-
-                                            <method name="org.bukkit.event.HandlerList getHandlers()">
-                                                <patternset>
-                                                    <include name="top.cmarco.lightlogin.api.**"/>
-                                                </patternset>
-                                            </method>
-
-                                            <field name="HANDLERS_LIST">
-                                                <patternset>
-                                                    <include name="top.cmarco.lightlogin.api.**"/>
-                                                </patternset>
-                                            </field>
-
-                                        </keep>
-
-                                        <map>
-                                            <!-- Obfuscate methods in LightLoginPlugin class - Fixes issue of yGuard -->
-                                            <method class="top.cmarco.lightlogin.LightLoginPlugin" name="com.alessiodp.libby.Library getBcprov()" map="$15325"/>
-                                            <method class="top.cmarco.lightlogin.LightLoginPlugin" name="top.cmarco.lightlogin.command.LoginCommand getLoginCommand()" map="$314159"/>
-                                            <method class="top.cmarco.lightlogin.LightLoginPlugin" name="top.cmarco.lightlogin.data.AuthenticationManager getAuthenticationManager()" map="$abcdef"/>
-                                            <method class="top.cmarco.lightlogin.LightLoginPlugin" name="java.util.EnumMap getLanguagesConfigMap()" map="$gASjGk"/>
-                                            <method class="top.cmarco.lightlogin.LightLoginPlugin" name="top.cmarco.lightlogin.data.PlaintextPasswordManager getPlaintextPasswordManager()" map="$lmnop"/>
-                                            <method class="top.cmarco.lightlogin.LightLoginPlugin" name="top.cmarco.lightlogin.command.RegisterCommand getRegisterCommand()" map="$qrstu"/>
-                                            <method class="top.cmarco.lightlogin.LightLoginPlugin" name="top.cmarco.lightlogin.data.StartupLoginsManager getStartupLoginsManager()" map="$vwxyz"/>
-                                            <method class="top.cmarco.lightlogin.LightLoginPlugin" name="top.cmarco.lightlogin.listeners.AuthenticationListener getAuthenticationListener()" map="$12345"/>
-                                            <method class="top.cmarco.lightlogin.LightLoginPlugin" name="com.alessiodp.libby.Library getBcutils()" map="$67890"/>
-                                            <method class="top.cmarco.lightlogin.LightLoginPlugin" name="top.cmarco.lightlogin.listeners.LoginAuthenticatorListener getLoginAuthenticatorListener()" map="$aGkvs"/>
-                                            <method class="top.cmarco.lightlogin.LightLoginPlugin" name="top.cmarco.lightlogin.command.ChangePasswordCommand getChangePasswordCommand()" map="$ghijk"/>
-                                            <method class="top.cmarco.lightlogin.LightLoginPlugin" name="top.cmarco.lightlogin.data.VoidLoginManager getVoidLoginManager()" map="$lGlkac"/>
-                                            <method class="top.cmarco.lightlogin.LightLoginPlugin" name="com.alessiodp.libby.Library getBcpkix()" map="$UiIVX"/>
-                                            <method class="top.cmarco.lightlogin.LightLoginPlugin" name="top.cmarco.lightlogin.command.BaseCommand getBaseCommand()" map="$KthUq"/>
-                                            <method class="top.cmarco.lightlogin.LightLoginPlugin" name="org.apache.logging.log4j.core.filter.AbstractFilter getSafetyFilter()" map="$j5lhu"/>
-                                            <method class="top.cmarco.lightlogin.LightLoginPlugin" name="top.cmarco.lightlogin.log.AuthLogs getAuthLogs()" map="$5wP66"/>
-                                            <method class="top.cmarco.lightlogin.LightLoginPlugin" name="org.bukkit.World getLoginWorld()" map="$BjldW"/>
-                                            <method class="top.cmarco.lightlogin.LightLoginPlugin" name="top.cmarco.lightlogin.database.PluginDatabase getDatabase()" map="$qSXC6"/>
-                                            <method class="top.cmarco.lightlogin.LightLoginPlugin" name="top.cmarco.lightlogin.data.AutoKickManager getAutoKickManager()" map="$pjy8Y"/>
-                                            <method class="top.cmarco.lightlogin.LightLoginPlugin" name="com.alessiodp.libby.BukkitLibraryManager getBukkitLibraryManager()" map="$TZe0j"/>
-                                            <method class="top.cmarco.lightlogin.LightLoginPlugin" name="com.alessiodp.libby.Library getHikariCP()" map="$SCtzc"/>
-                                            <method class="top.cmarco.lightlogin.LightLoginPlugin" name="top.cmarco.lightlogin.command.UnregisterCommand getUnregisterCommand()" map="$XfTsu"/>
-                                            <method class="top.cmarco.lightlogin.LightLoginPlugin" name="top.cmarco.lightlogin.listeners.PlayerUnloggedListener getPlayerUnloggedListener()" map="$rX3RB"/>
-                                            <method class="top.cmarco.lightlogin.LightLoginPlugin" name="top.cmarco.lightlogin.command.UnloginCommand getUnloginCommand()" map="$MPbI9"/>
-                                            <method class="top.cmarco.lightlogin.LightLoginPlugin" name="top.cmarco.lightlogin.configuration.LightConfiguration getLightConfiguration()" map="$RQjxy"/>
-                                            <method class="top.cmarco.lightlogin.LightLoginPlugin" name="boolean isDisabled()" map="$ggghk"/>
-
-                                        </map>
-
-                                    </rename>
-
-                                    <externalclasses>
-                                        <!--suppress UnresolvedMavenProperty -->
-                                        <pathelement path="${mvn.classpath}"/>
-                                    </externalclasses>
-
-                                </yguard>
-                            </target>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -177,6 +61,22 @@
                                     <pattern>org.postgresql</pattern>
                                     <shadedPattern>top.cmarco.lightlogin.libs.org.postgresql</shadedPattern>
                                 </relocation>
+
+                                <relocation>
+                                    <pattern>org.eclipse.angus</pattern>
+                                    <shadedPattern>top.cmarco.lightlogin.libs.org.eclipse.angus</shadedPattern>
+                                </relocation>
+
+                                <relocation>
+                                    <pattern>jakarta.mail</pattern>
+                                    <shadedPattern>top.cmarco.lightlogin.libs.jakarta.mail</shadedPattern>
+                                </relocation>
+
+                                <relocation>
+                                    <pattern>jakarta.activation</pattern>
+                                    <shadedPattern>top.cmarco.lightlogin.libs.jakarta.activation</shadedPattern>
+                                </relocation>
+
                             </relocations>
                         </configuration>
 
@@ -208,6 +108,12 @@
     </repositories>
 
     <dependencies>
+        <dependency>
+            <groupId>org.eclipse.angus</groupId>
+            <artifactId>angus-mail</artifactId>
+            <version>2.0.3</version>
+            <scope>provided</scope>
+        </dependency>
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
@@ -241,12 +147,12 @@
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-core</artifactId>
-            <version>2.19.0</version> <!-- This is the version Spigot 1.20.1 uses -->
+            <version>2.19.0</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.alessiodp.libby</groupId>
-            <artifactId>libby-bukkit</artifactId> <!-- Replace bukkit if you're using another platform -->
+            <artifactId>libby-bukkit</artifactId>
             <version>2.0.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>

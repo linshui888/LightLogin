@@ -54,6 +54,27 @@ safe-passwords:
     min-special: 1        # Numero minimo di caratteri speciali
     allowed-special: ['@', '^', '-', '_', '#', '!', '?', '*', '$', '%', '&', '*'] # Caratteri speciali consentiti
 
+# Configurazione Email
+email:
+  enabled: false
+  email-smtp: 'smtp.gmail.com'                    # Il provider del server SMTP.
+  email-port: 465                                 # La porta utilizzata dal server SMTP.
+  use-tls: true                                   # Utilizza una connessione sicura TLS.
+  email-account: ''                               # Il tuo account email (es. jeb@mojang.com).
+  email-password: ''                              # La password associata al tuo account email.
+  email-sender-name: 'LightLogin'                 # Il nome del mittente dell'email.
+  recovery-password-min-length: 8                 # Lunghezza della password generata automaticamente.
+  recovery-min-delay: 90                          # Il numero minimo di minuti tra ogni richiesta di reset.
+  email-subject: 'La tua nuova password LightLogin!'  # Oggetto dell'email di recupero.
+  email-text-content:                             # Contenuto dell'email,
+    # Segnaposto: {PASSWORD}, {PLAYER}
+    - "Caro {PLAYER},"
+    - "Questa è la nuova password temporanea appena richiesta dal server:"
+    - "Password: {PASSWORD}"
+    - "Per favore, non condividerla e sentiti libero di cambiarla successivamente."
+    - ""
+    - "~ IlMioServerMinecraft"
+
 # Configurazione dei messaggi
 messages:
   prefix: "&7╓&eLightLogin&7╛&f" # Prefisso per i messaggi del plugin
@@ -130,3 +151,34 @@ messages:
     - "{PREFIX}: &c&lAVVISO"
     - "&7» &4Hai scritto la tua password in chat,"
     - "&7» &4Il tuo messaggio è stato annullato, fai attenzione!"
+  email-update-help:
+    - "{PREFIX}: &eAiuto Email"
+    - "&7Imposta la tua email di recupero usando:"
+    - "&7/&eemail &7<&emiaEmail&7>"
+  email-invalid-format:
+    - "{PREFIX}: &cQuesta email ha un formato non valido!"
+  email-updated:
+    - "{PREFIX}: &aLa tua nuova email è stata impostata su &e{EMAIL}"
+  email-something-wrong:
+    - "{PREFIX}: &cQualcosa è andato storto durante l'aggiornamento della tua email."
+  password-reset-help:
+    - "{PREFIX}: &eAiuto per il Reset della Password"
+    - "&7Ripristina la tua password usando:"
+    - "&7/&eresetpassword"
+  password-reset-help-admins:
+    - "{PREFIX}: &eAiuto per il Reset della Password da parte degli Amministratori"
+    - "&7Ripristina la password di qualsiasi giocatore usando:"
+    - "&7/&eresetpassword &7<&6giocatore&7>"
+  password-reset-missing-email:
+    - "{PREFIX}: &cNon possiamo ripristinare la password"
+    - "&cperché non è stato associato alcun indirizzo email del destinatario!"
+  password-reset-not-enabled:
+    - "{PREFIX}: &cIl ripristino della password via email non è stato impostato"
+    - "&cdagli amministratori di questo server."
+  password-reset-failed:
+    - "{PREFIX}: &cQualcosa è andato storto durante il ripristino della password di &e{PLAYER}&c."
+  password-reset-success:
+    - "{PREFIX}: &aAbbiamo inviato con successo un'email di ripristino a &e{EMAIL}."
+  password-reset-too-early:
+    - "{PREFIX}: &cDevi aspettare più tempo prima di poter richiedere un nuovo reset della password."
+

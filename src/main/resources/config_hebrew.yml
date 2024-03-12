@@ -53,6 +53,27 @@ safe-passwords:
     min-special: 1        # מספר מינימלי של תווים מיוחדים
     allowed-special: ['@', '^', '-', '_', '#', '!', '?', '*', '$', '%', '&', '*'] # תווים מיוחדים מותרים
 
+# הגדרות אימייל
+email:
+  enabled: false
+  email-smtp: 'smtp.gmail.com'                    # ספק שרת SMTP.
+  email-port: 465                                 # הפורט המשמש על ידי שרת SMTP.
+  use-tls: true                                   # השתמש בחיבור מאובטח עם TLS.
+  email-account: ''                               # חשבון האימייל שלך (לדוגמה, jeb@mojang.com).
+  email-password: ''                              # הסיסמה הקשורה לחשבון האימייל שלך.
+  email-sender-name: 'LightLogin'                 # שם השולח של האימייל.
+  recovery-password-min-length: 8                 # אורך הסיסמה הנוצרת אוטומטית.
+  recovery-min-delay: 90                          # הדקות המינימליות בין כל בקשת איפוס.
+  email-subject: 'הסיסמה החדשה שלך ב-LightLogin!'  # נושא האימייל של שחזור.
+  email-text-content:                             # תוכן האימייל,
+    # מצייני מקום: {PASSWORD}, {PLAYER}
+    - "יקר {PLAYER},"
+    - "זו הסיסמה הזמנית החדשה שביקשת מהשרת לאחרונה:"
+    - "סיסמה: {PASSWORD}"
+    - "בבקשה, אל תשתף אותה וכן תרגיש חופשי לשנות אותה מאוחר יותר."
+    - ""
+    - "~ השרת שלי ב-Minecraft"
+
 # הגדרות הודעות
 messages:
   prefix: '&7╓&eLightLogin&7╛&f' # תחילית להודעות התוסף
@@ -129,4 +150,34 @@ messages:
     - "{PREFIX}: &c&lאזהרה"
     - "&7» &4כתבת את הסיסמה שלך בצ'אט,"
     - "&7» &4ההודעה שלך בוטלה, שים לב!"
+  email-update-help:
+    - "{PREFIX}: &eעזרה בדואר אלקטרוני"
+    - "&7קבע את הדואר האלקטרוני שלך לשחזור באמצעות:"
+    - "&7/&eemail &7<&emyEmail&7>"
+  email-invalid-format:
+    - "{PREFIX}: &cדואר אלקטרוני זה יש לו פורמט לא חוקי!"
+  email-updated:
+    - "{PREFIX}: &aהדואר האלקטרוני החדש שלך הוגדר ל &e{EMAIL}"
+  email-something-wrong:
+    - "{PREFIX}: &cמשהו השתבש בעת עדכון הדואר האלקטרוני שלך."
+  password-reset-help:
+    - "{PREFIX}: &eעזרה באיפוס סיסמה"
+    - "&7אפשר לאפס את הסיסמה שלך באמצעות:"
+    - "&7/&eresetpassword"
+  password-reset-help-admins:
+    - "{PREFIX}: &eעזרה באיפוס סיסמה על ידי מנהלים"
+    - "&7אפשר לאפס סיסמה של כל שחקן באמצעות:"
+    - "&7/&eresetpassword &7<&6player&7>"
+  password-reset-missing-email:
+    - "{PREFIX}: &cלא יכולנו לאפס את הסיסמה"
+    - "&cמכיוון שלא הוקשר אימייל למקבל!"
+  password-reset-not-enabled:
+    - "{PREFIX}: &cלא הופעלה אפשרות לאיפוס סיסמה דרך אימייל"
+    - "&cעל ידי מנהלי שרת זה."
+  password-reset-failed:
+    - "{PREFIX}: &cמשהו השתבש בעת איפוס סיסמתו של &e{PLAYER}&c."
+  password-reset-success:
+    - "{PREFIX}: &aשלחנו בהצלחה אימייל לאיפוס ל-&e{EMAIL}."
+  password-reset-too-early:
+    - "{PREFIX}: &cעליך לחכות עוד זמן לפני שתוכל לבקש איפוס סיסמה חדשה."
 
