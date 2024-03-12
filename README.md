@@ -1,5 +1,5 @@
-![CodeFactor Grade](https://img.shields.io/codefactor/grade/github/CMarcoo/LightLogin)
-![Lines of code](https://img.shields.io/tokei/lines/github/CMarcoo/LightLogin)
+![CodeFactor Grade](https://img.shields.io/codefactor/grade/github/CMarco-Development/LightLogin)
+![Lines of code](https://img.shields.io/tokei/lines/github/CMarco-Development/LightLogin)
 <br>
 # LightLogin
 Optimised and Safe SpigotMC Software for Authentication. <br>
