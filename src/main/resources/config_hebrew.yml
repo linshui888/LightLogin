@@ -25,6 +25,9 @@ void-world:
   enabled: false
   mode: 'NORMAL'        # NORMAL \ THE_END
 
+login-blindness:       # להפעיל עיוורון במהלך התחברות או הרשמה.
+  enabled: false
+
 # הגדרות כניסה
 login:
   command-delay: 3       # השהייה בשניות לפני שהפקודה של כניסה יכולה להתבצע

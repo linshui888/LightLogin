@@ -26,6 +26,9 @@ void-world:
   enabled: false
   mode: 'NORMAL'        # NORMAL \ THE_END
 
+login-blindness:       # Включить слепоту во время входа или регистрации.
+  enabled: false
+
 # Конфигурация входа
 login:
   command-delay: 3       # Задержка в секундах перед тем, как команда входа станет исполняемой

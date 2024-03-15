@@ -415,4 +415,8 @@ public final class LightConfiguration {
     public boolean isEmailEnabled() {
         return this.configuration.getBoolean("email.enabled", false);
     }
+
+    public boolean isLoginBlindness() {
+        return this.configuration.getBoolean("login-blindness.enabled", false);
+    }
 }

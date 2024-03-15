@@ -26,6 +26,9 @@ void-world:
   enabled: false
   mode: 'NORMAL'        # NORMAL \ THE_END
 
+login-blindness:        # Enable blindness during login or registration.
+  enabled: false
+
 # Login configuration
 login:
   command-delay: 3        # Delay in seconds before the login command is executable

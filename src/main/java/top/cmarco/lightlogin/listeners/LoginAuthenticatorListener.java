@@ -28,6 +28,8 @@ import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitScheduler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import top.cmarco.lightlogin.LightLoginPlugin;
@@ -118,6 +120,7 @@ public final class LoginAuthenticatorListener extends NamedListener {
                     if (row == null) {
                         if (player.isOnline()) {
                             authManager.addUnregistered(player);
+                            runSync(plugin, () -> giveBlindness(player, plugin));
                             // LightLoginCommand.sendColorPrefixMessages(player, this.configuration.getRegisterMessage(), this.plugin);
                         }
                         return;
@@ -132,6 +135,8 @@ public final class LoginAuthenticatorListener extends NamedListener {
                     if (requireLogin) {
                         authManager.unauthenticate(player);
                         authManager.addUnloginned(player);
+                        if (player.isOnline())
+                            runSync(plugin, () -> giveBlindness(player, plugin));
                         return;
                     }
 
@@ -143,6 +148,7 @@ public final class LoginAuthenticatorListener extends NamedListener {
                         authManager.unauthenticate(player);
                         authManager.addUnloginned(player);
                         if (player.isOnline()) {
+                            runSync(plugin, () -> giveBlindness(player, plugin));
                             // LightLoginCommand.sendColorPrefixMessages(player, this.configuration.getLoginMessages(), this.plugin);
                         }
                         return;
@@ -158,6 +164,8 @@ public final class LoginAuthenticatorListener extends NamedListener {
                         LightLoginCommand.sendColorPrefixMessages(player, this.configuration.getLoginAuto(), this.plugin);
                     } else {
                         authManager.addUnloginned(player);
+                        if (player.isOnline())
+                            runSync(plugin, () -> giveBlindness(player, plugin));
                         // LightLoginCommand.sendColorPrefixMessages(player, this.configuration.getLoginMessages(), this.plugin);
                     }
 

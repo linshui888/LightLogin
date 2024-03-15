@@ -35,9 +35,7 @@ public final class LibraryManager {
     }
 
     public void loadLibraries() {
-        if (this.hikariCP != null || this.bcpkix != null || this.bcutils != null
-                || this.bcprov != null || this.bukkitLibraryManager != null || postgreSQL != null
-                || angus != null) {
+        if (this.hikariCP != null || this.bcpkix != null || this.bcutils != null || this.bcprov != null || this.bukkitLibraryManager != null || postgreSQL != null || angus != null) {
             return;
         }
 

@@ -18,12 +18,14 @@
 
 package top.cmarco.lightlogin.listeners;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 import top.cmarco.lightlogin.LightLoginPlugin;
 import top.cmarco.lightlogin.api.PlayerAuthenticateEvent;
@@ -54,6 +56,8 @@ public class AuthenticationListener extends NamedListener {
                 .filter(p -> !p.equals(player))
                 .forEach(p -> p.showPlayer(plugin, player));
 
+        runSync(plugin, () -> player.removePotionEffect(PotionEffectType.BLINDNESS));
+
         AuthLogs authLogs = plugin.getAuthLogs();
         authLogs.add("Player " + player.getName() + " has been authenticated through " + event.getAuthenticationCause().getFormalName());
 
@@ -66,6 +70,7 @@ public class AuthenticationListener extends NamedListener {
     @EventHandler(priority = EventPriority.HIGH)
     public final void onUnauth(PlayerUnauthenticateEvent event) {
         Player player = event.getPlayer();
+        runSync(plugin, () -> giveBlindness(player, plugin));
         AuthLogs authLogs = plugin.getAuthLogs();
         authLogs.add("Player " + player.getName() + " has been unauthenticated through " + event.getAuthenticationCause().getFormalName());
     }
@@ -81,6 +86,11 @@ public class AuthenticationListener extends NamedListener {
     public final void onUnregister(UnregisterEvent event) {
         AuthLogs authLogs = plugin.getAuthLogs();
         authLogs.add("Player " + event.getName() + " has been unregistered.");
+
+        Player player = Bukkit.getPlayer(event.getUuid());
+        if (player != null && player.isOnline()) {
+            runSync(plugin, () -> giveBlindness(player, plugin));
+        }
 
         if (voidLoginManager == null) {
             return;

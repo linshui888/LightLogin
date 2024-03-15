@@ -18,12 +18,31 @@
 
 package top.cmarco.lightlogin.listeners;
 
+import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitScheduler;
 import org.jetbrains.annotations.NotNull;
+import top.cmarco.lightlogin.LightLoginPlugin;
 
 public abstract class NamedListener implements Listener {
 
     private final String name;
+
+    protected static void giveBlindness(@NotNull final Player player, @NotNull final LightLoginPlugin plugin) {
+
+        if (!plugin.getLightConfiguration().isLoginBlindness()) {
+            return;
+        }
+
+        player.addPotionEffect(PotionEffectType.BLINDNESS.createEffect(20*60*60, 1));
+    }
+
+    protected void runSync(@NotNull Plugin plugin, @NotNull Runnable runnable) {
+        BukkitScheduler scheduler = plugin.getServer().getScheduler();
+        scheduler.runTask(plugin, runnable);
+    }
 
     protected NamedListener(@NotNull String name) {
         this.name = name;

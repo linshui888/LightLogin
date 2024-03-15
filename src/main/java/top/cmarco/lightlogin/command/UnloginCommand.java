@@ -22,6 +22,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import top.cmarco.lightlogin.LightLoginPlugin;
+import top.cmarco.lightlogin.api.AuthenticationCause;
+import top.cmarco.lightlogin.api.PlayerUnauthenticateEvent;
 import top.cmarco.lightlogin.data.AuthenticationManager;
 import top.cmarco.lightlogin.database.LightLoginColumn;
 import top.cmarco.lightlogin.database.PluginDatabase;
@@ -55,5 +57,8 @@ public class UnloginCommand extends LightLoginCommand {
 
         database.updateRow(player.getUniqueId().toString(), LightLoginColumn.LAST_LOGIN, 1L);
         authenticationManager.addUnloginned(player);
+
+        PlayerUnauthenticateEvent playerUnauthenticateEvent = new PlayerUnauthenticateEvent(player, AuthenticationCause.AUTOMATIC);
+        this.plugin.getServer().getPluginManager().callEvent(playerUnauthenticateEvent);
     }
 }

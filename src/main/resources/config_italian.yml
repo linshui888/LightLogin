@@ -26,6 +26,9 @@ void-world:
   enabled: false
   mode: 'NORMAL'        # NORMAL \ THE_END
 
+login-blindness:       # Abilita la cecità durante il login o la registrazione.
+  enabled: false
+
 # Configurazione del login
 login:
   command-delay: 3       # Ritardo in secondi prima che il comando di login sia eseguibile

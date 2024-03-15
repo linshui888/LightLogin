@@ -26,6 +26,9 @@ void-world:
   enabled: false
   mode: 'NORMAL'        # NORMAL \ THE_END
 
+login-blindness:       # Paganahin ang kahangalang sa panahon ng login o pagsusuri.
+  enabled: false
+
 # Konfigurasyon ng Login
 login:
   command-delay: 3       # Pagitan ng segundo bago maging epektibo ang login command

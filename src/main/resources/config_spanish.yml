@@ -25,6 +25,9 @@ void-world:
   enabled: false
   mode: 'NORMAL'        # NORMAL \ THE_END
 
+login-blindness:       # Habilitar ceguera durante el inicio de sesión o registro.
+  enabled: false
+
 # Configuración de inicio de sesión
 login:
   command-delay: 3       # Retraso en segundos antes de que el comando de inicio de sesión sea ejecutable
