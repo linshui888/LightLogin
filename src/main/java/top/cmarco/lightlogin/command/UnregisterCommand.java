@@ -40,7 +40,7 @@ public final class UnregisterCommand extends LightLoginCommand {
     protected void commandLogic(@NotNull CommandSender sender, @NotNull String[] args) {
         final AuthenticationManager authManager = super.plugin.getAuthenticationManager();
 
-        if (sender instanceof Player tempPlayer && !authManager.isAuthenticated(tempPlayer)) {
+        if (sender instanceof Player && !authManager.isAuthenticated((Player) sender)) {
             return;
         }
 

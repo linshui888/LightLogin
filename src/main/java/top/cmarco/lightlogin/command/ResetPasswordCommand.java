@@ -31,6 +31,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public final class ResetPasswordCommand extends LightLoginCommand {
 
@@ -103,7 +104,7 @@ public final class ResetPasswordCommand extends LightLoginCommand {
                             }
 
                             if (b) {
-                                List<String> remappedMsg = configuration.getPasswordResetSuccess().stream().map(s->s.replace("{EMAIL}", r.getEmail())).toList();
+                                List<String> remappedMsg = configuration.getPasswordResetSuccess().stream().map(s->s.replace("{EMAIL}", r.getEmail())).collect(Collectors.toList());
                                 sendColorPrefixMessages(sender, remappedMsg, plugin);
 
                                 Player find = plugin.getServer().getPlayer(uuid);
@@ -112,7 +113,7 @@ public final class ResetPasswordCommand extends LightLoginCommand {
 
                                 }
                             } else {
-                                List<String> remappedMsg = configuration.getPasswordResetSuccess().stream().map(s->s.replace("{PLAYER}", playerName)).toList();
+                                List<String> remappedMsg = configuration.getPasswordResetSuccess().stream().map(s->s.replace("{PLAYER}", playerName)).collect(Collectors.toList());
                                 sendColorPrefixMessages(sender, remappedMsg, plugin);
                             }
 
@@ -171,7 +172,7 @@ public final class ResetPasswordCommand extends LightLoginCommand {
                             }
 
                             if (b) {
-                                List<String> remappedMsg = configuration.getPasswordResetSuccess().stream().map(s->s.replace("{EMAIL}", r.getEmail())).toList();
+                                List<String> remappedMsg = configuration.getPasswordResetSuccess().stream().map(s->s.replace("{EMAIL}", r.getEmail())).collect(Collectors.toList());
                                 sendColorPrefixMessages(sender, remappedMsg, plugin);
 
                                 if (player.isOnline()) {
@@ -179,7 +180,7 @@ public final class ResetPasswordCommand extends LightLoginCommand {
                                 }
 
                             } else {
-                                List<String> remappedMsg = configuration.getPasswordResetSuccess().stream().map(s->s.replace("{PLAYER}", player.getName())).toList();
+                                List<String> remappedMsg = configuration.getPasswordResetSuccess().stream().map(s->s.replace("{PLAYER}", player.getName())).collect(Collectors.toList());
                                 sendColorPrefixMessages(sender, remappedMsg, plugin);
                             }
 

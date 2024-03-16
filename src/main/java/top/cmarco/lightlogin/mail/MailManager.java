@@ -36,6 +36,7 @@ import java.util.Properties;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Collectors;
 
 public final class MailManager {
 
@@ -113,7 +114,7 @@ public final class MailManager {
                             .stream()
                             .map(s -> s.replace("{PASSWORD}", newPassword)
                                     .replace("{PLAYER}", username)
-                            ).toList();
+                            ).collect(Collectors.toList());
 
 
                     StringBuilder splitNewlineBuilder = new StringBuilder();

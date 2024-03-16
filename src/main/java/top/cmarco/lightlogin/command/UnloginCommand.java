@@ -37,7 +37,7 @@ public class UnloginCommand extends LightLoginCommand {
     protected void commandLogic(@NotNull CommandSender sender, @NotNull String[] args) {
         final AuthenticationManager authenticationManager = plugin.getAuthenticationManager();
 
-        if (sender instanceof Player tempPlayer && !authenticationManager.isAuthenticated(tempPlayer)) {
+        if (sender instanceof Player && !authenticationManager.isAuthenticated((Player) sender)) {
             return;
         }
 

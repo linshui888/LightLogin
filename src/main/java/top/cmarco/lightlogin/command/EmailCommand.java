@@ -28,6 +28,7 @@ import top.cmarco.lightlogin.database.PluginDatabase;
 
 import java.util.List;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class EmailCommand extends LightLoginCommand {
     public EmailCommand(@NotNull LightLoginPlugin plugin) {
@@ -78,7 +79,7 @@ public class EmailCommand extends LightLoginCommand {
 
                         if (player.isOnline()) {
                             List<String> toParse = super.configuration.getEmailUpdated();
-                            toParse = toParse.stream().map(s->s.replace("{EMAIL}", email)).toList();
+                            toParse = toParse.stream().map(s->s.replace("{EMAIL}", email)).collect(Collectors.toList());
                             sendColorPrefixMessages(player, toParse, super.plugin);
                         }
 
