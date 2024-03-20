@@ -16,7 +16,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package top.cmarco.lightlogin.command;
+package top.cmarco.lightlogin.command.login;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -24,6 +24,7 @@ import org.jetbrains.annotations.NotNull;
 import top.cmarco.lightlogin.LightLoginPlugin;
 import top.cmarco.lightlogin.api.AuthenticationCause;
 import top.cmarco.lightlogin.api.PlayerAuthenticateEvent;
+import top.cmarco.lightlogin.command.LightLoginCommand;
 import top.cmarco.lightlogin.data.AuthenticationManager;
 import top.cmarco.lightlogin.database.LightLoginColumn;
 import top.cmarco.lightlogin.database.PluginDatabase;

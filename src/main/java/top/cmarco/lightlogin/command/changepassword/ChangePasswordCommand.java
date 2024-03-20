@@ -16,18 +16,18 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package top.cmarco.lightlogin.command;
+package top.cmarco.lightlogin.command.changepassword;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import top.cmarco.lightlogin.LightLoginPlugin;
+import top.cmarco.lightlogin.command.LightLoginCommand;
+import top.cmarco.lightlogin.command.utils.CommandUtils;
 import top.cmarco.lightlogin.database.LightLoginColumn;
 import top.cmarco.lightlogin.database.PluginDatabase;
 import top.cmarco.lightlogin.encrypt.Argon2Utilities;
 
-import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
 public class ChangePasswordCommand extends LightLoginCommand {
@@ -55,8 +55,8 @@ public class ChangePasswordCommand extends LightLoginCommand {
             return;
         }
 
-        if (!RegisterCommand.isPasswordSafe(newPassword, super.configuration)) {
-            RegisterCommand.unsafePasswordMsg(player, super.configuration, super.plugin);
+        if (!CommandUtils.isPasswordSafe(newPassword, super.configuration)) {
+            CommandUtils.unsafePasswordMsg(player, super.configuration, super.plugin);
             return;
         }
 

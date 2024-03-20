@@ -16,14 +16,15 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package top.cmarco.lightlogin.command;
+package top.cmarco.lightlogin.command.resetpassword;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import top.cmarco.lightlogin.LightLoginPlugin;
-import top.cmarco.lightlogin.command.utils.PlayerUtils;
+import top.cmarco.lightlogin.command.LightLoginCommand;
+import top.cmarco.lightlogin.command.utils.CommandUtils;
 import top.cmarco.lightlogin.database.PluginDatabase;
 import top.cmarco.lightlogin.mail.MailManager;
 
@@ -69,7 +70,7 @@ public final class ResetPasswordCommand extends LightLoginCommand {
             }
 
             final String playerName = args[0x00];
-            final UUID uuid = PlayerUtils.getUuid(super.plugin, playerName);
+            final UUID uuid = CommandUtils.getUuid(super.plugin, playerName);
 
             if (uuid == null) {
                 sendColorPrefixMessages(sender, configuration.getUnregisterNotFound(), plugin);

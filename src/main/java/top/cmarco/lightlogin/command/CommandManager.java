@@ -21,6 +21,14 @@ package top.cmarco.lightlogin.command;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import top.cmarco.lightlogin.LightLoginPlugin;
+import top.cmarco.lightlogin.command.base.BaseCommand;
+import top.cmarco.lightlogin.command.changepassword.ChangePasswordCommand;
+import top.cmarco.lightlogin.command.email.EmailCommand;
+import top.cmarco.lightlogin.command.login.LoginCommand;
+import top.cmarco.lightlogin.command.register.RegisterCommand;
+import top.cmarco.lightlogin.command.resetpassword.ResetPasswordCommand;
+import top.cmarco.lightlogin.command.unlogin.UnloginCommand;
+import top.cmarco.lightlogin.command.unregister.UnregisterCommand;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -52,15 +60,8 @@ public final class CommandManager {
         this.registeredCommands.put(emailCommand.commandName, emailCommand);
         this.registeredCommands.put(resetPasswordCommand.commandName, resetPasswordCommand);
 
-        baseCommand.register();
-        loginCommand.register();
+        this.registeredCommands.values().forEach(LightLoginCommand::register);
         loginCommand.startClearTasks();
-        registerCommand.register();
-        unregisterCommand.register();
-        unloginCommand.register();
-        changePasswordCommand.register();
-        emailCommand.register();
-        resetPasswordCommand.register();
     }
 
     @Nullable
