@@ -56,7 +56,6 @@ public final class LightLoginPlugin extends JavaPlugin {
     private VoidLoginManager voidLoginManager = null;
     private StartupLoginsManager startupLoginsManager = null;
     private MailManager mailManager = null;
-
     private LibraryManager libraryManager = null;
     private CommandManager commandManager = null;
     private ListenerManager listenerManager = null;
