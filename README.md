@@ -3,5 +3,5 @@
 <br>
 # LightLogin
 Optimised and Safe SpigotMC Software for Authentication. <br>
-Officially supports Spigot 1.17.1 to 1.20.5 and Java 17.
+Officially supports Spigot 1.17.1 to 1.20.5 and Java 11 to 17.
 ---
