@@ -78,6 +78,15 @@ email:
     - ""
     - "~ Мой Minecraft Сервер"
 
+# Настройте звуки во время этапа входа в систему
+# Пожалуйста, обратитесь к именам звуков в API Bukkit, как указано в вашей версии,
+# Вы можете найти список здесь (https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Sound.html)
+sounds:
+  enabled: true
+  successful-login: 'BLOCK_NOTE_BLOCK_HARP'   # Звук, который проигрывается после входа.
+  wrong-password: 'ENTITY_VILLAGER_HURT'      # Звук, который воспроизводится, когда пользователь вводит неправильный пароль.
+  action-bar-tick: 'BLOCK_LEVER_CLICK'        # Звук, воспроизводимый для функции времени панели действий.
+
 # Конфигурация сообщений
 messages:
   prefix: '&7╓&eLightLogin&7╛&f' # Префикс для сообщений плагина

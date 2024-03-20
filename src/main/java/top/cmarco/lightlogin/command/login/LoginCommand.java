@@ -18,12 +18,14 @@
 
 package top.cmarco.lightlogin.command.login;
 
+import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import top.cmarco.lightlogin.LightLoginPlugin;
 import top.cmarco.lightlogin.api.AuthenticationCause;
 import top.cmarco.lightlogin.api.PlayerAuthenticateEvent;
+import top.cmarco.lightlogin.api.PlayerWrongPasswordEvent;
 import top.cmarco.lightlogin.command.LightLoginCommand;
 import top.cmarco.lightlogin.data.AuthenticationManager;
 import top.cmarco.lightlogin.database.LightLoginColumn;
@@ -36,21 +38,20 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 public final class LoginCommand extends LightLoginCommand {
+    private static final long HOUR_TICKS = 20L * 60L * 60L;
+    private final HashMap<UUID, Long> lastLoginAttempt = new HashMap<>();
+    private final ConcurrentHashMap<UUID, Integer> failedAttempts = new ConcurrentHashMap<>();
+
     public LoginCommand(@NotNull LightLoginPlugin plugin) {
         super(plugin, null, "login", false);
     }
 
-    private final HashMap<UUID, Long> lastLoginAttempt = new HashMap<>();
-    private final ConcurrentHashMap<UUID, Integer> failedAttempts = new ConcurrentHashMap<>();
-
-    private static final long HOUR_TICKS = 20L*60L*60L;
-
-    public final void startClearTasks() {
+    public void startClearTasks() {
         super.plugin.getServer().getScheduler().runTaskTimer(
                 super.plugin,
                 this.failedAttempts::clear,
-                HOUR_TICKS*24,
-                HOUR_TICKS*24);
+                HOUR_TICKS * 24,
+                HOUR_TICKS * 24);
     }
 
     @Override
@@ -92,6 +93,7 @@ public final class LoginCommand extends LightLoginCommand {
         final String password = args[0];
 
         final PluginDatabase database = super.plugin.getDatabase();
+
         database.searchRowFromPK(player.getUniqueId().toString())
                 .whenCompleteAsync((row, throwable) -> {
 
@@ -114,6 +116,7 @@ public final class LoginCommand extends LightLoginCommand {
                     final String databaseHash = row.getPasswordHash();
 
                     if (databaseHash.equals(hashAttempt)) {
+
                         if (player.isOnline()) {
                             sendColorPrefixMessages(player, super.configuration.getLoginSuccess(), super.plugin);
                         }
@@ -128,20 +131,27 @@ public final class LoginCommand extends LightLoginCommand {
                         authManager.authenticate(player);
                         database.updateRow(uuid.toString(), LightLoginColumn.LAST_LOGIN, System.currentTimeMillis());
 
-                    } else if (player.isOnline()) {
+                    } else {
 
-                        sendColorPrefixMessages(player, super.configuration.getLoginWrongPassword(), super.plugin);
+                        if (player.isOnline()) {
+
+                            plugin.getServer().getScheduler()
+                                    .runTask(plugin, () -> {
+                                        PlayerWrongPasswordEvent event = new PlayerWrongPasswordEvent(player);
+                                        plugin.getServer().getPluginManager().callEvent(event);
+                                    });
+
+                            sendColorPrefixMessages(player, super.configuration.getLoginWrongPassword(), super.plugin);
+
+                            if (plugin.getLightConfiguration().isSoundsEnabled()) {
+                                player.playSound(player.getEyeLocation(), Sound.valueOf(plugin.getLightConfiguration().getWrongPasswordSound()), 1f, 1f);
+                            }
+                        }
 
                         int currentAttempts = this.failedAttempts.get(uuid);
 
                         if (currentAttempts >= super.configuration.getMaxFailedAttempts() + 1) {
-                            super.plugin.getServer().getScheduler().runTask(super.plugin, () -> {
-                                super.configuration.getBruteforcePunishment().forEach(cmd -> {
-                                    super.plugin.getServer().dispatchCommand(
-                                            super.plugin.getServer().getConsoleSender(),
-                                            cmd.replace("{PLAYER}", player.getName()));
-                                });
-                            });
+                            super.plugin.getServer().getScheduler().runTask(super.plugin, () -> super.configuration.getBruteforcePunishment().forEach(cmd -> super.plugin.getServer().dispatchCommand(super.plugin.getServer().getConsoleSender(), cmd.replace("{PLAYER}", player.getName()))));
                         } else {
                             this.failedAttempts.put(uuid, currentAttempts + 1);
                         }

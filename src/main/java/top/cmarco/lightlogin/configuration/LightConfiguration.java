@@ -372,6 +372,22 @@ public final class LightConfiguration {
         return this.configuration.getStringList("messages.password-reset-too-early");
     }
 
+    public boolean isSoundsEnabled() {
+        return this.configuration.getBoolean("sounds.enabled", true);
+    }
+
+    public String getSuccessfulLoginSound() {
+        return this.configuration.getString("sounds.successful-login");
+    }
+
+    public String getWrongPasswordSound() {
+        return this.configuration.getString("sounds.wrong-password");
+    }
+
+    public String getActionBarTickSound() {
+        return this.configuration.getString("sounds.action-bar-tick");
+    }
+
     public int getRecoveryMinDelay() {
         return this.configuration.getInt("email.recovery-min-delay", 90);
     }

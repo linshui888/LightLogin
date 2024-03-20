@@ -78,6 +78,15 @@ email:
     - ""
     - "~ 我的Minecraft服务器"
 
+# 配置登录阶段的声音
+# 请参考您版本的Bukkit-API命名声音，如下所示，
+# 您可以在此处找到它们的列表（https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Sound.html）
+sounds:
+  enabled: true
+  successful-login: 'BLOCK_NOTE_BLOCK_HARP'   # 登录成功后播放的声音。
+  wrong-password: 'ENTITY_VILLAGER_HURT'      # 用户输入错误密码时播放的声音。
+  action-bar-tick: 'BLOCK_LEVER_CLICK'        # 动作栏时间功能播放的声音。
+
 # 消息配置
 messages:
   prefix: '&7╓&eLightLogin&7╛&f' # 插件消息的前缀

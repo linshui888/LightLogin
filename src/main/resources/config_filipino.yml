@@ -78,6 +78,16 @@ email:
     - ""
     - "~ Aking Minecraft Server"
 
+# I-configure ang tunog sa yugto ng pag-login
+# Mangyaring tingnan ang mga pangalan ng sounds sa Bukkit API ayon sa itinakda ng iyong bersyon,
+# Maaari mong mahanap ang isang listahan ng mga ito dito (https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Sound.html)
+sounds:
+  enabled: true
+  successful-login: 'BLOCK_NOTE_BLOCK_HARP'   # Ang tunog na i-play pagkatapos mag-login.
+  wrong-password: 'ENTITY_VILLAGER_HURT'      # Ang tunog na i-play kapag mali ang password ng gumagamit.
+  action-bar-tick: 'BLOCK_LEVER_CLICK'        # Ang tunog na i-play para sa tampok ng oras ng action bar.
+
+
 # Konfigurasyon ng Mensahe
 messages:
   prefix: "&7╓&eLightLogin&7╛&f" # Prefix para sa mga mensaheng ng plugin

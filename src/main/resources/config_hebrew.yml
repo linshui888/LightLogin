@@ -77,6 +77,15 @@ email:
     - ""
     - "~ השרת שלי ב-Minecraft"
 
+# הגדרת צלילים במהלך שלב ההתחברות
+# אנא הפנה לשמות API של Bukkit כפי שצוין על ידי הגרסה שלך,
+# ניתן למצוא רשימתם כאן (https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Sound.html)
+sounds:
+  enabled: true
+  successful-login: 'BLOCK_NOTE_BLOCK_HARP'   # הצליל לשימוש לאחר התחברות מוצלחת.
+  wrong-password: 'ENTITY_VILLAGER_HURT'      # הצליל לשימוש כאשר המשתמש כותב סיסמה שגויה.
+  action-bar-tick: 'BLOCK_LEVER_CLICK'        # הצליל המושמע לתכונת זמן שורת הפעולה.
+
 # הגדרות הודעות
 messages:
   prefix: '&7╓&eLightLogin&7╛&f' # תחילית להודעות התוסף

@@ -29,6 +29,15 @@ void-world:
 login-blindness:       # Abilita la cecità durante il login o la registrazione.
   enabled: false
 
+# Configura i suoni durante la fase di accesso
+# Si prega di fare riferimento ai nomi dei suoni nell'API Bukkit come specificato dalla tua versione,
+# Puoi trovarne un elenco qui (https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Sound.html)
+sounds:
+  enabled: true
+  successful-login: 'BLOCK_NOTE_BLOCK_HARP'   # Il suono da riprodurre dopo il login.
+  wrong-password: 'ENTITY_VILLAGER_HURT'      # Il suono da riprodurre quando l'utente inserisce una password errata.
+  action-bar-tick: 'BLOCK_LEVER_CLICK'        # Il suono riprodotto per la funzione di tempo della barra delle azioni.
+
 # Configurazione del login
 login:
   command-delay: 3       # Ritardo in secondi prima che il comando di login sia eseguibile

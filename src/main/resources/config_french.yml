@@ -78,6 +78,16 @@ email:
     - ""
     - "~ MonServeurMinecraft"
 
+# Configurer les sons pendant la phase de connexion
+# Veuillez vous référer aux noms de sons de l'API Bukkit tels que spécifiés par votre version,
+# Vous pouvez trouver une liste d'entre eux ici (https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Sound.html)
+sounds:
+  enabled: true
+  successful-login: 'BLOCK_NOTE_BLOCK_HARP'   # Le son à jouer après la connexion.
+  wrong-password: 'ENTITY_VILLAGER_HURT'      # Le son à jouer lorsque l'utilisateur entre un mauvais mot de passe.
+  action-bar-tick: 'BLOCK_LEVER_CLICK'        # Le son joué pour la fonction de temps de la barre d'action.
+
+
 # Configuration des messages
 messages:
   prefix: "&7╓&eLightLogin&7╛&f" # Préfixe pour les messages du plugin

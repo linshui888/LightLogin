@@ -19,12 +19,10 @@
 package top.cmarco.lightlogin.listeners;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 import top.cmarco.lightlogin.LightLoginPlugin;
@@ -56,7 +54,14 @@ public class AuthenticationListener extends NamedListener {
                 .filter(p -> !p.equals(player))
                 .forEach(p -> p.showPlayer(plugin, player));
 
-        runSync(plugin, () -> player.removePotionEffect(PotionEffectType.BLINDNESS));
+        runSync(plugin, () -> {
+            player.removePotionEffect(PotionEffectType.BLINDNESS);
+
+            if (plugin.getLightConfiguration().isSoundsEnabled()) {
+                player.playSound(player.getEyeLocation(), Sound.valueOf(plugin.getLightConfiguration().getSuccessfulLoginSound()), 1f, 1f);
+            }
+
+        });
 
         AuthLogs authLogs = plugin.getAuthLogs();
         authLogs.add("Player " + player.getName() + " has been authenticated through " + event.getAuthenticationCause().getFormalName());
@@ -95,6 +100,7 @@ public class AuthenticationListener extends NamedListener {
         if (voidLoginManager == null) {
             return;
         }
+
         this.voidLoginManager.clearLastLocation(event.getUuid());
     }
 }

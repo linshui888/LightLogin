@@ -77,6 +77,15 @@ email:
     - ""
     - "~ Mi Servidor Minecraft"
 
+# Configure sonidos durante la fase de inicio de sesión
+# Por favor refiérase a los nombres de sonido en el API de Bukkit como se especifica por su versión,
+# Puede encontrar una lista de ellos aquí (https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Sound.html)
+sounds:
+  enabled: true
+  successful-login: 'BLOCK_NOTE_BLOCK_HARP'   # El sonido a reproducir después de iniciar sesión correctamente.
+  wrong-password: 'ENTITY_VILLAGER_HURT'      # El sonido a reproducir cuando el usuario escribe una contraseña incorrecta.
+  action-bar-tick: 'BLOCK_LEVER_CLICK'        # El sonido reproducido para la función de tiempo de la barra de acción.
+
 # Configuración de mensajes
 messages:
   prefix: '&7╓&eLightLogin&7╛&f' # Prefijo para los mensajes del complemento
