@@ -27,7 +27,11 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.entity.EntityShootBowEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCreativeEvent;
+import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.player.*;
+import org.bukkit.inventory.InventoryHolder;
 import org.jetbrains.annotations.NotNull;
 import top.cmarco.lightlogin.LightLoginPlugin;
 import top.cmarco.lightlogin.data.AuthenticationManager;
@@ -53,11 +57,25 @@ public final class PlayerUnloggedListener extends NamedListener {
         }
     }
 
-    private <K extends Event & Cancellable> void cancelIfUnauthenticated(@NotNull K cancellableEntityEvent,
+    private  <K extends Event & Cancellable> void cancelIfUnauthenticated(@NotNull K cancellableEntityEvent,
                                                                          @NotNull Supplier<Entity> playerSupplier) {
         final Entity entity = playerSupplier.get();
         if (entity instanceof Player) {
             this.cancelIfPlayerUnauthenticated((Player) entity, cancellableEntityEvent);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onInventoryClick(final InventoryClickEvent event) {
+        Player player = (Player) event.getWhoClicked();
+        this.cancelIfPlayerUnauthenticated(player, event);
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onInventoryCreative(final InventoryCreativeEvent event) {
+        InventoryHolder inventoryHolder = event.getInventory().getHolder();
+        if (inventoryHolder instanceof Player) {
+            this.cancelIfPlayerUnauthenticated((Player) inventoryHolder, event);
         }
     }
 

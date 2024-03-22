@@ -38,6 +38,8 @@ import top.cmarco.lightlogin.data.VoidLoginManager;
 import top.cmarco.lightlogin.database.LightLoginColumn;
 import top.cmarco.lightlogin.database.PluginDatabase;
 import top.cmarco.lightlogin.network.NetworkUtilities;
+import static top.cmarco.lightlogin.api.LoginUtils.whenOnline;
+import static top.cmarco.lightlogin.api.LoginUtils.whenOnlineOrElse;
 
 import java.net.InetAddress;
 import java.util.Objects;
@@ -81,7 +83,7 @@ public final class LoginAuthenticatorListener extends NamedListener {
                 LightLoginCommand.colorAndReplace(lightConfiguration.getMessagePlayersSameIp(), plugin));
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.LOW)
     public void onJoin(final PlayerJoinEvent event) {
         final AutoKickManager autoKickManager = this.plugin.getAutoKickManager();
         final VoidLoginManager voidLoginManager = this.plugin.getVoidLoginManager();
@@ -110,52 +112,55 @@ public final class LoginAuthenticatorListener extends NamedListener {
                 })
                 .thenAcceptAsync(row -> {
                     if (row == null) {
-                        if (player.isOnline()) {
-                            authManager.addUnregistered(player);
-                            runSync(plugin, () -> giveBlindness(player, plugin));
-                        }
-                        return;
-                    }
-
-                    if (!player.hasPermission("lightlogin.autologin")) {
-                        authManager.addUnloginned(player);
-                        if (player.isOnline()) {
-                            runSync(plugin, () -> giveBlindness(player, plugin));
-                        }
-                        return;
-                    }
-
-                    final long lastLogin = row.getLastLogin();
-                    final long lastIpv4 = row.getLastIpv4();
-                    final long currentIpv4 = NetworkUtilities.convertInetSocketAddressToLong(player.getAddress());
-
-                    if (requireLogin || currentIpv4 != lastIpv4) {
-                        plugin.getServer().getScheduler().runTask(plugin, () -> {
-                            PlayerUnauthenticateEvent playerUnauthenticateEvent = new PlayerUnauthenticateEvent(player, AuthenticationCause.AUTOMATIC);
-                            this.plugin.getServer().getPluginManager().callEvent(playerUnauthenticateEvent);
+                        whenOnline(player, p -> {
+                            authManager.addUnregistered(p);
+                            runSync(plugin, () -> giveBlindness(p, plugin));
                         });
-                        authManager.unauthenticate(player);
-                        authManager.addUnloginned(player);
-                        if (player.isOnline()) {
-                            runSync(plugin, () -> giveBlindness(player, plugin));
-                        }
                         return;
                     }
 
-                    final long timeNow = System.currentTimeMillis();
-                    if ((timeNow - lastLogin) / 1E3 <= this.configuration.getSessionExpire()) {
-                        plugin.getServer().getScheduler().runTask(plugin, () -> {
-                            PlayerAuthenticateEvent playerAuthenticateEvent = new PlayerAuthenticateEvent(player, AuthenticationCause.AUTOMATIC);
-                            this.plugin.getServer().getPluginManager().callEvent(playerAuthenticateEvent);
-                        });
-                        this.authManager.authenticate(player);
-                        LightLoginCommand.sendColorPrefixMessages(player, this.configuration.getLoginAuto(), this.plugin);
-                    } else {
-                        authManager.addUnloginned(player);
-                        if (player.isOnline()) {
+                    whenOnlineOrElse(player, p -> {
+                        if (!player.hasPermission("lightlogin.autologin")) {
+                            authManager.addUnloginned(player);
+                            runSync(plugin, () -> giveBlindness(player, plugin));
+                            return;
+                        }
+
+                        final long lastLogin = row.getLastLogin();
+                        final long lastIpv4 = row.getLastIpv4();
+                        final long currentIpv4 = NetworkUtilities.convertInetSocketAddressToLong(player.getAddress());
+
+                        if (requireLogin || currentIpv4 != lastIpv4) {
+
+                            plugin.getServer().getScheduler().runTask(plugin, () -> {
+                                PlayerUnauthenticateEvent playerUnauthenticateEvent = new PlayerUnauthenticateEvent(player, AuthenticationCause.AUTOMATIC);
+                                this.plugin.getServer().getPluginManager().callEvent(playerUnauthenticateEvent);
+                            });
+
+                            authManager.unauthenticate(player);
+                            authManager.addUnloginned(player);
+                            runSync(plugin, () -> giveBlindness(player, plugin));
+                            return;
+                        }
+
+                        final long timeNow = System.currentTimeMillis();
+
+                        if ((timeNow - lastLogin) / 1E3 <= this.configuration.getSessionExpire()) {
+
+                            plugin.getServer().getScheduler().runTask(plugin, () -> {
+                                PlayerAuthenticateEvent playerAuthenticateEvent = new PlayerAuthenticateEvent(player, AuthenticationCause.AUTOMATIC);
+                                this.plugin.getServer().getPluginManager().callEvent(playerAuthenticateEvent);
+                            });
+
+                            this.authManager.authenticate(player);
+                            LightLoginCommand.sendColorPrefixMessages(player, this.configuration.getLoginAuto(), this.plugin);
+
+                        } else {
+                            authManager.addUnloginned(player);
                             runSync(plugin, () -> giveBlindness(player, plugin));
                         }
-                    }
+
+                    }, authManager::addUnloginned);
                 })
                 .exceptionally(throwable -> {
                     this.plugin.getLogger().warning(throwable.getLocalizedMessage());

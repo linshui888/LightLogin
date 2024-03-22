@@ -20,18 +20,43 @@ package top.cmarco.lightlogin.api;
 
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Enumeration representing different causes of player authentication.
+ * Each cause corresponds to a specific method or action triggering the authentication process.
+ */
 public enum AuthenticationCause {
 
+    /**
+     * Authentication triggered by a command.
+     */
     COMMAND("Command"),
+
+    /**
+     * Authentication triggered automatically, such as upon login.
+     */
     AUTOMATIC("Automatic"),
+
+    /**
+     * Authentication triggered by administrators.
+     */
     ADMINS("Admins");
 
     private final String formalName;
 
+    /**
+     * Constructs an AuthenticationCause enum with the specified formal name.
+     *
+     * @param formalName The formal name of the authentication cause.
+     */
     AuthenticationCause(String formalName) {
         this.formalName = formalName;
     }
 
+    /**
+     * Gets the formal name of the authentication cause.
+     *
+     * @return The formal name of the authentication cause.
+     */
     @NotNull
     public String getFormalName() {
         return formalName;

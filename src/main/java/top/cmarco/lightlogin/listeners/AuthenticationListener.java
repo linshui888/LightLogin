@@ -44,8 +44,8 @@ public class AuthenticationListener extends NamedListener {
         this.voidLoginManager = plugin.getVoidLoginManager();
     }
 
-    @EventHandler(priority = EventPriority.NORMAL)
-    public final void onAuth(PlayerAuthenticateEvent event) {
+    @EventHandler(priority = EventPriority.LOW)
+    public final void onAuth(@NotNull final PlayerAuthenticateEvent event) {
         Player player = event.getPlayer();
 
         plugin.getStartupLoginsManager().addPlayer(player);
@@ -73,22 +73,25 @@ public class AuthenticationListener extends NamedListener {
     }
 
     @EventHandler(priority = EventPriority.HIGH)
-    public final void onUnauth(PlayerUnauthenticateEvent event) {
+    public final void onUnauth(@NotNull final PlayerUnauthenticateEvent event) {
         Player player = event.getPlayer();
-        runSync(plugin, () -> giveBlindness(player, plugin));
+        runSync(plugin, () -> {
+            plugin.getAutoKickManager().cleanPlayerData(player);
+            giveBlindness(player, plugin);
+        });
         AuthLogs authLogs = plugin.getAuthLogs();
         authLogs.add("Player " + player.getName() + " has been unauthenticated through " + event.getAuthenticationCause().getFormalName());
     }
 
     @EventHandler(priority = EventPriority.HIGH)
-    public final void onRegister(PlayerRegisterEvent event) {
+    public final void onRegister(@NotNull final PlayerRegisterEvent event) {
         Player player = event.getPlayer();
         AuthLogs authLogs = plugin.getAuthLogs();
         authLogs.add("Player " + player.getName() + " has successfully registered.");
     }
 
     @EventHandler(priority = EventPriority.HIGH)
-    public final void onUnregister(UnregisterEvent event) {
+    public final void onUnregister(@NotNull final UnregisterEvent event) {
         AuthLogs authLogs = plugin.getAuthLogs();
         authLogs.add("Player " + event.getName() + " has been unregistered.");
 

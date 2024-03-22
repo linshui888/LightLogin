@@ -23,19 +23,39 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerEvent;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Represents an event that is triggered when a player enters the wrong password during authentication.
+ * This event is typically called when a player fails to authenticate due to providing an incorrect password.
+ */
 public class PlayerWrongPasswordEvent extends PlayerEvent {
 
     private static final HandlerList HANDLERS_LIST = new HandlerList();
 
+    /**
+     * Constructs a new PlayerWrongPasswordEvent with the specified player.
+     *
+     * @param who The player who entered the wrong password.
+     */
     public PlayerWrongPasswordEvent(@NotNull final Player who) {
         super(who);
     }
 
+    /**
+     * Gets the list of event handlers for this event.
+     *
+     * @return The list of event handlers for this event.
+     */
     public static HandlerList getHandlerList() {
         return HANDLERS_LIST;
     }
 
-    @NotNull @Override
+    /**
+     * Gets the list of event handlers for this event.
+     *
+     * @return The list of event handlers for this event.
+     */
+    @NotNull
+    @Override
     public HandlerList getHandlers() {
         return HANDLERS_LIST;
     }

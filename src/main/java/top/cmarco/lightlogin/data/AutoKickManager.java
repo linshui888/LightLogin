@@ -75,7 +75,11 @@ public final class AutoKickManager {
         bukkitTask = null;
     }
 
-    public void addEntered(final Player player) {
+    public void addEntered(@NotNull final Player player) {
         this.joinedMap.put(player.getUniqueId(), System.currentTimeMillis());
+    }
+
+    public void cleanPlayerData(@NotNull final Player player) {
+        this.joinedMap.remove(player.getUniqueId());
     }
 }

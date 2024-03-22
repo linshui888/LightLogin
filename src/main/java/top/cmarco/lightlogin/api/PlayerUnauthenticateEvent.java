@@ -23,25 +23,51 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerEvent;
 import org.jetbrains.annotations.NotNull;
 
-public final class PlayerUnauthenticateEvent extends PlayerEvent {
+/**
+ * Represents an event that is triggered when a player is unauthenticated.
+ * This event is typically called when a player's authentication status changes to unauthenticated.
+ */
+public class PlayerUnauthenticateEvent extends PlayerEvent {
 
     private final AuthenticationCause authenticationCause;
     private static final HandlerList HANDLERS_LIST = new HandlerList();
 
+    /**
+     * Constructs a new PlayerUnauthenticateEvent with the specified player and authentication cause.
+     *
+     * @param who                 The player who is being unauthenticated.
+     * @param authenticationCause The cause of the unauthentication.
+     */
     public PlayerUnauthenticateEvent(@NotNull Player who, @NotNull AuthenticationCause authenticationCause) {
         super(who);
         this.authenticationCause = authenticationCause;
     }
 
+    /**
+     * Gets the list of event handlers for this event.
+     *
+     * @return The list of event handlers for this event.
+     */
     public static HandlerList getHandlerList() {
         return HANDLERS_LIST;
     }
 
-    @NotNull @Override
+    /**
+     * Gets the list of event handlers for this event.
+     *
+     * @return The list of event handlers for this event.
+     */
+    @NotNull
+    @Override
     public HandlerList getHandlers() {
         return HANDLERS_LIST;
     }
 
+    /**
+     * Gets the cause of the unauthentication.
+     *
+     * @return The cause of the unauthentication.
+     */
     @NotNull
     public AuthenticationCause getAuthenticationCause() {
         return authenticationCause;
