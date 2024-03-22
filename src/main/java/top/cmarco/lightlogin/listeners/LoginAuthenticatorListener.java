@@ -18,20 +18,13 @@
 
 package top.cmarco.lightlogin.listeners;
 
-import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.player.PlayerTeleportEvent;
-import org.bukkit.potion.PotionEffectType;
-import org.bukkit.scheduler.BukkitScheduler;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import top.cmarco.lightlogin.LightLoginPlugin;
 import top.cmarco.lightlogin.api.AuthenticationCause;
 import top.cmarco.lightlogin.api.PlayerAuthenticateEvent;
@@ -47,9 +40,7 @@ import top.cmarco.lightlogin.database.PluginDatabase;
 import top.cmarco.lightlogin.network.NetworkUtilities;
 
 import java.net.InetAddress;
-import java.util.HashMap;
 import java.util.Objects;
-import java.util.UUID;
 
 public final class LoginAuthenticatorListener extends NamedListener {
 
@@ -59,7 +50,7 @@ public final class LoginAuthenticatorListener extends NamedListener {
     private final PluginDatabase database;
     private final LightConfiguration configuration;
 
-    public LoginAuthenticatorListener(LightLoginPlugin plugin) {
+    public LoginAuthenticatorListener(@NotNull final LightLoginPlugin plugin) {
         super("login_authenticator_listener");
         this.plugin = plugin;
         this.startupLoginsManager = plugin.getStartupLoginsManager();
@@ -110,37 +101,35 @@ public final class LoginAuthenticatorListener extends NamedListener {
         final boolean requireLogin = !startupLoginsManager.contains(player);
 
         this.database.searchRowFromPK(player.getUniqueId().toString())
-                .whenComplete((row, throwable) -> {
-
+                .handle((row, throwable) -> {
                     if (throwable != null) {
                         this.plugin.getLogger().warning(throwable.getLocalizedMessage());
-                        return;
+                        return null;
                     }
-
+                    return row;
+                })
+                .thenAcceptAsync(row -> {
                     if (row == null) {
                         if (player.isOnline()) {
                             authManager.addUnregistered(player);
                             runSync(plugin, () -> giveBlindness(player, plugin));
-                            // LightLoginCommand.sendColorPrefixMessages(player, this.configuration.getRegisterMessage(), this.plugin);
                         }
                         return;
                     }
 
-
-                    final long lastLogin = row.getLastLogin();
-                    final long lastIpv4 = row.getLastIpv4();
-
-                    final long currentIpv4 = NetworkUtilities.convertInetSocketAddressToLong(player.getAddress());
-
-                    if (requireLogin) {
-                        authManager.unauthenticate(player);
+                    if (!player.hasPermission("lightlogin.autologin")) {
                         authManager.addUnloginned(player);
-                        if (player.isOnline())
+                        if (player.isOnline()) {
                             runSync(plugin, () -> giveBlindness(player, plugin));
+                        }
                         return;
                     }
 
-                    if (currentIpv4 != lastIpv4) {
+                    final long lastLogin = row.getLastLogin();
+                    final long lastIpv4 = row.getLastIpv4();
+                    final long currentIpv4 = NetworkUtilities.convertInetSocketAddressToLong(player.getAddress());
+
+                    if (requireLogin || currentIpv4 != lastIpv4) {
                         plugin.getServer().getScheduler().runTask(plugin, () -> {
                             PlayerUnauthenticateEvent playerUnauthenticateEvent = new PlayerUnauthenticateEvent(player, AuthenticationCause.AUTOMATIC);
                             this.plugin.getServer().getPluginManager().callEvent(playerUnauthenticateEvent);
@@ -149,13 +138,12 @@ public final class LoginAuthenticatorListener extends NamedListener {
                         authManager.addUnloginned(player);
                         if (player.isOnline()) {
                             runSync(plugin, () -> giveBlindness(player, plugin));
-                            // LightLoginCommand.sendColorPrefixMessages(player, this.configuration.getLoginMessages(), this.plugin);
                         }
                         return;
                     }
 
                     final long timeNow = System.currentTimeMillis();
-                    if ((timeNow - lastLogin) / 1e3 <= this.configuration.getSessionExpire()) {
+                    if ((timeNow - lastLogin) / 1E3 <= this.configuration.getSessionExpire()) {
                         plugin.getServer().getScheduler().runTask(plugin, () -> {
                             PlayerAuthenticateEvent playerAuthenticateEvent = new PlayerAuthenticateEvent(player, AuthenticationCause.AUTOMATIC);
                             this.plugin.getServer().getPluginManager().callEvent(playerAuthenticateEvent);
@@ -164,13 +152,17 @@ public final class LoginAuthenticatorListener extends NamedListener {
                         LightLoginCommand.sendColorPrefixMessages(player, this.configuration.getLoginAuto(), this.plugin);
                     } else {
                         authManager.addUnloginned(player);
-                        if (player.isOnline())
+                        if (player.isOnline()) {
                             runSync(plugin, () -> giveBlindness(player, plugin));
-                        // LightLoginCommand.sendColorPrefixMessages(player, this.configuration.getLoginMessages(), this.plugin);
+                        }
                     }
-
+                })
+                .exceptionally(throwable -> {
+                    this.plugin.getLogger().warning(throwable.getLocalizedMessage());
+                    return null;
                 });
     }
+
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onLeave(final PlayerQuitEvent event) {
         final Player player = event.getPlayer();
