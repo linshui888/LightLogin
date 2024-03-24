@@ -32,7 +32,7 @@ import java.util.Base64;
  */
 public final class Argon2Utilities {
 
-    public static boolean debug = false;
+    public static boolean debug = Boolean.parseBoolean(System.getProperty("debug", "false"));
 
     private Argon2Utilities() {
         throw new RuntimeException("You may not instantiate this utility class.");
