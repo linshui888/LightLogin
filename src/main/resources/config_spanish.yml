@@ -86,6 +86,18 @@ sounds:
   wrong-password: 'ENTITY_VILLAGER_HURT'      # El sonido a reproducir cuando el usuario escribe una contraseña incorrecta.
   action-bar-tick: 'BLOCK_LEVER_CLICK'        # El sonido reproducido para la función de tiempo de la barra de acción.
 
+# Animación de Tiempo Restante de Inicio de Sesión
+# Esta característica habilita una animación que muestra cuánto tiempo le queda al jugador para autenticarse.
+login-animation:
+  enabled: true
+  display-type: 'ACTION_BAR'                          # Opciones disponibles: 'TITLE' o 'ACTION_BAR'.
+  format: "&7[{BAR}&7] &e Tiempo Restante de Inicio de Sesión &c{TIME}"   # El formato de texto utilizado.
+  bar-length: 24                                      # La longitud de la barra generada.
+  bar-character-passed: '|'                           # El carácter utilizado para indicar el tiempo transcurrido.
+  bar-character-not-passed: '|'                       # El carácter utilizado para indicar el tiempo restante.
+  bar-time-passed-colour: '&c'                        # El color utilizado para el tiempo que ya ha transcurrido.
+  bar-time-not-passed-colour: '&a'                    # El color utilizado para el tiempo que aún no ha transcurrido.
+
 # Configuración de mensajes
 messages:
   prefix: '&7╓&eLightLogin&7╛&f' # Prefijo para los mensajes del complemento

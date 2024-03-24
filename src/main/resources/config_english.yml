@@ -86,6 +86,18 @@ sounds:
   wrong-password: 'ENTITY_VILLAGER_HURT'      # The sound to play when user writes wrong password.
   action-bar-tick: 'BLOCK_LEVER_CLICK'        # The sound played for the action bar time feature.
 
+# Login Remaining Time Animation
+# This features enables an animation showing how much time left the player has to authenticate.
+login-animation:
+  enabled: true
+  display-type: 'ACTION_BAR'                          # Available options: 'TITLE' or 'ACTION_BAR'.
+  format: "&7[{BAR}&7] &eTime Left &c{TIME}s"         # The text format used.
+  bar-length: 24                                      # The length of the generated bar.
+  bar-character-passed: '|'                           # The character used to make the bar passed time.
+  bar-character-not-passed: '|'                       # The character used to make the bar not passed time.
+  bar-time-passed-colour: '&c'                        # The colour used for time that has passed already.
+  bar-time-not-passed-colour: '&a'                    # The colour used for the time that has not passed yet.
+
 # Messages configuration
 messages:
   prefix: '&6&l★&r&eLightLogin&6&l★&r&f' # Prefix for plugin messages

@@ -31,12 +31,32 @@ public final class BaseCommand extends LightLoginCommand {
         super(plugin, "lightlogin.admin.info", "lightlogin", true);
     }
 
+    public static void sendCommandHelps(@NotNull final CommandSender sender) {
+        final String s1 = colorMessage("&6&l★&r&eLightLogin&6&l★&r&f Help Page:");
+        final String s2 = colorMessage("&7Set your account's email.");
+        final String s3 = colorMessage("  ● &7/&eemail &7<&6email&7>");
+        final String s4 = colorMessage("&7Request to change your current password.");
+        final String s5 = colorMessage("  ● &7/&echangepassword &7<&6oldPassword&7> &7<&6newPassword&7>");
+        final String s6 = colorMessage("&7Reset your password via email.");
+        final String s7 = colorMessage("  ● &7/&eresetpassword");
+        final String s8 = colorMessage("&7Unauthenticate an online player.");
+        final String s9 = colorMessage("  ● &7/&eunlogin &7<&6username&7>");
+        final String s10 = colorMessage("&7Unregister a player");
+        final String s11 = colorMessage("  ● &7/&eunregister &7<&6username&7>");
+        final String s12 = colorMessage("&7Authenticate into the server.");
+        final String s13 = colorMessage("  ● &7/&elogin &7<&6password&7>");
+        final String s14 = colorMessage("&7Register into this server.");
+        final String s15 = colorMessage("  ● &7/&eregister &7<&6password&7> &7<&6passwordConfirm&7>");
+
+        final String[] englishMessages = {s1,s2,s3,s4,s5,s6,s7,s8,s9,s10,s11,s12,s13,s14,s15};
+        sender.sendMessage(englishMessages);
+    }
+
     @Override
-    protected void commandLogic(@NotNull CommandSender sender, @NotNull String[] args) {
+    protected void commandLogic(@NotNull final CommandSender sender, @NotNull final String[] args) {
 
         if (args.length == 0) {
-            sendColorPrefixMessages(sender, configuration.getPluginInfo().stream().map(s ->
-                    s.replaceAll("\\{VERSION}", plugin.getDescription().getVersion())).collect(Collectors.toList()), plugin);
+            sendCommandHelps(sender);
             return;
         }
 

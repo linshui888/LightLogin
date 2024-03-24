@@ -87,6 +87,17 @@ sounds:
   wrong-password: 'ENTITY_VILLAGER_HURT'      # Le son à jouer lorsque l'utilisateur entre un mauvais mot de passe.
   action-bar-tick: 'BLOCK_LEVER_CLICK'        # Le son joué pour la fonction de temps de la barre d'action.
 
+# Animation de Temps de Connexion Restant
+# Cette fonctionnalité permet une animation montrant combien de temps il reste au joueur pour s'authentifier.
+login-animation:
+  enabled: true
+  display-type: 'ACTION_BAR'                          # Options disponibles : 'TITLE' ou 'ACTION_BAR'.
+  format: "&7[{BAR}&7] &e Temps de Connexion Restant &c{TIME}"   # Le format de texte utilisé.
+  bar-length: 24                                      # La longueur de la barre générée.
+  bar-character-passed: '|'                           # Le caractère utilisé pour indiquer le temps passé.
+  bar-character-not-passed: '|'                       # Le caractère utilisé pour indiquer le temps restant.
+  bar-time-passed-colour: '&c'                        # La couleur utilisée pour le temps écoulé.
+  bar-time-not-passed-colour: '&a'                    # La couleur utilisée pour le temps restant.
 
 # Configuration des messages
 messages:

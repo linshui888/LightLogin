@@ -25,16 +25,19 @@ import top.cmarco.lightlogin.LightLoginPlugin;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public final class AutoKickManager {
 
     private final LightLoginPlugin plugin;
-    private final HashMap<UUID, Long> joinedMap = new HashMap<>();
+    private final Map<UUID, Long> joinedMap = new HashMap<>();
+    private final LoginTimeoutBarManager timeoutBarManager;
     private BukkitTask bukkitTask = null;
 
     public AutoKickManager(@NotNull final LightLoginPlugin plugin) {
         this.plugin = plugin;
+        this.timeoutBarManager = new LoginTimeoutBarManager(plugin.getLightConfiguration());
     }
 
     public void startAutoKickTask() {
@@ -55,15 +58,24 @@ public final class AutoKickManager {
                     continue;
                 }
 
-                final Long lastEnter = joinedMap.get(onlinePlayer.getUniqueId());
+                final long lastEnter = joinedMap.get(onlinePlayer.getUniqueId());
                 final boolean compareTo = (System.currentTimeMillis() - lastEnter) >= ticks;
-                if (!authenticationManager.isAuthenticated(onlinePlayer) && compareTo) {
-                    onlinePlayer.kickPlayer(plugin.getLightConfiguration().getLoginTookTooMuchTime());
+
+                if (authenticationManager.isAuthenticated(onlinePlayer)) {
+                    return;
                 }
+
+                if (!compareTo && plugin.getLightConfiguration().isLoginAnimationEnabled()) {
+                    timeoutBarManager.sendBar(onlinePlayer, lastEnter);
+                    timeoutBarManager.sendSound(onlinePlayer);
+                    return;
+                }
+
+                onlinePlayer.kickPlayer(plugin.getLightConfiguration().getLoginTookTooMuchTime());
 
             }
 
-        }, 0L, 20L);
+        }, 1L, 20L);
     }
 
     public void stopAutoKickTask() {

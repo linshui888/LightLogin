@@ -38,6 +38,18 @@ sounds:
   wrong-password: 'ENTITY_VILLAGER_HURT'      # Il suono da riprodurre quando l'utente inserisce una password errata.
   action-bar-tick: 'BLOCK_LEVER_CLICK'        # Il suono riprodotto per la funzione di tempo della barra delle azioni.
 
+# Animazione del Tempo di Accesso Rimasto
+# Questa funzione abilita un'animazione che mostra quanto tempo rimane al giocatore per autenticarsi.
+login-animation:
+  enabled: true
+  display-type: 'ACTION_BAR'                          # Opzioni disponibili: 'TITLE' o 'ACTION_BAR'.
+  format: "&7[{BAR}&7] &e Tempo di Accesso Rimasto &c{TIME}"   # Il formato del testo utilizzato.
+  bar-length: 24                                      # La lunghezza della barra generata.
+  bar-character-passed: '|'                           # Il carattere utilizzato per indicare il tempo trascorso.
+  bar-character-not-passed: '|'                       # Il carattere utilizzato per indicare il tempo rimasto.
+  bar-time-passed-colour: '&c'                        # Il colore utilizzato per il tempo già trascorso.
+  bar-time-not-passed-colour: '&a'                    # Il colore utilizzato per il tempo non ancora trascorso.
+
 # Configurazione del login
 login:
   command-delay: 3       # Ritardo in secondi prima che il comando di login sia eseguibile

@@ -399,4 +399,36 @@ public final class LightConfiguration {
     public boolean isLoginBlindness() {
         return this.configuration.getBoolean("login-blindness.enabled", false);
     }
+
+    public boolean isLoginAnimationEnabled() {
+        return this.configuration.getBoolean("login-animation.enabled", false);
+    }
+
+    public String getLoginAnimationDisplayType() {
+        return this.configuration.getString("login-animation.display-type", "ACTION_BAR");
+    }
+
+    public String getLoginAnimationFormat() {
+        return this.configuration.getString("login-animation.format", "&7[{BAR}&7] &e Login Time Left &c{TIME}");
+    }
+
+    public int getLoginAnimationBarLength() {
+        return this.configuration.getInt("login-animation.bar-length", 24);
+    }
+
+    public String getLoginAnimationBarCharacterPassed() {
+        return this.configuration.getString("login-animation.bar-character-passed", "|");
+    }
+
+    public String getLoginAnimationBarCharacterNotPassed() {
+        return this.configuration.getString("login-animation.bar-character-not-passed", "|");
+    }
+
+    public String getLoginAnimationBarTimePassedColour() {
+        return this.configuration.getString("login-animation.bar-time-passed-colour", "&c");
+    }
+
+    public String getLoginAnimationBarTimeNotPassedColour() {
+        return this.configuration.getString("login-animation.bar-time-not-passed-colour", "&a");
+    }
 }

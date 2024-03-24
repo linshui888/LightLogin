@@ -86,6 +86,19 @@ sounds:
   wrong-password: 'ENTITY_VILLAGER_HURT'      # הצליל לשימוש כאשר המשתמש כותב סיסמה שגויה.
   action-bar-tick: 'BLOCK_LEVER_CLICK'        # הצליל המושמע לתכונת זמן שורת הפעולה.
 
+# אנימציה של זמן התחברות נותר
+# תכונה זו מאפשרת הנגשה לאנימציה המציגה כמה זמן נותר לשחקן לאמת.
+login-animation:
+  enabled: true
+  display-type: 'ACTION_BAR'                          # אפשרויות זמינות: 'כותרת' או 'ACTION_BAR'.
+  format: "&7[{BAR}&7] &e זמן התחברות נותר &c{TIME}"   # פורמט הטקסט המשמש.
+  bar-length: 24                                      # אורך הסרגל הנוצר.
+  bar-character-passed: '|'                           # התו המשמש לציון זמן שחלף.
+  bar-character-not-passed: '|'                       # התו המשמש לציון זמן שלא חלף.
+  bar-time-passed-colour: '&c'                        # הצבע המשמש לזמן שחלף כבר.
+  bar-time-not-passed-colour: '&a'                    # הצבע המשמש לזמן שעוד לא חלף.
+
+
 # הגדרות הודעות
 messages:
   prefix: '&7╓&eLightLogin&7╛&f' # תחילית להודעות התוסף

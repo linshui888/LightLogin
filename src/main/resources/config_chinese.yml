@@ -87,6 +87,18 @@ sounds:
   wrong-password: 'ENTITY_VILLAGER_HURT'      # 用户输入错误密码时播放的声音。
   action-bar-tick: 'BLOCK_LEVER_CLICK'        # 动作栏时间功能播放的声音。
 
+# 登录剩余时间动画
+# 此功能启用动画显示玩家还剩多少时间进行身份验证。
+login-animation:
+  enabled: true
+  display-type: 'ACTION_BAR'                          # 可用选项：'标题' 或 'ACTION_BAR'。
+  format: "&7[{BAR}&7] &e 登录剩余时间 &c{TIME}"        # 使用的文本格式。
+  bar-length: 24                                      # 生成的进度条长度。
+  bar-character-passed: '|'                           # 用于表示已过时间的字符。
+  bar-character-not-passed: '|'                       # 用于表示未过时间的字符。
+  bar-time-passed-colour: '&c'                        # 已过时间的颜色。
+  bar-time-not-passed-colour: '&a'                    # 尚未过时间的颜色。
+
 # 消息配置
 messages:
   prefix: '&7╓&eLightLogin&7╛&f' # 插件消息的前缀

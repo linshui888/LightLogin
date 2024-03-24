@@ -87,6 +87,17 @@ sounds:
   wrong-password: 'ENTITY_VILLAGER_HURT'      # Ang tunog na i-play kapag mali ang password ng gumagamit.
   action-bar-tick: 'BLOCK_LEVER_CLICK'        # Ang tunog na i-play para sa tampok ng oras ng action bar.
 
+# Animation ng Natitirang Oras ng Pag-login
+# Ang feature na ito ay nagpapagana ng isang animation na nagpapakita kung gaano katagal pa ang natitirang oras ng player upang mag-authenticate.
+login-animation:
+  enabled: true
+  display-type: 'ACTION_BAR'                          # Mga available na pagpipilian: 'TITLE' o 'ACTION_BAR'.
+  format: "&7[{BAR}&7] &e Natitirang Oras ng Pag-login &c{TIME}"   # Ang format ng teksto na ginagamit.
+  bar-length: 24                                      # Ang haba ng ginagawang bar.
+  bar-character-passed: '|'                           # Ang karakter na ginagamit upang magtakda ng oras na lumipas.
+  bar-character-not-passed: '|'                       # Ang karakter na ginagamit upang hindi lumipas ang oras.
+  bar-time-passed-colour: '&c'                        # Ang kulay na ginagamit para sa oras na lumipas na.
+  bar-time-not-passed-colour: '&a'                    # Ang kulay na ginagamit para sa oras na hindi pa lumilipas.
 
 # Konfigurasyon ng Mensahe
 messages:
