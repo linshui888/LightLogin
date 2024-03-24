@@ -45,7 +45,6 @@
 
                                 <relocation>
                                     <pattern>org.bstats</pattern>
-                                    <!-- Replace this with your package! -->
                                     <shadedPattern>top.cmarco.lightlogin.libs.org.bstats</shadedPattern>
                                 </relocation>
 
