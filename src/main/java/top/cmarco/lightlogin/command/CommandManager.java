@@ -27,6 +27,7 @@ import top.cmarco.lightlogin.command.email.EmailCommand;
 import top.cmarco.lightlogin.command.login.LoginCommand;
 import top.cmarco.lightlogin.command.register.RegisterCommand;
 import top.cmarco.lightlogin.command.resetpassword.ResetPasswordCommand;
+import top.cmarco.lightlogin.command.temppassword.TempPasswordCommand;
 import top.cmarco.lightlogin.command.unlogin.UnloginCommand;
 import top.cmarco.lightlogin.command.unregister.UnregisterCommand;
 
@@ -50,6 +51,7 @@ public final class CommandManager {
         ChangePasswordCommand changePasswordCommand = new ChangePasswordCommand(this.plugin);
         EmailCommand emailCommand = new EmailCommand(this.plugin);
         ResetPasswordCommand resetPasswordCommand = new ResetPasswordCommand(this.plugin);
+        TempPasswordCommand tempPasswordCommand = new TempPasswordCommand(this.plugin);
 
         this.registeredCommands.put(baseCommand.commandName, baseCommand);
         this.registeredCommands.put(loginCommand.commandName, loginCommand);
@@ -59,6 +61,7 @@ public final class CommandManager {
         this.registeredCommands.put(changePasswordCommand.commandName, changePasswordCommand);
         this.registeredCommands.put(emailCommand.commandName, emailCommand);
         this.registeredCommands.put(resetPasswordCommand.commandName, resetPasswordCommand);
+        this.registeredCommands.put(tempPasswordCommand.commandName, tempPasswordCommand);
 
         this.registeredCommands.values().forEach(LightLoginCommand::register);
         loginCommand.startClearTasks();

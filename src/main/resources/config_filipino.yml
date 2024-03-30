@@ -99,6 +99,13 @@ login-animation:
   bar-time-passed-colour: '&c'                        # Ang kulay na ginagamit para sa oras na lumipas na.
   bar-time-not-passed-colour: '&a'                    # Ang kulay na ginagamit para sa oras na hindi pa lumilipas.
 
+# Tamporanyong Tampok sa Admin Access
+# Ang tamporanyong tampok na ito na para lamang sa konsola ay nagbibigay sa mga admins ng pagkakataon na magbigay ng isang pansamantalang password
+# upang ma-access ang isa sa kanilang mga account ng user para sa mga layunin ng debug o testing, nang hindi nakakaapekto sa kanilang privacy.
+temp-password:
+  secret-key: "L&UJ6tT%"  # Pakibago ito!
+  password-timeout: 180   # Pagkatapos ng ilang segundo, itong pansamantalang password ay mag-eexpire.
+
 # Konfigurasyon ng Mensahe
 messages:
   prefix: "&7╓&eLightLogin&7╛&f" # Prefix para sa mga mensaheng ng plugin
@@ -205,4 +212,8 @@ messages:
     - "{PREFIX}: &aMatagumpay nating naipadala ang reset email kay &e{EMAIL}."
   password-reset-too-early:
     - "{PREFIX}: &cKailangan mong maghintay ng mas mahabang oras bago ka makapag-request ng bagong pag-reset ng password."
-
+  temp-login-wrong-password:
+    - "{PREFIX}: &cMali ang inyong isinumiteng security key para sa pagdagdag ng isang pansamantalang password!"
+    - "-  &cMangyaring suriin ang inyong configuration file upang ito ay kumpirmahin."
+  added-temp-login-password:
+    - "{PREFIX}: &eMatagumpay naming idinagdag ang isang pansamantalang password para sa player na {PLAYER}."

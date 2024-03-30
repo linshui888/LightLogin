@@ -26,6 +26,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 import top.cmarco.lightlogin.command.CommandManager;
 import top.cmarco.lightlogin.command.LightLoginCommand;
+import top.cmarco.lightlogin.command.temppassword.TempPasswordManager;
 import top.cmarco.lightlogin.configuration.ConfigUtils;
 import top.cmarco.lightlogin.configuration.ConfigurationFiles;
 import top.cmarco.lightlogin.configuration.LightConfiguration;
@@ -53,6 +54,7 @@ public final class LightLoginPlugin extends JavaPlugin {
     private AutoKickManager autoKickManager = null;
     private final EnumMap<ConfigurationFiles, FileConfiguration> languagesConfigMap = new EnumMap<>(ConfigurationFiles.class);
     private PlaintextPasswordManager plaintextPasswordManager = null;
+    private TempPasswordManager tempPasswordManager = null;
     private boolean disabled = false;
     private World loginWorld;
     private AuthLogs authLogs = null;
@@ -82,6 +84,7 @@ public final class LightLoginPlugin extends JavaPlugin {
         this.setVoidLoginManager(); // 2
         this.setupAuthenticationManager();
         this.setupPasswordManager();
+        this.setupTempPswManager();
         this.setupStartupLoginsManager();
         this.registerAllListeners();
         this.setupMailManager();
@@ -142,6 +145,10 @@ public final class LightLoginPlugin extends JavaPlugin {
 
     public void sendConsoleColoured(String text) {
         super.getServer().getConsoleSender().sendMessage(LightLoginCommand.colorMessage(text));
+    }
+
+    private void setupTempPswManager() {
+        this.tempPasswordManager = new TempPasswordManager(this);
     }
 
     private void setupPasswordManager() {
@@ -333,5 +340,9 @@ public final class LightLoginPlugin extends JavaPlugin {
 
     public StartupLoginsManager getStartupLoginsManager() {
         return startupLoginsManager;
+    }
+
+    public TempPasswordManager getTempPasswordManager() {
+        return tempPasswordManager;
     }
 }

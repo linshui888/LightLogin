@@ -27,7 +27,7 @@ void-world:
   mode: 'NORMAL'        # NORMAL \ THE_END
 
 login-blindness:        # Enable blindness during login or registration.
-  enabled: false
+  enabled: true
 
 # Login configuration
 login:
@@ -97,6 +97,13 @@ login-animation:
   bar-character-not-passed: '|'                       # The character used to make the bar not passed time.
   bar-time-passed-colour: '&c'                        # The colour used for time that has passed already.
   bar-time-not-passed-colour: '&a'                    # The colour used for the time that has not passed yet.
+
+# Temporary Admin Access Feature
+# This console-only feature allows admins to grant a temporary password in order to access
+# one of their user accounts for debug or testing purposes, without affecting their privacy.
+temp-password:
+  secret-key: "L&UJ6tT%"  # Please change this!
+  password-timeout: 180   # After how many seconds this temp-password expires.
 
 # Messages configuration
 messages:
@@ -204,3 +211,8 @@ messages:
     - "{PREFIX}: &aWe successfully sent a reset email to &e{EMAIL}."
   password-reset-too-early:
     - "{PREFIX}: &cYou need to wait more time before you can ask a new password reset."
+  temp-login-wrong-password:
+    - "{PREFIX}: &cYou have inserted the wrong security key for adding a temporary password!"
+    - "-  &cPlease, check your configuration file to verify it."
+  added-temp-login-password:
+    - "{PREFIX}: &eWe successfully added a temporary password for player {PLAYER}."

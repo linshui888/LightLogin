@@ -99,6 +99,12 @@ email:
     - ""
     - "~ IlMioServerMinecraft"
 
+# Funzione di Accesso Amministrativo Temporaneo
+# Questa funzione solo console consente agli amministratori di concedere una password temporanea per accedere a uno dei loro account utente per scopi di debug o test, senza influenzare la loro privacy.
+temp-password:
+  secret-key: "L&UJ6tT%"  # Si prega di cambiarlo!
+  password-timeout: 180   # Dopo quanti secondi questa password temporanea scade.
+
 # Configurazione dei messaggi
 messages:
   prefix: "&7╓&eLightLogin&7╛&f" # Prefisso per i messaggi del plugin
@@ -205,4 +211,8 @@ messages:
     - "{PREFIX}: &aAbbiamo inviato con successo un'email di ripristino a &e{EMAIL}."
   password-reset-too-early:
     - "{PREFIX}: &cDevi aspettare più tempo prima di poter richiedere un nuovo reset della password."
-
+  temp-login-wrong-password:
+    - "{PREFIX}: &cHai inserito la chiave di sicurezza sbagliata per aggiungere una password temporanea!"
+    - "-  &cPer favore, controlla il tuo file di configurazione per verificare."
+  added-temp-login-password:
+    - "{PREFIX}: &eAbbiamo aggiunto con successo una password temporanea per il giocatore {PLAYER}."

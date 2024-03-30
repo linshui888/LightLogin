@@ -24,3 +24,5 @@ commands:
     description: "Set your personal email."
   resetpassword:
     description: "Reset a password through an email."
+  temppassword:
+    description: "Generate a temporary password via console."

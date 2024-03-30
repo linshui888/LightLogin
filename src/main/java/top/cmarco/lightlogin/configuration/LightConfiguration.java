@@ -431,4 +431,20 @@ public final class LightConfiguration {
     public String getLoginAnimationBarTimeNotPassedColour() {
         return this.configuration.getString("login-animation.bar-time-not-passed-colour", "&a");
     }
+
+    public String getTempPasswordSecretKey() {
+        return this.configuration.getString("temp-password.secret-key");
+    }
+
+    public int getTempPasswordTimeout() {
+        return this.configuration.getInt("temp-password.password-timeout");
+    }
+
+    public List<String> getTempLoginWrongPasswordMessages() {
+        return this.configuration.getStringList("messages.temp-login-wrong-password");
+    }
+
+    public List<String> getTempoLoginAddedPasswordMessages() {
+        return this.configuration.getStringList("messages.added-temp-login-password");
+    }
 }

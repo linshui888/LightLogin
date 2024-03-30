@@ -99,6 +99,12 @@ login-animation:
   bar-time-passed-colour: '&c'                        # 已过时间的颜色。
   bar-time-not-passed-colour: '&a'                    # 尚未过时间的颜色。
 
+# 临时管理员访问功能
+# 该仅限控制台的功能允许管理员授予临时密码，以便在调试或测试目的下访问其用户账户，而不会影响其隐私。
+temp-password:
+  secret-key: "L&UJ6tT%"  # 请更改此项！
+  password-timeout: 180   # 多少秒后此临时密码过期。
+
 # 消息配置
 messages:
   prefix: '&7╓&eLightLogin&7╛&f' # 插件消息的前缀
@@ -204,4 +210,10 @@ messages:
     - "{PREFIX}：&a我们成功发送了重置邮件至&e{EMAIL}。"
   password-reset-too-early:
     - "{PREFIX}：&c在请求新的密码重置之前，您需要等待更长的时间。"
+  temp-login-wrong-password:
+    - "{PREFIX}: &c您已经输入了错误的安全密钥以添加临时密码！"
+    - "-  &c请检查您的配置文件以验证它。"
+  added-temp-login-password:
+    - "{PREFIX}: &e我们已成功为玩家{PLAYER}添加了临时密码。"
+
 

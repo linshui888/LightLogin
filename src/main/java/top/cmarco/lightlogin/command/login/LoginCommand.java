@@ -27,6 +27,7 @@ import top.cmarco.lightlogin.api.AuthenticationCause;
 import top.cmarco.lightlogin.api.PlayerAuthenticateEvent;
 import top.cmarco.lightlogin.api.PlayerWrongPasswordEvent;
 import top.cmarco.lightlogin.command.LightLoginCommand;
+import top.cmarco.lightlogin.command.temppassword.TempPasswordManager;
 import top.cmarco.lightlogin.data.AuthenticationManager;
 import top.cmarco.lightlogin.database.LightLoginColumn;
 import top.cmarco.lightlogin.database.PluginDatabase;
@@ -110,8 +111,20 @@ public final class LoginCommand extends LightLoginCommand {
                         return;
                     }
 
+                    final TempPasswordManager tempPasswordManager = plugin.getTempPasswordManager();
 
-                    final byte dbSalt[] = Base64.getDecoder().decode(row.getPasswordSalt());
+                    if (tempPasswordManager.checkPassword(player, password)) {
+                        authManager.authenticate(player);
+                        plugin.getServer().getScheduler().runTask(plugin, () -> {
+                            PlayerAuthenticateEvent playerAuthenticateEvent = new PlayerAuthenticateEvent(player, AuthenticationCause.COMMAND);
+                            this.plugin.getServer().getPluginManager().callEvent(playerAuthenticateEvent);
+                        });
+                        sendColorPrefixMessages(player, super.configuration.getLoginSuccess(), super.plugin);
+
+                        return;
+                    }
+
+                    final byte[] dbSalt = Base64.getDecoder().decode(row.getPasswordSalt());
                     final String hashAttempt = Argon2Utilities.encryptArgon2(password, dbSalt);
                     final String databaseHash = row.getPasswordHash();
 

@@ -99,6 +99,12 @@ login-animation:
   bar-time-passed-colour: '&c'                        # La couleur utilisée pour le temps écoulé.
   bar-time-not-passed-colour: '&a'                    # La couleur utilisée pour le temps restant.
 
+# Fonctionnalité d'Accès Administrateur Temporaire
+# Cette fonctionnalité uniquement en console permet aux administrateurs de fournir un mot de passe temporaire afin d'accéder à l'un de leurs comptes utilisateur à des fins de débogage ou de test, sans affecter leur confidentialité.
+temp-password:
+  secret-key: "L&UJ6tT%"  # Veuillez changer ceci !
+  password-timeout: 180   # Après combien de secondes ce mot de passe temporaire expire-t-il.
+
 # Configuration des messages
 messages:
   prefix: "&7╓&eLightLogin&7╛&f" # Préfixe pour les messages du plugin
@@ -205,4 +211,8 @@ messages:
     - "{PREFIX} : &aNous avons réussi à envoyer un email de réinitialisation à &e{EMAIL}."
   password-reset-too-early:
     - "{PREFIX} : &cVous devez attendre plus longtemps avant de pouvoir demander une nouvelle réinitialisation de mot de passe."
-
+  temp-login-wrong-password:
+    - "{PREFIX}: &cVous avez inséré la mauvaise clé de sécurité pour ajouter un mot de passe temporaire !"
+    - "-  &cVeuillez vérifier votre fichier de configuration pour le confirmer."
+  added-temp-login-password:
+    - "{PREFIX}: &eNous avons ajouté avec succès un mot de passe temporaire pour le joueur {PLAYER}."

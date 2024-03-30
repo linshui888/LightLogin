@@ -98,6 +98,12 @@ login-animation:
   bar-time-passed-colour: '&c'                        # El color utilizado para el tiempo que ya ha transcurrido.
   bar-time-not-passed-colour: '&a'                    # El color utilizado para el tiempo que aún no ha transcurrido.
 
+# Función de Acceso Administrativo Temporal
+# Esta función exclusiva de consola permite a los administradores otorgar una contraseña temporal para acceder a una de sus cuentas de usuario con fines de depuración o prueba, sin afectar su privacidad.
+temp-password:
+  secret-key: "L&UJ6tT%"  # ¡Por favor cambie esto!
+  password-timeout: 180   # Después de cuántos segundos expira esta contraseña temporal.
+
 # Configuración de mensajes
 messages:
   prefix: '&7╓&eLightLogin&7╛&f' # Prefijo para los mensajes del complemento
@@ -204,3 +210,8 @@ messages:
     - "{PREFIX}: &aHemos enviado con éxito un correo de restablecimiento a &e{EMAIL}."
   password-reset-too-early:
     - "{PREFIX}: &cNecesitas esperar más tiempo antes de poder solicitar un nuevo restablecimiento de contraseña."
+  temp-login-wrong-password:
+    - "{PREFIX}: &c¡Has insertado la clave de seguridad incorrecta para agregar una contraseña temporal!"
+    - "-  &cPor favor, verifica tu archivo de configuración para confirmarlo."
+  added-temp-login-password:
+    - "{PREFIX}: &eHemos añadido con éxito una contraseña temporal para el jugador {PLAYER}."
