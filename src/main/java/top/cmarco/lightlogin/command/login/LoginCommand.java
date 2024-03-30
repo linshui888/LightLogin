@@ -57,11 +57,9 @@ public final class LoginCommand extends LightLoginCommand {
     @Override
     protected void commandLogic(@NotNull CommandSender sender, @NotNull String[] args) {
 
-        if (!(sender instanceof Player)) {
+        if (!(sender instanceof Player player)) {
             return;
         }
-
-        final Player player = (Player) sender;
 
         if (args.length != 1) {
             sendColorPrefixMessages(player, super.configuration.getLoginIncorrectUsage(), super.plugin);
@@ -112,7 +110,9 @@ public final class LoginCommand extends LightLoginCommand {
                         return;
                     }
 
-                    final String hashAttempt = Argon2Utilities.encryptArgon2(password, Base64.getDecoder().decode(row.getPasswordSalt()));
+
+                    final byte dbSalt[] = Base64.getDecoder().decode(row.getPasswordSalt());
+                    final String hashAttempt = Argon2Utilities.encryptArgon2(password, dbSalt);
                     final String databaseHash = row.getPasswordHash();
 
                     if (databaseHash.equals(hashAttempt)) {

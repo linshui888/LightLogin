@@ -33,7 +33,7 @@ import java.util.Base64;
  */
 public final class Argon2Utilities {
 
-    public static boolean debug = Boolean.parseBoolean(System.getProperty("lightLoginDebug", "false"));
+    public static boolean debug = false;
 
     private Argon2Utilities() {
         throw new RuntimeException("You may not instantiate this utility class.");
@@ -53,10 +53,10 @@ public final class Argon2Utilities {
         return salt;
     }
 
-    private static final int ITERATIONS = Integer.parseInt(System.getProperty("lightLoginIterations", "4"));
-    private static final int MEMORY_LIMIT = Integer.parseInt(System.getProperty("lightLoginMemLimit", "65536"));
-    private static final int HASH_LENGTH = Integer.parseInt(System.getProperty("lightLoginHashLength", "32"));
-    private static final int PARALLELISM = Integer.parseInt(System.getProperty("lightLoginParallelism", "4"));
+    private static final int ITERATIONS = 4; // 16
+    private static final int MEMORY_LIMIT = 65336;
+    private static final int HASH_LENGTH = 32; // 64
+    private static final int PARALLELISM = 4;
 
     /**
      * A function to encrypt a string in Argon2 and encode it using Base64.
@@ -82,11 +82,9 @@ public final class Argon2Utilities {
         final byte[] result = new byte[HASH_LENGTH];
         generator.generateBytes(password.getBytes(StandardCharsets.UTF_8), result, 0x00, result.length);
         final long endTime = System.currentTimeMillis();
-
         if (debug) {
-            System.out.printf("HASH IMPACT = %.3f (s) %n", ((double) (endTime - startTime)) / 1E3);
+            System.out.printf("HASH IMPACT (ms) = %.3f%n", ((double) (endTime - startTime)) / 1E3);
         }
-
         return Base64.getEncoder().encodeToString(result);
     }
 

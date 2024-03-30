@@ -43,11 +43,9 @@ public final class RegisterCommand extends LightLoginCommand {
     @Override
     protected void commandLogic(@NotNull CommandSender sender, @NotNull String[] args) {
 
-        if (!(sender instanceof Player)) {
+        if (!(sender instanceof Player player)) {
             return;
         }
-
-        final Player player = (Player) sender;
 
         if (args.length != 2) {
             sendColorPrefixMessages(player, super.configuration.getRegisterIncorrectUsageMessage(), super.plugin);
@@ -84,15 +82,14 @@ public final class RegisterCommand extends LightLoginCommand {
                         } else {
                             final String uuid = player.getUniqueId().toString();
                             final byte[] salt = Argon2Utilities.generateSaltByte(0x10);
-                            final String password = Argon2Utilities.encryptArgon2(args[0], salt);
-                            final String email = null;
+                            final String password = Argon2Utilities.encryptArgon2(args[1], salt);
                             final long lastLogin = System.currentTimeMillis();
                             final long lastIpv4 = NetworkUtilities.convertInetSocketAddressToLong(player.getAddress());
 
                             database.addRow(new LightLoginDbRow(uuid,
                                     password,
                                     Base64.getEncoder().encodeToString(salt),
-                                    email,
+                                    null,
                                     lastLogin,
                                     lastIpv4)
                             ).whenCompleteAsync((addedRow, throwable2) -> {
