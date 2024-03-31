@@ -64,14 +64,12 @@ public final class RegisterCommand extends LightLoginCommand {
 
         PluginDatabase database = super.plugin.getDatabase();
 
-        database.searchRowFromPK(player.getUniqueId().toString())
-                .whenCompleteAsync((row, throwable) -> {
+        database.searchRowsPredicate(row -> row.getLastIpv4() == NetworkUtilities.convertInetSocketAddressToLong(player.getAddress()))
+                .thenAcceptBothAsync(database.searchRowFromPK(player.getUniqueId().toString()), (list, row) -> {
 
-                    if (throwable != null) {
-                        super.plugin.getLogger().warning(throwable.getLocalizedMessage());
-                        if (player.isOnline()) {
-                            sendColorPrefixMessages(player, super.configuration.getRegisterError(), super.plugin);
-                        }
+                    final int sameIpCount = list.size();
+                    if (sameIpCount > configuration.getRegisterSameIp()) {
+                        sendColorPrefixMessages(sender, configuration.getCannotRegisterTooManyIp(), plugin);
                         return;
                     }
 
@@ -128,6 +126,7 @@ public final class RegisterCommand extends LightLoginCommand {
                         }
 
                     });
+
                 });
 
     }

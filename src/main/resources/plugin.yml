@@ -9,20 +9,28 @@ database: false
 description: "Optimised and Safe SpigotMC Software for Authentication"
 commands:
   login:
+    aliases: ['l', 'authenticate', 'auth']
     description: "Login into the server."
   register:
+    aliases: ['reg']
     description: "Register into the server."
   unregister:
+    aliases: ['unreg']
     description: "Unregister a user from the server."
   lightlogin:
+    aliases: ['ll']
     description: "Information about this software"
   changepassword:
+    aliases: ['changepsw']
     description: "Change your current password."
   unlogin:
+    aliases: ['unlog', 'unl', 'ul']
     description: "Remove login session from a player."
   email:
     description: "Set your personal email."
   resetpassword:
+    aliases: ['resetpsw']
     description: "Reset a password through an email."
   temppassword:
+    aliases: ['temppsw']
     description: "Generate a temporary password via console."

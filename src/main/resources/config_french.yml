@@ -46,6 +46,7 @@ login:
 
 safety:
   players-same-ip: 2      # Combien de joueurs peuvent être connectés en même temps depuis la même adresse IPv4?
+  register-same-ip: 2     # Combien de comptes peuvent s'inscrire depuis la même IPv4 ?
 
 # Configuration des mots de passe sûrs
 safe-passwords:
@@ -216,3 +217,6 @@ messages:
     - "-  &cVeuillez vérifier votre fichier de configuration pour le confirmer."
   added-temp-login-password:
     - "{PREFIX}: &eNous avons ajouté avec succès un mot de passe temporaire pour le joueur {PLAYER}."
+  cannot-register-too-many-ip:
+    - "{PREFIX}: &cVous ne pouvez pas vous inscrire car le nombre maximal de comptes par adresse IP a été atteint !"
+

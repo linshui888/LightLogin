@@ -32,6 +32,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Predicate;
 
 /**
  * Represents a specific implementation of database used by this
@@ -74,6 +75,8 @@ public interface PluginDatabase {
     CompletableFuture<Void> updateRow(@NotNull String uuid, @NotNull LightLoginColumn column, @NotNull Object columnValue);
 
     CompletableFuture<Boolean> deleteRow(@NotNull String uuid);
+
+    CompletableFuture<List<LightLoginDbRow>> searchRowsPredicate(@NotNull Predicate<? super LightLoginDbRow> predicate);
 
     default void close() {
         try {

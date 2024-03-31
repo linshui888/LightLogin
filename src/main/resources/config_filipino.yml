@@ -46,6 +46,7 @@ login:
 
 safety:
   players-same-ip: 2      # Ilang players ang maaring mag-connect sabay-sabay gamit ang parehong IPv4?
+  register-same-ip: 2     # Ilang account ang maaaring magparehistro mula sa parehong IPv4?
 
 # Konfigurasyon ng Safe Passwords
 safe-passwords:
@@ -217,3 +218,5 @@ messages:
     - "-  &cMangyaring suriin ang inyong configuration file upang ito ay kumpirmahin."
   added-temp-login-password:
     - "{PREFIX}: &eMatagumpay naming idinagdag ang isang pansamantalang password para sa player na {PLAYER}."
+  cannot-register-too-many-ip:
+    - "{PREFIX}: &cHindi ka makapagrehistro dahil naabot na ang maximum na bilang ng mga account kada IP!"

@@ -29,7 +29,7 @@ public final class NetworkUtilities {
         throw new RuntimeException("Cannot instantiate utility class.");
     }
 
-    public static long convertInetSocketAddressToLong(@NotNull InetSocketAddress socketAddress) {
+    public static long convertInetSocketAddressToLong(@NotNull final InetSocketAddress socketAddress) {
         final InetAddress inetAddress = socketAddress.getAddress();
         final byte[] ipAddressBytes = inetAddress.getAddress();
 

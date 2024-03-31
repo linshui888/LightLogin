@@ -38,11 +38,12 @@ import top.cmarco.lightlogin.data.VoidLoginManager;
 import top.cmarco.lightlogin.database.LightLoginColumn;
 import top.cmarco.lightlogin.database.PluginDatabase;
 import top.cmarco.lightlogin.network.NetworkUtilities;
-import static top.cmarco.lightlogin.api.LoginUtils.whenOnline;
-import static top.cmarco.lightlogin.api.LoginUtils.whenOnlineOrElse;
 
 import java.net.InetAddress;
 import java.util.Objects;
+
+import static top.cmarco.lightlogin.api.LoginUtils.whenOnline;
+import static top.cmarco.lightlogin.api.LoginUtils.whenOnlineOrElse;
 
 public final class LoginAuthenticatorListener extends NamedListener {
 
@@ -91,7 +92,7 @@ public final class LoginAuthenticatorListener extends NamedListener {
 
         if (voidLoginManager != null) {
             voidLoginManager.sendLoginToVoid(player);
-            return;
+            // return;
         }
 
         autoKickManager.addEntered(player);
