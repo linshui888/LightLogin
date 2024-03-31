@@ -27,7 +27,7 @@ void-world:
   mode: 'NORMAL'        # NORMAL \ THE_END
 
 login-blindness:       # Abilita la cecità durante il login o la registrazione.
-  enabled: false
+  enabled: true
 
 # Configura i suoni durante la fase di accesso
 # Si prega di fare riferimento ai nomi dei suoni nell'API Bukkit come specificato dalla tua versione,

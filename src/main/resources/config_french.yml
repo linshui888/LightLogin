@@ -27,7 +27,7 @@ void-world:
   mode: 'NORMAL'        # NORMAL \ THE_END
 
 login-blindness:       # Activer la cécité pendant la connexion ou l'inscription.
-  enabled: false
+  enabled: true
 
 # Configuration de la connexion
 login:

@@ -26,7 +26,7 @@ void-world:
   mode: 'NORMAL'        # NORMAL \ THE_END
 
 login-blindness:       # להפעיל עיוורון במהלך התחברות או הרשמה.
-  enabled: false
+  enabled: true
 
 # הגדרות כניסה
 login:

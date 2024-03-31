@@ -26,7 +26,7 @@ void-world:
   mode: 'NORMAL'        # NORMAL \ THE_END
 
 login-blindness:       # Habilitar ceguera durante el inicio de sesión o registro.
-  enabled: false
+  enabled: true
 
 # Configuración de inicio de sesión
 login:

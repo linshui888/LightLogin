@@ -27,7 +27,7 @@ void-world:
   mode: 'NORMAL'        # NORMAL \ THE_END
 
 login-blindness:       # Включить слепоту во время входа или регистрации.
-  enabled: false
+  enabled: true
 
 # Конфигурация входа
 login:

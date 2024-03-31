@@ -27,7 +27,7 @@ void-world:
   mode: 'NORMAL'        # NORMAL \ THE_END
 
 login-blindness:       # Paganahin ang kahangalang sa panahon ng login o pagsusuri.
-  enabled: false
+  enabled: true
 
 # Konfigurasyon ng Login
 login:

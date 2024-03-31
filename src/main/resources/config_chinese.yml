@@ -27,7 +27,7 @@ void-world:
   mode: 'NORMAL'        # NORMAL \ THE_END
 
 login-blindness:       # 在登录或注册过程中启用盲目模式。
-  enabled: false
+  enabled: true
 
 safety:
   players-same-ip: 2      # 同一IPv4地址上可以同时连接多少玩家？
