@@ -27,10 +27,11 @@ void-world:
   mode: 'NORMAL'        # NORMAL \ THE_END
 
 login-blindness:       # 在登录或注册过程中启用盲目模式。
-  enabled: false
+  enabled: true
 
 safety:
   players-same-ip: 2      # 同一IPv4地址上可以同时连接多少玩家？
+  register-same-ip: 2     # 同一IPv4地址可以注册多少个帐户？
 
 # 登录配置
 login:
@@ -215,5 +216,8 @@ messages:
     - "-  &c请检查您的配置文件以验证它。"
   added-temp-login-password:
     - "{PREFIX}: &e我们已成功为玩家{PLAYER}添加了临时密码。"
+  cannot-register-too-many-ip:
+    - "{PREFIX}: &c您无法注册，因为已达到每个 IP 地址的最大帐户数！"
+
 
 

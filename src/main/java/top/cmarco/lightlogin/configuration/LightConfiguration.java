@@ -447,4 +447,12 @@ public final class LightConfiguration {
     public List<String> getTempoLoginAddedPasswordMessages() {
         return this.configuration.getStringList("messages.added-temp-login-password");
     }
+
+    public int getRegisterSameIp() {
+        return this.configuration.getInt("safety.register-same-ip");
+    }
+
+    public List<String> getCannotRegisterTooManyIp() {
+        return this.configuration.getStringList("messages.cannot-register-too-many-ip");
+    }
 }

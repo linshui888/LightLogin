@@ -33,7 +33,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Predicate;
 
 public final class SQLiteDatabase extends CredentialPluginDatabase {
     public SQLiteDatabase(final @NotNull LightLoginPlugin plugin) {
@@ -172,7 +175,7 @@ public final class SQLiteDatabase extends CredentialPluginDatabase {
     public CompletableFuture<Boolean> deleteRow(@NotNull String uuid) {
         return CompletableFuture.supplyAsync(() -> {
 
-            try (PreparedStatement statement = connection.prepareStatement(DELETE_ROW)) {
+            try (final PreparedStatement statement = connection.prepareStatement(DELETE_ROW)) {
                 statement.setString(1, uuid);
                 return statement.executeUpdate() != 0;
             } catch (SQLException exception) {
@@ -181,6 +184,42 @@ public final class SQLiteDatabase extends CredentialPluginDatabase {
             }
 
             return null;
+        });
+    }
+
+    private static final String SEARCH_ALL = "SELECT * FROM lightlogin;";
+
+    @Override
+    public CompletableFuture<List<LightLoginDbRow>> searchRowsPredicate(@NotNull Predicate<? super LightLoginDbRow> predicate) {
+        return CompletableFuture.supplyAsync(() -> {
+            final List<LightLoginDbRow> list = new ArrayList<>();
+
+            try (final PreparedStatement statement = connection.prepareStatement(SEARCH_ALL)) {
+                final ResultSet resultSet = statement.executeQuery();
+
+                while (resultSet.next()) {
+                    final String uuid = resultSet.getString(1);
+                    final String hash = resultSet.getString(2);
+                    final String salt = resultSet.getString(3);
+                    final String email = resultSet.getString(4);
+                    final long lastLogin = resultSet.getLong(5);
+                    final long lastIpv4 = resultSet.getLong(6);
+                    final LightLoginDbRow dbRow = new LightLoginDbRow(uuid, hash, salt, email, lastLogin, lastIpv4);
+
+                    if (predicate.test(dbRow)) {
+                        list.add(dbRow);
+
+                    }
+                }
+
+                resultSet.close();
+
+            } catch (SQLException exception) {
+                super.plugin.getLogger().warning("WARNING! Error database search with predicate failed!");
+                super.plugin.getLogger().warning(exception.getLocalizedMessage());
+            }
+
+            return list;
         });
     }
 }

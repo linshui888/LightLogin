@@ -22,6 +22,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 import top.cmarco.lightlogin.LightLoginPlugin;
+import top.cmarco.lightlogin.command.LightLoginCommand;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -71,7 +72,7 @@ public final class AutoKickManager {
                     return;
                 }
 
-                onlinePlayer.kickPlayer(plugin.getLightConfiguration().getLoginTookTooMuchTime());
+                onlinePlayer.kickPlayer(LightLoginCommand.colorAndReplace(plugin.getLightConfiguration().getLoginTookTooMuchTime(), plugin));
 
             }
 

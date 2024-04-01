@@ -27,7 +27,7 @@ void-world:
   mode: 'NORMAL'        # NORMAL \ THE_END
 
 login-blindness:       # Abilita la cecità durante il login o la registrazione.
-  enabled: false
+  enabled: true
 
 # Configura i suoni durante la fase di accesso
 # Si prega di fare riferimento ai nomi dei suoni nell'API Bukkit come specificato dalla tua versione,
@@ -67,6 +67,7 @@ login:
 
 safety:
   players-same-ip: 2      # Quanti giocatori possono essere collegati contemporaneamente attraverso lo stesso IPv4?
+  register-same-ip: 2     # Quanti account possono registrarsi dalla stessa IPv4?
 
 # Configurazione delle password sicure
 safe-passwords:
@@ -216,3 +217,6 @@ messages:
     - "-  &cPer favore, controlla il tuo file di configurazione per verificare."
   added-temp-login-password:
     - "{PREFIX}: &eAbbiamo aggiunto con successo una password temporanea per il giocatore {PLAYER}."
+  cannot-register-too-many-ip:
+    - "{PREFIX}: &cNon puoi registrarti perché è stato raggiunto il numero massimo di account per IP!"
+
